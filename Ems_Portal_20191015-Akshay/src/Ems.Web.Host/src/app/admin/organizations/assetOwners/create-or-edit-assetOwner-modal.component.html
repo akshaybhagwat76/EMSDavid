@@ -1,0 +1,86 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #assetOwnerForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="assetOwner.id">{{l("EditAssetOwner")}}</span>
+                        <span *ngIf="!assetOwner.id">{{l("CreateNewAssetOwner")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="SsicCodeCode">{{l("SsicCode")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SsicCodeCode" name="ssicCodeCode" [(ngModel)]="ssicCodeCode" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSsicCodeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSsicCodeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetOwner.ssicCodeId" [(ngModel)]="assetOwner.ssicCodeId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="CurrencyCode">{{l("Currency")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CurrencyCode" name="currencyCode" [(ngModel)]="currencyCode" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCurrencyModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCurrencyIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetOwner.currencyId" [(ngModel)]="assetOwner.currencyId" type="text" required hidden>
+		 
+
+								<div class="form-group">
+									<label for="AssetOwner_Reference">{{l("Reference")}} *</label>
+									<input type="text" id="AssetOwner_Reference" class="form-control" [(ngModel)]="assetOwner.reference" name="Reference"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="AssetOwner_Name">{{l("Name")}} *</label>
+									<input type="text" id="AssetOwner_Name" class="form-control" [(ngModel)]="assetOwner.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="AssetOwner_Identifier">{{l("Identifier")}} *</label>
+									<input type="text" id="AssetOwner_Identifier" class="form-control" [(ngModel)]="assetOwner.identifier" name="Identifier"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="AssetOwner_LogoUrl">{{l("LogoUrl")}}</label>
+									<input type="text" id="AssetOwner_LogoUrl" class="form-control" [(ngModel)]="assetOwner.logoUrl" name="LogoUrl"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="AssetOwner_Website">{{l("Website")}}</label>
+									<input type="text" id="AssetOwner_Website" class="form-control" [(ngModel)]="assetOwner.website" name="Website"    />
+								</div>
+					
+								<!--<div class="form-group">
+									<label for="AssetOwner_AssetOwnerLoc8GUID">{{l("AssetOwnerLoc8GUID")}}</label>
+									<input type="text" id="AssetOwner_AssetOwnerLoc8GUID" class="form-control" [(ngModel)]="assetOwner.assetOwnerLoc8GUID" name="AssetOwnerLoc8GUID"    />
+								</div>-->
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!assetOwnerForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<assetOwnerSsicCodeLookupTableModal #assetOwnerSsicCodeLookupTableModal (modalSave)="getNewSsicCodeId()"></assetOwnerSsicCodeLookupTableModal>
+		 <assetOwnerCurrencyLookupTableModal #assetOwnerCurrencyLookupTableModal (modalSave)="getNewCurrencyId()"></assetOwnerCurrencyLookupTableModal>
+		 
+</div>

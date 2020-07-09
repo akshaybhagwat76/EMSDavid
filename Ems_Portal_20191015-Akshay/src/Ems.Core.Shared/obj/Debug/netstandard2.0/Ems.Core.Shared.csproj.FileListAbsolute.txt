@@ -1,0 +1,8 @@
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\bin\Debug\netstandard2.0\Ems.Core.Shared.deps.json
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\bin\Debug\netstandard2.0\Ems.Core.Shared.dll
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\bin\Debug\netstandard2.0\Ems.Core.Shared.pdb
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\obj\Debug\netstandard2.0\Ems.Core.Shared.csprojAssemblyReference.cache
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\obj\Debug\netstandard2.0\Ems.Core.Shared.AssemblyInfoInputs.cache
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\obj\Debug\netstandard2.0\Ems.Core.Shared.AssemblyInfo.cs
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\obj\Debug\netstandard2.0\Ems.Core.Shared.dll
+F:\David\Ems_Portal_20191015-Akshay\src\Ems.Core.Shared\obj\Debug\netstandard2.0\Ems.Core.Shared.pdb

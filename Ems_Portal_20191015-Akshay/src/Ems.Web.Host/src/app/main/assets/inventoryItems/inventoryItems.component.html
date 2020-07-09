@@ -1,0 +1,237 @@
+﻿<div [@routerTransition]>
+  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item">
+      <div [class]="containerClass">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("InventoryItems")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("InventoryItemsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.InventoryItems.Create')" (click)="createInventoryItem()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewInventoryItem")}}</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getInventoryItems()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="NameFilter">{{l("Name")}}</label>
+									<input type="text" class="form-control" id="NameFilter" name="nameFilter" [(ngModel)]="nameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ReferenceFilter">{{l("Reference")}}</label>
+									<input type="text" class="form-control" id="ReferenceFilter" name="referenceFilter" [(ngModel)]="referenceFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinQtyInWarehouseFilter">{{l("MinMax")}} {{l("QtyInWarehouse")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinQtyInWarehouseFilter" [(ngModel)]="minQtyInWarehouseFilter" placeholder="{{l('MinValue')}}" name="minQtyInWarehouseFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxQtyInWarehouseFilter" placeholder="{{l('MaxValue')}}" name="maxQtyInWarehouseFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinRestockLimitFilter">{{l("MinMax")}} {{l("RestockLimit")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinRestockLimitFilter" [(ngModel)]="minRestockLimitFilter" placeholder="{{l('MinValue')}}" name="minRestockLimitFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxRestockLimitFilter" placeholder="{{l('MaxValue')}}" name="maxRestockLimitFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinQtyOnOrderFilter">{{l("MinMax")}} {{l("QtyOnOrder")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinQtyOnOrderFilter" [(ngModel)]="minQtyOnOrderFilter" placeholder="{{l('MinValue')}}" name="minQtyOnOrderFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxQtyOnOrderFilter" placeholder="{{l('MaxValue')}}" name="maxQtyOnOrderFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ItemTypeTypeFilter">({{l("ItemType")}}) {{l("Type")}}</label>
+									<input type="text" class="form-control" id="ItemTypeTypeFilter" name="itemTypeTypeFilter" [(ngModel)]="itemTypeTypeFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetReferenceFilter">({{l("Asset")}}) {{l("Reference")}}</label>
+									<input type="text" class="form-control" id="AssetReferenceFilter" name="assetReferenceFilter" [(ngModel)]="assetReferenceFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getInventoryItems($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.InventoryItems.Edit', 'Pages.InventoryItems.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="itemTypeFk.type">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="itemTypeType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetFk.reference">
+                                        {{l('Reference')}}
+                                        <p-sortIcon field="assetReference"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="inventoryItem.name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="reference">
+                                        {{l('Reference')}}
+                                        <p-sortIcon field="inventoryItem.reference"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="qtyInWarehouse">
+                                        {{l('QtyInWarehouse')}}
+                                        <p-sortIcon field="inventoryItem.qtyInWarehouse"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="restockLimit">
+                                        {{l('RestockLimit')}}
+                                        <p-sortIcon field="inventoryItem.restockLimit"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="qtyOnOrder">
+                                        {{l('QtyOnOrder')}}
+                                        <p-sortIcon field="inventoryItem.qtyOnOrder"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.InventoryItems.Edit', 'Pages.InventoryItems.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewInventoryItemModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.InventoryItems.Edit')"
+														(click)="createOrEditInventoryItemModal.show(record.inventoryItem.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.InventoryItems.Delete')"
+														(click)="deleteInventoryItem(record.inventoryItem)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Type')}}</span>
+												{{record.itemTypeType}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Reference')}}</span>
+												{{record.assetReference}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Name')}}</span>
+											{{record.inventoryItem.name}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Reference')}}</span>
+											{{record.inventoryItem.reference}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('QtyInWarehouse')}}</span>
+											{{record.inventoryItem.qtyInWarehouse}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('RestockLimit')}}</span>
+											{{record.inventoryItem.restockLimit}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('QtyOnOrder')}}</span>
+											{{record.inventoryItem.qtyOnOrder}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getInventoryItems($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditInventoryItemModal #createOrEditInventoryItemModal (modalSave)="getInventoryItems()"></createOrEditInventoryItemModal>
+    <viewInventoryItemModal #viewInventoryItemModal></viewInventoryItemModal>
+    
+  </div>
+</div>

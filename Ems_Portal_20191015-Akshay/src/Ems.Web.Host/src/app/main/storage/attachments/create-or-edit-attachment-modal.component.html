@@ -1,0 +1,154 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #attachmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="attachment.id">{{l("EditAttachment")}}</span>
+                        <span *ngIf="!attachment.id">{{l("CreateNewAttachment")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.assetId" [(ngModel)]="attachment.assetId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="IncidentDescription">{{l("Incident")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentDescription" name="incidentDescription" [(ngModel)]="incidentDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectIncidentModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setIncidentIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.incidentId" [(ngModel)]="attachment.incidentId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="LeaseAgreementReference">{{l("LeaseAgreement")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseAgreementReference" name="leaseAgreementReference" [(ngModel)]="leaseAgreementReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseAgreementModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseAgreementIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.leaseAgreementId" [(ngModel)]="attachment.leaseAgreementId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="QuotationTitle">{{l("Quotation")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="QuotationTitle" name="quotationTitle" [(ngModel)]="quotationTitle" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectQuotationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setQuotationIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.quotationId" [(ngModel)]="attachment.quotationId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="SupportContractTitle">{{l("SupportContract")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportContractTitle" name="supportContractTitle" [(ngModel)]="supportContractTitle" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportContractModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportContractIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.supportContractId" [(ngModel)]="attachment.supportContractId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="WorkOrderSubject">{{l("WorkOrder")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderSubject" name="workOrderSubject" [(ngModel)]="workOrderSubject" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.workOrderId" [(ngModel)]="attachment.workOrderId" type="text" hidden>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin') && !hasReferenceId" class="form-group m-form__group">
+                        <label for="CustomerInvoiceDescription">{{l("CustomerInvoice")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CustomerInvoiceDescription" name="customerInvoiceDescription" [(ngModel)]="customerInvoiceDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCustomerInvoiceModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCustomerInvoiceIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="attachment.customerInvoiceId" [(ngModel)]="attachment.customerInvoiceId" type="text" hidden>
+
+
+                    <div class="form-group" *ngIf="!attachment.id">
+                        <label for="Attachment_Filename">{{l("File")}} *</label>
+                        <input type="file" ng2FileSelect [uploader]="attachmentUploader" (click)="clearFileQueue()" class="col-lg-12" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Attachment_Description">{{l("Description")}}</label>
+                        <input type="text" id="Attachment_Description" class="form-control" [(ngModel)]="attachment.description" name="Description" />
+                    </div>
+
+                    <!--<div *ngIf="isGranted('Pages.Main.Attachments.Admin')" class="form-group">
+                        <label for="Attachment_UploadedAt">{{l("UploadedAt")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker  [bsConfig]="{ adaptivePosition: true }"  [(ngModel)]="attachment.uploadedAt._d" id="Attachment_UploadedAt" name="Attachment_UploadedAt">
+                    </div>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin')" class="form-group">
+                        <label for="Attachment_UploadedBy">{{l("UploadedBy")}}</label>
+                        <input type="number" id="Attachment_UploadedBy" class="form-control" [(ngModel)]="attachment.uploadedBy" name="UploadedBy" />
+                    </div>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin')" class="form-group">
+                        <label for="Attachment_BlobFolder">{{l("BlobFolder")}}</label>
+                        <input type="text" id="Attachment_BlobFolder" class="form-control" [(ngModel)]="attachment.blobFolder" name="BlobFolder" />
+                    </div>
+
+                    <div *ngIf="isGranted('Pages.Main.Attachments.Admin')" class="form-group">
+                        <label for="Attachment_BlobId">{{l("BlobId")}}</label>
+                        <input type="text" id="Attachment_BlobId" class="form-control" [(ngModel)]="attachment.blobId" name="BlobId" />
+                    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!attachmentForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <attachmentAssetLookupTableModal #attachmentAssetLookupTableModal (modalSave)="getNewAssetId()"></attachmentAssetLookupTableModal>
+    <attachmentIncidentLookupTableModal #attachmentIncidentLookupTableModal (modalSave)="getNewIncidentId()"></attachmentIncidentLookupTableModal>
+    <attachmentLeaseAgreementLookupTableModal #attachmentLeaseAgreementLookupTableModal (modalSave)="getNewLeaseAgreementId()"></attachmentLeaseAgreementLookupTableModal>
+    <attachmentQuotationLookupTableModal #attachmentQuotationLookupTableModal (modalSave)="getNewQuotationId()"></attachmentQuotationLookupTableModal>
+    <attachmentSupportContractLookupTableModal #attachmentSupportContractLookupTableModal (modalSave)="getNewSupportContractId()"></attachmentSupportContractLookupTableModal>
+    <attachmentWorkOrderLookupTableModal #attachmentWorkOrderLookupTableModal (modalSave)="getNewWorkOrderId()"></attachmentWorkOrderLookupTableModal>
+    <attachmentCustomerInvoiceLookupTableModal #attachmentCustomerInvoiceLookupTableModal (modalSave)="getNewCustomerInvoiceId()"></attachmentCustomerInvoiceLookupTableModal>
+
+</div>

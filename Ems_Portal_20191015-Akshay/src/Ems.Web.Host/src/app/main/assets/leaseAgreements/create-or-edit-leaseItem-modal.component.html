@@ -1,0 +1,141 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #leaseItemForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="leaseItem.id">{{l("EditLeaseItem")}}</span>
+                        <span *ngIf="!leaseItem.id">{{l("CreateNewLeaseItem")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetClassClass">{{l("AssetClass")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetClassClass" name="assetClassClass" [(ngModel)]="assetClassClass" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetClassIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="leaseItem.assetClassId" [(ngModel)]="leaseItem.assetClassId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="leaseItem.assetId" [(ngModel)]="leaseItem.assetId" type="text" hidden>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_DateAllocated">{{l("DateAllocated")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="dateAllocated" id="LeaseItem_DateAllocated" name="LeaseItem_DateAllocated" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_AllocationPercentage">{{l("AllocationPercentage")}}</label>
+                        <input type="number" id="LeaseItem_AllocationPercentage" class="form-control" [(ngModel)]="leaseItem.allocationPercentage" name="AllocationPercentage" min="0" max="100" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_Terms">{{l("Terms")}}</label>
+                        <input type="text" id="LeaseItem_Terms" class="form-control" [(ngModel)]="leaseItem.terms" name="Terms" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_UnitRentalRate">{{l("UnitRentalRate")}} *</label>
+                        <input type="number" id="LeaseItem_UnitRentalRate" class="form-control" [(ngModel)]="leaseItem.unitRentalRate" name="UnitRentalRate" min="0" required />
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="LeaseItem_RentalUomRefId">{{l("RentalUomRefId")}}</label>
+                        <input type="number" id="LeaseItem_RentalUomRefId" class="form-control" [(ngModel)]="leaseItem.rentalUomRefId" name="RentalUomRefId" />
+                    </div>-->
+
+                    <div class="form-group m-form__group">
+                        <label for="RentalUOM">{{l("RentalUomRefId")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="RentalUOM" name="rentalUOM" [(ngModel)]="rentalUOM" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectRentalUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setRentalUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="leaseItem.rentalUomRefId" [(ngModel)]="leaseItem.rentalUomRefId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="LeaseItem_UnitDepositRate">{{l("UnitDepositRate")}} *</label>
+                        <input type="number" id="LeaseItem_UnitDepositRate" class="form-control" [(ngModel)]="leaseItem.unitDepositRate" name="UnitDepositRate" min="0" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_StartDate">{{l("StartDate")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="startDate" id="LeaseItem_StartDate" name="LeaseItem_StartDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LeaseItem_EndDate">{{l("EndDate")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="endDate" id="LeaseItem_EndDate" name="LeaseItem_EndDate" required>
+                    </div>
+
+
+                    <!--<div class="form-group">
+                        <label for="LeaseItem_DepositUomRefId">{{l("DepositUomRefId")}}</label>
+                        <input type="number" id="LeaseItem_DepositUomRefId" class="form-control" [(ngModel)]="leaseItem.depositUomRefId" name="DepositUomRefId" />
+                    </div>-->
+
+                    <!--<div class="form-group m-form__group">
+                        <label for="DepositUOM">{{l("DepositUomRefId")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="DepositUOM" name="depositUOM" [(ngModel)]="depositUOM" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectDepositUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setDepositUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="leaseItem.depositUomRefId" [(ngModel)]="leaseItem.depositUomRefId" type="text" hidden>-->
+
+                    <!--<div class="form-group">
+                        <label for="LeaseItem_Item">{{l("Item")}} *</label>
+                        <input type="text" id="LeaseItem_Item" class="form-control" [(ngModel)]="leaseItem.item" name="Item" required />
+                    </div>-->
+
+                    <div class="form-group">
+                        <label for="LeaseItem_Description">{{l("Notes")}}</label>
+                        <input type="text" id="LeaseItem_Description" class="form-control" [(ngModel)]="leaseItem.description" name="Description" />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!leaseItemForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <leaseItemAssetClassLookupTableModal #leaseItemAssetClassLookupTableModal (modalSave)="getNewAssetClassId()"></leaseItemAssetClassLookupTableModal>
+    <leaseItemAssetLookupTableModal #leaseItemAssetLookupTableModal (modalSave)="getNewAssetId()"></leaseItemAssetLookupTableModal>
+    <leaseItemDepositUomLookupTableModal #leaseItemDepositUomLookupTableModal (modalSave)="getNewDepositUomId()"></leaseItemDepositUomLookupTableModal>
+    <leaseItemRentalUomLookupTableModal #leaseItemRentalUomLookupTableModal (modalSave)="getNewRentalUomId()"></leaseItemRentalUomLookupTableModal>
+    <!--<leaseItemLeaseAgreementLookupTableModal #leaseItemLeaseAgreementLookupTableModal (modalSave)="getNewLeaseAgreementId()"></leaseItemLeaseAgreementLookupTableModal>-->
+
+</div>

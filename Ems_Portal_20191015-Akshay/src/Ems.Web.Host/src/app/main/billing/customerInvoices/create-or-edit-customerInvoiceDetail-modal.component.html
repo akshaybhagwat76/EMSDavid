@@ -1,0 +1,129 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #customerInvoiceDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="customerInvoiceDetail.id">{{l("EditCustomerInvoiceDetail")}}</span>
+                        <span *ngIf="!customerInvoiceDetail.id">{{l("CreateNewCustomerInvoiceDetail")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="LeaseItemItem">{{l("LeaseItem")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseItemItem" name="leaseItemItem" [(ngModel)]="leaseItemItem" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customerInvoiceDetail.leaseItemId" [(ngModel)]="customerInvoiceDetail.leaseItemId" type="text" required hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customerInvoiceDetail.itemTypeId" [(ngModel)]="customerInvoiceDetail.itemTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UomUnitOfMeasurement">{{l("Uom")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UomUnitOfMeasurement" name="uomUnitOfMeasurement" [(ngModel)]="uomUnitOfMeasurement" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customerInvoiceDetail.uomId" [(ngModel)]="customerInvoiceDetail.uomId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="ActionWorkOrderAction">{{l("Action")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ActionWorkOrderAction" name="actionWorkOrderAction" [(ngModel)]="actionWorkOrderAction" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWoActionModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWoActionIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customerInvoiceDetail.workOrderActionId" [(ngModel)]="customerInvoiceDetail.workOrderActionId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Description">{{l("Description")}} #</label>
+                        <input type="text" id="CustomerInvoiceDetail_Description" class="form-control" [(ngModel)]="customerInvoiceDetail.description" name="Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Quantity">{{l("Quantity")}} *</label>
+                        <input type="number" id="CustomerInvoiceDetail_Quantity" class="form-control" [(ngModel)]="customerInvoiceDetail.quantity" name="Quantity" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_UnitPrice">{{l("UnitPrice")}} *</label>
+                        <input type="number" id="CustomerInvoiceDetail_UnitPrice" class="form-control" [(ngModel)]="customerInvoiceDetail.unitPrice" name="UnitPrice" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Net">{{l("Net [MarkUp]")}} in (%)</label>
+                        <input type="number" id="CustomerInvoiceDetail_Net" class="form-control" [(ngModel)]="customerInvoiceDetail.net" name="Net" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Gross">{{l("Gross")}} </label>
+                        <input type="number" id="CustomerInvoiceDetail_Gross" class="form-control" [(ngModel)]="customerInvoiceDetail.gross" name="Gross" min="0" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Discount">{{l("Discount")}} in (%)</label>
+                        <input type="number" id="CustomerInvoiceDetail_Discount" class="form-control" [(ngModel)]="customerInvoiceDetail.discount" name="Discount" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="CustomerInvoiceDetail_IsTaxable" class="kt-checkbox">
+                            <input id="CustomerInvoiceDetail_IsTaxable" type="checkbox" name="IsTaxable" [(ngModel)]="customerInvoiceDetail.isTaxable" (change)="calculateAmount()">
+                            {{l("IsTaxable")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <label for="CustomerInvoiceDetail_Charge">{{l("Charge")}} *</label>
+                        <input type="number" id="CustomerInvoiceDetail_Charge" class="form-control" [(ngModel)]="customerInvoiceDetail.charge" name="Charge" required min="0" disabled />
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="CustomerInvoiceDetail_BillingRuleRefId">{{l("BillingRuleRefId")}}</label>
+                        <input type="number" id="CustomerInvoiceDetail_BillingRuleRefId" class="form-control" [(ngModel)]="customerInvoiceDetail.billingRuleRefId" name="BillingRuleRefId" />
+                    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!customerInvoiceDetailForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <itemTypeLookupTableModal #itemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></itemTypeLookupTableModal>
+    <uomLookupTableModal #uomLookupTableModal (modalSave)="getNewUomId()"></uomLookupTableModal>
+    <workOrderWorkOrderActionLookupTableModal #workOrderWorkOrderActionLookupTableModal (modalSave)="getNewWoActionId()"></workOrderWorkOrderActionLookupTableModal>
+    <customerInvoiceDetailLeaseItemLookupTableModal #customerInvoiceDetailLeaseItemLookupTableModal (modalSave)="getNewLeaseItemId()"></customerInvoiceDetailLeaseItemLookupTableModal>
+</div>

@@ -1,0 +1,82 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DateAllocated")}} :</h6>
+                        {{ item.leaseItem.dateAllocated | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AllocationPercentage")}} :</h6>
+                        {{ item.leaseItem.allocationPercentage }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Terms")}} :</h6>
+                        {{ item.leaseItem.terms }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("UnitRentalRate")}} :</h6>
+                        {{ item.leaseItem.unitRentalRate }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("UnitDepositRate")}} :</h6>
+                        {{ item.leaseItem.unitDepositRate }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.leaseItem.startDate | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EndDate")}} :</h6>
+                        {{ item.leaseItem.endDate | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("RentalUomRefId")}} :</h6>
+                        {{ item.rentalUom }}
+                    </div>
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("DepositUom")}} :</h6>
+                        {{ item.depositUom }}
+                    </div>-->
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("Item")}} :</h6>
+                        {{ item.leaseItem.item }}
+                    </div>-->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Notes")}} :</h6>
+                        {{ item.leaseItem.description }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AssetClass")}} :</h6>
+                        {{item.assetClassClass}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AssetReference")}} :</h6>
+                        {{item.assetReference}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LeaseAgreement")}} :</h6>
+                        {{item.leaseAgreementTitle}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

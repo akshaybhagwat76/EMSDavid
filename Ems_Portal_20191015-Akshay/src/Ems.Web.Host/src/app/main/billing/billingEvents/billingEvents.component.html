@@ -1,0 +1,242 @@
+<div [@routerTransition]>
+  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item">
+      <div [class]="containerClass">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("BillingEvents")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("BillingEventsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.Main.BillingEvents.Create')" (click)="createBillingEvent()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewBillingEvent")}}</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getBillingEvents()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBillingEventDateFilter">{{l("BillingEventDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBillingEventDateFilter" name="MinBillingEventDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minBillingEventDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBillingEventDateFilter" name="MaxBillingEventDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBillingEventDateFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TriggeredByFilter">{{l("TriggeredBy")}}</label>
+									<input type="text" class="form-control" id="TriggeredByFilter" name="triggeredByFilter" [(ngModel)]="triggeredByFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="PurposeFilter">{{l("Purpose")}}</label>
+									<input type="text" class="form-control" id="PurposeFilter" name="purposeFilter" [(ngModel)]="purposeFilter">
+								</div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="WasInvoiceGeneratedFilterSelect">{{l("WasInvoiceGenerated")}}</label>
+								<select class="form-control" name="WasInvoiceGeneratedFilter" id="WasInvoiceGeneratedFilterSelect" [(ngModel)]="wasInvoiceGeneratedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="LeaseAgreementTitleFilter">({{l("LeaseAgreement")}}) {{l("Title")}}</label>
+									<input type="text" class="form-control" id="LeaseAgreementTitleFilter" name="leaseAgreementTitleFilter" [(ngModel)]="leaseAgreementTitleFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="VendorChargeReferenceFilter">({{l("VendorCharge")}}) {{l("Reference")}}</label>
+									<input type="text" class="form-control" id="VendorChargeReferenceFilter" name="vendorChargeReferenceFilter" [(ngModel)]="vendorChargeReferenceFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="BillingEventTypeTypeFilter">({{l("BillingEventType")}}) {{l("Type")}}</label>
+									<input type="text" class="form-control" id="BillingEventTypeTypeFilter" name="billingEventTypeTypeFilter" [(ngModel)]="billingEventTypeTypeFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getBillingEvents($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.BillingEvents.Edit', 'Pages.Main.BillingEvents.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="leaseAgreementFk.title">
+                                        {{l('Title')}}
+                                        <p-sortIcon field="leaseAgreementTitle"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="vendorChargeFk.reference">
+                                        {{l('Reference')}}
+                                        <p-sortIcon field="vendorChargeReference"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="billingEventTypeFk.type">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="billingEventTypeType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="billingEventDate">
+                                        {{l('BillingEventDate')}}
+                                        <p-sortIcon field="billingEvent.billingEventDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="triggeredBy">
+                                        {{l('TriggeredBy')}}
+                                        <p-sortIcon field="billingEvent.triggeredBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="purpose">
+                                        {{l('Purpose')}}
+                                        <p-sortIcon field="billingEvent.purpose"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="wasInvoiceGenerated">
+                                        {{l('WasInvoiceGenerated')}}
+                                        <p-sortIcon field="billingEvent.wasInvoiceGenerated"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.Main.BillingEvents.Edit', 'Pages.Main.BillingEvents.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewBillingEventModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.BillingEvents.Edit')"
+														(click)="createOrEditBillingEventModal.show(record.billingEvent.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.BillingEvents.Delete')"
+														(click)="deleteBillingEvent(record.billingEvent)">{{l('Delete')}}</a>
+												</li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                       (click)="showHistory(record.billingEvent)">{{l('History')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Title')}}</span>
+												{{record.leaseAgreementTitle}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Reference')}}</span>
+												{{record.vendorChargeReference}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Type')}}</span>
+												{{record.billingEventTypeType}}
+											</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BillingEventDate')}}</span>
+                                        <span *ngIf="record.billingEvent.billingEventDate">
+											{{record.billingEvent.billingEventDate | momentFormat:'ll'}}
+                                        </span>
+                                        <span *ngIf="!record.billingEvent.billingEventDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TriggeredBy')}}</span>
+											{{record.billingEvent.triggeredBy}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Purpose')}}</span>
+											{{record.billingEvent.purpose}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('WasInvoiceGenerated')}}</span>
+                                        <div *ngIf="record.billingEvent.wasInvoiceGenerated" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
+										<div *ngIf="!record.billingEvent.wasInvoiceGenerated" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getBillingEvents($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBillingEventModal #createOrEditBillingEventModal (modalSave)="getBillingEvents()"></createOrEditBillingEventModal>
+    <viewBillingEventModal #viewBillingEventModal></viewBillingEventModal>
+     <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+  </div>
+</div>

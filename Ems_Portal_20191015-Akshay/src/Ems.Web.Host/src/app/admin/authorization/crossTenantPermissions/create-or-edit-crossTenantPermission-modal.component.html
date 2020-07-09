@@ -1,0 +1,48 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #crossTenantPermissionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="crossTenantPermission.id">{{l("EditCrossTenantPermission")}}</span>
+                        <span *ngIf="!crossTenantPermission.id">{{l("CreateNewCrossTenantPermission")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="CrossTenantPermission_TenantRefId">{{l("TenantRefId")}}</label>
+									<input type="number" id="CrossTenantPermission_TenantRefId" class="form-control" [(ngModel)]="crossTenantPermission.tenantRefId" name="TenantRefId"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="CrossTenantPermission_EntityType">{{l("EntityType")}} *</label>
+									<input type="text" id="CrossTenantPermission_EntityType" class="form-control" [(ngModel)]="crossTenantPermission.entityType" name="EntityType"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="CrossTenantPermission_Tenants">{{l("Tenants")}}</label>
+									<input type="text" id="CrossTenantPermission_Tenants" class="form-control" [(ngModel)]="crossTenantPermission.tenants" name="Tenants"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="CrossTenantPermission_TenantType">{{l("TenantType")}} *</label>
+									<input type="text" id="CrossTenantPermission_TenantType" class="form-control" [(ngModel)]="crossTenantPermission.tenantType" name="TenantType"     required/>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!crossTenantPermissionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,326 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{l("Incidents")}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{l("IncidentsHeaderInfo")}}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                        <button *ngIf="isGranted('Pages.Main.Incidents.Create')" (click)="createIncident()"
+                                class="btn btn-primary blue">
+                            <i class="fa fa-plus"></i> {{l("CreateNewIncident")}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                            <span class="input-group-btn input-group-btn-left">
+                                                <button class="btn btn-primary" (click)="getIncidents()" type="button"><i class="fa fa-search"></i> {{l("Search")}}</button>
+                                            </span> 
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-danger" type="button" (click)="clearSearch()"><i class="fa fa-times"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="DescriptionFilter">{{l("Description")}}</label>
+                                        <input type="text" class="form-control" id="DescriptionFilter" name="descriptionFilter" [(ngModel)]="descriptionFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinIncidentDateFilter">{{l("IncidentDateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinIncidentDateFilter" name="MinIncidentDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minIncidentDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxIncidentDateFilter" name="MaxIncidentDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxIncidentDateFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="LocationFilter">{{l("Location")}}</label>
+                                        <input type="text" class="form-control" id="LocationFilter" name="locationFilter" [(ngModel)]="locationFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RemarksFilter">{{l("Remarks")}}</label>
+                                        <input type="text" class="form-control" id="RemarksFilter" name="remarksFilter" [(ngModel)]="remarksFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinResolvedAtFilter">{{l("ResolvedAtRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinResolvedAtFilter" name="MinResolvedAtFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minResolvedAtFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxResolvedAtFilter" name="MaxResolvedAtFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxResolvedAtFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="IncidentPriorityPriorityFilter">{{l("IncidentPriority")}}</label>
+                                        <input type="text" class="form-control" id="IncidentPriorityPriorityFilter" name="incidentPriorityPriorityFilter" [(ngModel)]="incidentPriorityPriorityFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="IncidentStatusStatusFilter">{{l("IncidentStatus")}}</label>
+                                        <input type="text" class="form-control" id="IncidentStatusStatusFilter" name="incidentStatusStatusFilter" [(ngModel)]="incidentStatusStatusFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="CustomerNameFilter">{{l("Customer")}}</label>
+                                        <input type="text" class="form-control" id="CustomerNameFilter" name="customerNameFilter" [(ngModel)]="customerNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="AssetReferenceFilter">{{l("AssetReference")}}</label>
+                                        <input type="text" class="form-control" id="AssetReferenceFilter" name="assetReferenceFilter" [(ngModel)]="assetReferenceFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="SupportItemDescriptionFilter">{{l("SupportItem")}}</label>
+                                        <input type="text" class="form-control" id="SupportItemDescriptionFilter" name="supportItemDescriptionFilter" [(ngModel)]="supportItemDescriptionFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="IncidentTypeTypeFilter">{{l("IncidentType")}}</label>
+                                        <input type="text" class="form-control" id="IncidentTypeTypeFilter" name="incidentTypeTypeFilter" [(ngModel)]="incidentTypeTypeFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="UserNameFilter">{{l("UserName")}}</label>
+                                        <input type="text" class="form-control" id="UserNameFilter" name="userNameFilter" [(ngModel)]="userNameFilter">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12"
+                             [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable
+                                     (onLazyLoad)="getIncidents($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px">{{l('Actions')}}</th>
+                                        <th style="width: 100px" pSortableColumn="incidentPriorityFk.priority">
+                                            {{l('Priority')}}
+                                            <p-sortIcon field="incidentPriorityPriority"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="incidentStatusFk.status">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="incidentStatusStatus"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 350px" pSortableColumn="description">
+                                            {{l('Incident')}}
+                                            <p-sortIcon field="incident.description"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="incidentTypeFk.type">
+                                            {{l('Type')}}
+                                            <p-sortIcon field="incidentTypeType"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 200px" pSortableColumn="customerFk.name">
+                                            {{l('Customer')}}
+                                            <p-sortIcon field="customerName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="assetFk.reference">
+                                            {{l('AssetReference')}}
+                                            <p-sortIcon field="assetReference"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 350px" pSortableColumn="supportItemFk.description">
+                                            {{l('Asset')}}
+                                            <p-sortIcon field="supportItemDescription"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="userFk.name">
+                                            {{l('Username')}}
+                                            <p-sortIcon field="userName"></p-sortIcon>
+                                        </th>
+
+                                        <th style="width: 150px" pSortableColumn="incidentDate">
+                                            {{l('IncidentDate')}}
+                                            <p-sortIcon field="incident.incidentDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="location">
+                                            {{l('Location')}}
+                                            <p-sortIcon field="incident.location"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="resolvedAt">
+                                            {{l('ResolvedAt')}}
+                                            <p-sortIcon field="incident.resolvedAt"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Incidents.View')"
+                                                           (click)="viewIncident(record.incident.id)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Incidents.Edit')"
+                                                           (click)="createOrEditIncidentModal.show(record.incident.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Incidents.Delete')"
+                                                           (click)="deleteIncident(record.incident)">{{l('Delete')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                           (click)="showHistory(record.incident)">{{l('History')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.WorkOrders.Create')"
+                                                           (click)="createWorkOrder(record.incident.id)">{{l('CreateNewWorkOrder')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:100px">
+                                            <span class="ui-column-title"> {{l('Priority')}}</span>
+                                            {{record.incidentPriorityPriority}}
+                                        </td>
+                                        <td style="width:100px">
+                                            <span class="ui-column-title"> {{l('Status')}}</span>
+                                            {{record.incidentStatusStatus}}
+                                        </td>
+                                        <td style="width:350px">
+                                            <span class="ui-column-title"> {{l('Description')}}</span>
+                                            {{record.incident.description}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Type')}}</span>
+                                            {{record.incidentTypeType}}
+                                        </td>
+                                        <td style="width:200px">
+                                            <span class="ui-column-title"> {{l('Name')}}</span>
+                                            {{record.customerName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Reference')}}</span>
+                                            {{record.assetReference}}
+                                        </td>
+                                        <td style="width:350px">
+                                            <span class="ui-column-title"> {{l('Description')}}</span>
+                                            {{record.supportItemDescription}}
+                                        </td>
+
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Name')}}</span>
+                                            {{record.userName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('IncidentDate')}}</span>
+                                            <span *ngIf="record.incident.incidentDate">
+                                                {{record.incident.incidentDate | momentFormat:'ll'}}
+                                            </span>
+                                            <span *ngIf="!record.incident.incidentDate">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Location')}}</span>
+                                            {{record.incident.location}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('ResolvedAt')}}</span>
+                                            <span *ngIf="record.incident.resolvedAt">
+                                                {{record.incident.resolvedAt | momentFormat:'ll'}}
+                                            </span>
+                                            <span *ngIf="!record.incident.resolvedAt">-</span>
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                             #paginator
+                                             (onPageChange)="getIncidents($event)"
+                                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <createOrEditIncidentModal #createOrEditIncidentModal (modalSave)="getIncidents()"></createOrEditIncidentModal>
+        <viewIncidentModal #viewIncidentModal></viewIncidentModal>
+        <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+    </div>
+</div>
+<style>
+    .input-group span.input-group-btn-left button {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+    }
+</style>

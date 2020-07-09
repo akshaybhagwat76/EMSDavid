@@ -1,0 +1,136 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #assetForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="asset.id">{{l("EditAsset")}}</span>
+                        <span *ngIf="!asset.id">{{l("CreateNewAsset")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetClassClass">{{l("AssetClass")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetClassClass" name="assetClassClass" [(ngModel)]="assetClassClass" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetClassIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="asset.assetClassId" [(ngModel)]="asset.assetClassId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetStatusStatus">{{l("AssetStatus")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetStatusStatus" name="assetStatusStatus" [(ngModel)]="assetStatusStatus" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="asset.assetStatusId" [(ngModel)]="asset.assetStatusId" type="text" hidden required>
+
+
+                    <div class="form-group">
+                        <label for="Asset_Reference">{{l("Reference")}} *</label>
+                        <input type="text" id="Asset_Reference" class="form-control" [(ngModel)]="asset.reference" name="Reference" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_Description">{{l("Description")}} *</label>
+                        <input type="text" id="Asset_Description" class="form-control" [(ngModel)]="asset.description" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_VehicleRegistrationNo">{{l("VehicleRegistrationNo")}}</label>
+                        <input type="text" id="Asset_VehicleRegistrationNo" class="form-control" [(ngModel)]="asset.vehicleRegistrationNo" name="VehicleRegistrationNo" />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="Asset_IsExternalAsset" class="kt-checkbox">
+                            <input id="Asset_IsExternalAsset" type="checkbox" name="IsExternalAsset" [(ngModel)]="asset.isExternalAsset">
+                            {{l("IsExternalAsset")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="Asset_Location">{{l("Location")}}</label>
+                        <input type="text" id="Asset_Location" class="form-control" [(ngModel)]="asset.location" name="Location" />
+                    </div>-->
+                    <div class="form-group m-form__group">
+                        <label for="AssetLocation">{{l("Location")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetLocation" name="assetLocation" [(ngModel)]="assetLocation" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLocationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLocationIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="asset.location" [(ngModel)]="asset.location" type="text" hidden required>
+
+
+                    <div class="form-group">
+                        <label for="Asset_SerialNumber">{{l("SerialNumber")}}</label>
+                        <input type="text" id="Asset_SerialNumber" class="form-control" [(ngModel)]="asset.serialNumber" name="SerialNumber" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_EngineNo">{{l("EngineNo")}}</label>
+                        <input type="text" id="Asset_EngineNo" class="form-control" [(ngModel)]="asset.engineNo" name="EngineNo" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_ChassisNo">{{l("ChassisNo")}}</label>
+                        <input type="text" id="Asset_ChassisNo" class="form-control" [(ngModel)]="asset.chassisNo" name="ChassisNo" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_PurchaseOrderNo">{{l("PurchaseOrderNo")}}</label>
+                        <input type="text" id="Asset_PurchaseOrderNo" class="form-control" [(ngModel)]="asset.purchaseOrderNo" name="PurchaseOrderNo" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_PurchaseDate">{{l("PurchaseDate")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="purchaseDate" id="Asset_PurchaseDate" name="Asset_PurchaseDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Asset_PurchaseCost">{{l("PurchaseCost")}}</label>
+                        <input type="number" id="Asset_PurchaseCost" class="form-control" [(ngModel)]="asset.purchaseCost" name="PurchaseCost" />
+                    </div>
+
+
+
+                    <!--<div class="form-group">
+                        <label for="Asset_AssetLoc8GUID">{{l("AssetLoc8GUID")}}</label>
+                        <input type="text" id="Asset_AssetLoc8GUID" class="form-control" [(ngModel)]="asset.assetLoc8GUID" name="AssetLoc8GUID"    />
+                    </div>-->
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!assetForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <assetAssetClassLookupTableModal #assetAssetClassLookupTableModal (modalSave)="getNewAssetClassId()"></assetAssetClassLookupTableModal>
+    <assetAssetStatusLookupTableModal #assetAssetStatusLookupTableModal (modalSave)="getNewAssetStatusId()"></assetAssetStatusLookupTableModal>
+    <assetLocationLookupTableModal #assetLocationLookupTableModal (modalSave)="getNewLocationId()"></assetLocationLookupTableModal>
+
+</div>

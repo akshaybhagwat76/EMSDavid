@@ -1,0 +1,217 @@
+﻿<html>
+<head [innerHTML]="getSanitizedHtml()">
+</head>
+<body style="background: #FFF; padding:50px 0;">
+    <table *ngIf="ePdfInfo" style="width: 960px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 22px; background: #FFF; color: #333;" border="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td style="width: 960px;">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 360px;">
+                                    <!--<img src="{{ ePdfInfo.customerInfo.logoUrl }}" style="vertical-align: top; width:250px;" *ngIf="ePdfInfo.customerInfo.logoUrl">-->
+                                    <img src="{{ aelLogo }}" style="vertical-align: top; width:250px;">
+                                </td>
+                                <!--<td *ngIf="ePdfInfo.assetOwnerInfo && ePdfInfo.assetOwnerAddress" style="width:600px; text-align: right;">
+                                    <h2 style="margin:8px 0; font-weight:bold;">
+                                        {{ ePdfInfo.assetOwnerInfo.name }}
+                                    </h2>
+                                    <div>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.addressLine1">{{ ePdfInfo.assetOwnerAddress.addressLine1 }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.addressLine2">, {{ ePdfInfo.assetOwnerAddress.addressLine2 }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.city">, {{ ePdfInfo.assetOwnerAddress.city }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.state">, {{ ePdfInfo.assetOwnerAddress.state }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.country">, {{ ePdfInfo.assetOwnerAddress.country }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.postalCode">, {{ ePdfInfo.assetOwnerAddress.postalCode }}</span>
+                                    </div>
+                                    <div>Tel : +65 6592 8849 Fax : +65 6546 1705</div>
+                                    <div>www.avel.com.sg</div>
+                                    <div>Co. Reg. No. 201815619K</div>
+                                </td>-->
+                                <td *ngIf="ePdfInfo.assetOwnerInfo && ePdfInfo.assetOwnerAddress" style="width:600px; text-align: right;">
+                                    <h3 style="margin:8px 0; font-weight:bold;" *ngIf="ePdfInfo.assetOwnerInfo">
+                                        {{ ePdfInfo.assetOwnerInfo.name }}
+                                    </h3>
+                                    <div>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.addressLine1">{{ ePdfInfo.assetOwnerAddress.addressLine1 }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.addressLine2">, {{ ePdfInfo.assetOwnerAddress.addressLine2 }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.city">, {{ ePdfInfo.assetOwnerAddress.city }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.state">, {{ ePdfInfo.assetOwnerAddress.state }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.country">, {{ ePdfInfo.assetOwnerAddress.country }}</span>
+                                        <span *ngIf="ePdfInfo.assetOwnerAddress.postalCode">, {{ ePdfInfo.assetOwnerAddress.postalCode }}</span>
+                                    </div>
+                                    <div *ngIf="ePdfInfo.assetOwnerContact.phoneOffice || ePdfInfo.assetOwnerContact.fax">
+                                        <span *ngIf="ePdfInfo.assetOwnerContact.phoneOffice">Tel : {{ ePdfInfo.assetOwnerContact.phoneOffice }}  </span>
+                                        &nbsp;<span *ngIf="ePdfInfo.assetOwnerContact.fax"> Fax : {{ ePdfInfo.assetOwnerContact.fax }}</span>
+                                    </div>
+                                    <div *ngIf="ePdfInfo.assetOwnerInfo.website">{{ ePdfInfo.assetOwnerInfo.website }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:30px;">
+                        Our Ref : {{ refID }}
+                    </div>
+                    <div style="margin-top:15px;">
+                        {{ currentDate | momentFormat:'DD MMM YYYY' }}
+                    </div>
+                    <div *ngIf="ePdfInfo.customerInfo && ePdfInfo.customerAddress" style="font-weight: bold; margin-top:20px;">
+                        <div>
+                            {{ ePdfInfo.customerInfo.name }}
+                        </div>
+                        <div>
+                            <div *ngIf="ePdfInfo.customerAddress.addressLine1 || ePdfInfo.customerAddress.addressLine2 || ePdfInfo.customerAddress.city || ePdfInfo.customerAddress.state">
+                                <span *ngIf="ePdfInfo.customerAddress.addressLine1">{{ ePdfInfo.customerAddress.addressLine1 }}</span>
+                                <span *ngIf="ePdfInfo.customerAddress.addressLine2">, {{ ePdfInfo.customerAddress.addressLine2 }}</span>
+                                <span *ngIf="ePdfInfo.customerAddress.city">, {{ ePdfInfo.customerAddress.city }}</span>
+                                <span *ngIf="ePdfInfo.customerAddress.state">, {{ ePdfInfo.customerAddress.state }}</span>
+                            </div>
+                            <div *ngIf="ePdfInfo.customerAddress.country || ePdfInfo.customerAddress.postalCode">
+                                <span *ngIf="ePdfInfo.customerAddress.country">{{ ePdfInfo.customerAddress.country }}</span>
+                                <span *ngIf="ePdfInfo.customerAddress.postalCode">, {{ ePdfInfo.customerAddress.postalCode }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="ePdfInfo.customerContact" style="font-weight: bold; margin-top:20px;">
+                        Attn: {{ePdfInfo.customerContact.contactName}}
+                    </div>
+                    <div *ngIf="ePdfInfo.estimateInfo" style="margin-top:20px;">
+                        <span style="font-weight: bold; text-decoration: underline;">
+                            Estimate FOR {{ ePdfInfo.estimateInfo.title }}
+                        </span>
+                        <br />
+                        <span>We are pleased to estimate on the above-mentioned scope of work.</span>
+                    </div>
+                    <table *ngIf="ePdfInfo.estimateDetailList" style="page-break-before: auto; width: 960px; border-collapse: collapse; border: 1.5px solid black; margin-top:15px;" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;text-align: center;font-weight: bold; border: 1.5px solid black;">No.</th>
+                                <th style="width: 620px;text-align: center;font-weight: bold; border: 1.5px solid black;">Description</th>
+                                <th style="width: 50px;text-align: center;font-weight: bold; border: 1.5px solid black;">Qty</th>
+                                <th style="width: 120px;text-align: center;font-weight: bold; border: 1.5px solid black;">Unit Price</th>
+                                <th style="width: 120px;text-align: center;font-weight: bold; border: 1.5px solid black;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;"><span style="font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:10px; text-decoration: underline;">Materials</span></td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                            </tr>
+                            <tr *ngFor="let obj of ePdfInfo.estimateDetailList.detailList; let i = index">
+                                <td style="text-align: center; border-left: 1.5px solid black;">{{ i + 1 }}</td>
+                                <td style="text-align: left; border-left: 1.5px solid black;">
+                                    <span *ngIf="obj.itemTypeType"> {{ obj.itemTypeType }} - </span>
+                                    <span *ngIf="obj.uomUnitOfMeasurement"> {{ obj.uomUnitOfMeasurement }} - </span>
+                                    {{ obj.estimateDetail.description}}
+                                </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">{{ obj.estimateDetail.quantity}}    </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">${{ obj.estimateDetail.calculatedUnitPrice | number : '1.2-2' }}    </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">${{ obj.estimateDetail.calculatedAmount | number : '1.2-2' }}       </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;"><span style="font-size:15px; margin-top:100px; display:block;">Job estimated has been completed.</span></td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="text-align: right; font-weight: bold; border: 1.5px solid black;">Total Tax</td>
+                                <td style="text-align: right; font-weight: bold; border: 1.5px solid black;">${{ ePdfInfo.estimateDetailList.totalTax | number : '1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="text-align: right;font-weight: bold; border: 1.5px solid black;">Total</th>
+                                <th style="text-align: right;font-weight: bold; border: 1.5px solid black;">${{ ePdfInfo.estimateDetailList.totalAmount | number : '1.2-2' }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:15px; page-break-before: auto;">
+                        Price estimated in SGD subjected to GST. <br />
+                        Any other jobs found during the course of repair shall be estimated separately. <br />
+                        Please do not hesitate to contact {{ aoContactString }}for further <br />
+                        clarification.
+                    </div>
+                    <table style="page-break-before: auto;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 480px; vertical-align:top;">
+                                    <div style="margin-top:15px;">Thank you and regards.</div>
+                                    <div style="margin-top:15px;">Yours faithfully,</div>
+                                    <div style="text-align:center; margin-top:5px;">
+                                        <span *ngIf="ePdfInfo.assetOwnerInfo" style="font-weight: bold;"> {{ ePdfInfo.assetOwnerInfo.name }} </span>
+                                        <div style="height: 100px;"></div>
+                                        <span style="font-weight: bold;">{{ username }}</span>
+                                    </div>
+                                </td>
+                                <td style="width: 480px;">
+                                    <div style="border: 1px solid black;margin-top:15px;">
+                                        <table cellpadding="5">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span style="font-weight: bold;">ACCEPTANCE OF ESTIMATE</span>
+                                                        <p style="margin-top:15px;">
+                                                            We, <span *ngIf="ePdfInfo.customerInfo">{{ ePdfInfo.customerInfo.name }},</span>  hereby approve the proposed
+                                                            estimation listed herein and its respective rates.
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            Name:<input type="text" name="name" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 83%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Designation:<input type="text" name="designation" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 74.5%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Date:<input type="text" name="date" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 84.7%; margin-bottom:50px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Signature & Co. Stamp:<input type="text" name="signature" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 58%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;">
+                    <div style="font-weight: bold; font-size:42px; color:darkorange; margin:25px 50px 15px;">Estimate</div>
+                    <div style="width:100%; height:20px; background-color:darkorange;"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="ePdfInfo" style="text-align:center; margin-top:50px;">
+        <button type="submit" class="btn btn-primary blue" (click)="generatePDF()" [disabled]="saving" [buttonBusy]="saving" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("CreatePDF")}}</span></button>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

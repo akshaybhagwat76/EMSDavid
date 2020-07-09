@@ -1,0 +1,93 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #billingEventForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="billingEvent.id">{{l("EditBillingEvent")}}</span>
+                        <span *ngIf="!billingEvent.id">{{l("CreateNewBillingEvent")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="LeaseAgreementTitle">{{l("LeaseAgreement")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseAgreementTitle" name="leaseAgreementTitle" [(ngModel)]="leaseAgreementTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseAgreementModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseAgreementIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEvent.leaseAgreementId" [(ngModel)]="billingEvent.leaseAgreementId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="VendorChargeReference">{{l("VendorCharge")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorChargeReference" name="vendorChargeReference" [(ngModel)]="vendorChargeReference" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorChargeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorChargeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEvent.vendorChargeId" [(ngModel)]="billingEvent.vendorChargeId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="BillingEventTypeType">{{l("BillingEventType")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="BillingEventTypeType" name="billingEventTypeType" [(ngModel)]="billingEventTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectBillingEventTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setBillingEventTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEvent.billingEventTypeId" [(ngModel)]="billingEvent.billingEventTypeId" type="text" required hidden>
+		 
+
+								<div class="form-group">
+									<label for="BillingEvent_BillingEventDate">{{l("BillingEventDate")}}</label>
+									 <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="billingEvent.billingEventDate._d" id="BillingEvent_BillingEventDate" name="BillingEvent_BillingEventDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingEvent_TriggeredBy">{{l("TriggeredBy")}}</label>
+									<input type="text" id="BillingEvent_TriggeredBy" class="form-control" [(ngModel)]="billingEvent.triggeredBy" name="TriggeredBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingEvent_Purpose">{{l("Purpose")}}</label>
+									<input type="text" id="BillingEvent_Purpose" class="form-control" [(ngModel)]="billingEvent.purpose" name="Purpose"    />
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="BillingEvent_WasInvoiceGenerated" class="kt-checkbox">
+										<input id="BillingEvent_WasInvoiceGenerated" type="checkbox" name="WasInvoiceGenerated" [(ngModel)]="billingEvent.wasInvoiceGenerated"> 
+										{{l("WasInvoiceGenerated")}}
+										<span></span>
+									</label>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!billingEventForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<billingEventLeaseAgreementLookupTableModal #billingEventLeaseAgreementLookupTableModal (modalSave)="getNewLeaseAgreementId()"></billingEventLeaseAgreementLookupTableModal>
+		 <billingEventVendorChargeLookupTableModal #billingEventVendorChargeLookupTableModal (modalSave)="getNewVendorChargeId()"></billingEventVendorChargeLookupTableModal>
+		 <billingEventBillingEventTypeLookupTableModal #billingEventBillingEventTypeLookupTableModal (modalSave)="getNewBillingEventTypeId()"></billingEventBillingEventTypeLookupTableModal>
+		 
+</div>

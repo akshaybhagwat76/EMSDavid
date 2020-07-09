@@ -1,0 +1,83 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #billingEventDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="billingEventDetail.id">{{l("EditBillingEventDetail")}}</span>
+                        <span *ngIf="!billingEventDetail.id">{{l("CreateNewBillingEventDetail")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="BillingRuleName">{{l("BillingRule")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="BillingRuleName" name="billingRuleName" [(ngModel)]="billingRuleName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectBillingRuleModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setBillingRuleIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEventDetail.billingRuleId" [(ngModel)]="billingEventDetail.billingRuleId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="LeaseItemItem">{{l("LeaseItem")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseItemItem" name="leaseItemItem" [(ngModel)]="leaseItemItem" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEventDetail.leaseItemId" [(ngModel)]="billingEventDetail.leaseItemId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="BillingEventPurpose">{{l("BillingEvent")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="BillingEventPurpose" name="billingEventPurpose" [(ngModel)]="billingEventPurpose" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectBillingEventModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setBillingEventIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingEventDetail.billingEventId" [(ngModel)]="billingEventDetail.billingEventId" type="text"  hidden>
+		 
+
+								<br/><div class="m-checkbox-list">
+									<label for="BillingEventDetail_RuleExecutedSuccessfully" class="kt-checkbox">
+										<input id="BillingEventDetail_RuleExecutedSuccessfully" type="checkbox" name="RuleExecutedSuccessfully" [(ngModel)]="billingEventDetail.ruleExecutedSuccessfully"> 
+										{{l("RuleExecutedSuccessfully")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingEventDetail_Exception">{{l("Exception")}}</label>
+									<input type="text" id="BillingEventDetail_Exception" class="form-control" [(ngModel)]="billingEventDetail.exception" name="Exception"    />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!billingEventDetailForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<billingEventDetailBillingRuleLookupTableModal #billingEventDetailBillingRuleLookupTableModal (modalSave)="getNewBillingRuleId()"></billingEventDetailBillingRuleLookupTableModal>
+		 <billingEventDetailLeaseItemLookupTableModal #billingEventDetailLeaseItemLookupTableModal (modalSave)="getNewLeaseItemId()"></billingEventDetailLeaseItemLookupTableModal>
+		 <billingEventDetailBillingEventLookupTableModal #billingEventDetailBillingEventLookupTableModal (modalSave)="getNewBillingEventId()"></billingEventDetailBillingEventLookupTableModal>
+		 
+</div>

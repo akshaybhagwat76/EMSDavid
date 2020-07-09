@@ -1,0 +1,217 @@
+﻿<html>
+<head [innerHTML]="getSanitizedHtml()">
+</head>
+<body style="background: #FFF; padding:50px 0;">
+    <table *ngIf="qPdfInfo" style="width: 960px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 22px; background: #FFF; color: #333;" border="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td style="width: 960px;">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 360px;">
+                                    <!--<img src="{{ qPdfInfo.vendorInfo.logoUrl }}" style="vertical-align: top; width:250px;" *ngIf="qPdfInfo.vendorInfo.logoUrl">-->
+                                    <img src="{{ aelLogo }}" style="vertical-align: top; width:250px;">
+                                </td>
+                                <!--<td *ngIf="qPdfInfo.assetOwnerInfo && qPdfInfo.assetOwnerAddress" style="width:600px; text-align: right;">
+                                    <h2 style="margin:8px 0; font-weight:bold;">
+                                        {{ qPdfInfo.assetOwnerInfo.name }}
+                                    </h2>
+                                    <div>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.addressLine1">{{ qPdfInfo.assetOwnerAddress.addressLine1 }}</span>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.addressLine2">, {{ qPdfInfo.assetOwnerAddress.addressLine2 }}</span>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.city">, {{ qPdfInfo.assetOwnerAddress.city }}</span>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.state">, {{ qPdfInfo.assetOwnerAddress.state }}</span>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.country">, {{ qPdfInfo.assetOwnerAddress.country }}</span>
+                                        <span *ngIf="qPdfInfo.assetOwnerAddress.postalCode">, {{ qPdfInfo.assetOwnerAddress.postalCode }}</span>
+                                    </div>
+                                    <div>Tel : +65 6592 8849 Fax : +65 6546 1705</div>
+                                    <div>www.avel.com.sg</div>
+                                    <div>Co. Reg. No. 201815619K</div>
+                                </td>-->
+                                <td *ngIf="qPdfInfo.vendorInfo && qPdfInfo.vendorAddress" style="width:600px; text-align: right;">
+                                    <h3 style="margin:8px 0; font-weight:bold;" *ngIf="qPdfInfo.vendorInfo">
+                                        {{ qPdfInfo.vendorInfo.name }}
+                                    </h3>
+                                    <div>
+                                        <span *ngIf="qPdfInfo.vendorAddress.addressLine1">{{ qPdfInfo.vendorAddress.addressLine1 }}</span>
+                                        <span *ngIf="qPdfInfo.vendorAddress.addressLine2">, {{ qPdfInfo.vendorAddress.addressLine2 }}</span>
+                                        <span *ngIf="qPdfInfo.vendorAddress.city">, {{ qPdfInfo.vendorAddress.city }}</span>
+                                        <span *ngIf="qPdfInfo.vendorAddress.state">, {{ qPdfInfo.vendorAddress.state }}</span>
+                                        <span *ngIf="qPdfInfo.vendorAddress.country">, {{ qPdfInfo.vendorAddress.country }}</span>
+                                        <span *ngIf="qPdfInfo.vendorAddress.postalCode">, {{ qPdfInfo.vendorAddress.postalCode }}</span>
+                                    </div>
+                                    <div *ngIf="qPdfInfo.vendorContact.phoneOffice || qPdfInfo.vendorContact.fax">
+                                        <span *ngIf="qPdfInfo.vendorContact.phoneOffice">Tel : {{ qPdfInfo.vendorContact.phoneOffice }}  </span>
+                                        &nbsp;<span *ngIf="qPdfInfo.vendorContact.fax"> Fax : {{ qPdfInfo.vendorContact.fax }}</span>
+                                    </div>
+                                    <div *ngIf="qPdfInfo.vendorInfo.website">{{ qPdfInfo.vendorInfo.website }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:30px;">
+                        Our Ref : {{ refID }}
+                    </div>
+                    <div style="margin-top:15px;">
+                        {{ currentDate | momentFormat:'DD MMM YYYY' }}
+                    </div>
+                    <div *ngIf="qPdfInfo.assetOwnerInfo && qPdfInfo.assetOwnerAddress" style="font-weight: bold; margin-top:20px;">
+                        <div>
+                            {{ qPdfInfo.assetOwnerInfo.name }}
+                        </div>
+                        <div>
+                            <div *ngIf="qPdfInfo.assetOwnerAddress.addressLine1 || qPdfInfo.assetOwnerAddress.addressLine2 || qPdfInfo.assetOwnerAddress.city || qPdfInfo.assetOwnerAddress.state">
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.addressLine1">{{ qPdfInfo.assetOwnerAddress.addressLine1 }}</span>
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.addressLine2">, {{ qPdfInfo.assetOwnerAddress.addressLine2 }}</span>
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.city">, {{ qPdfInfo.assetOwnerAddress.city }}</span>
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.state">, {{ qPdfInfo.assetOwnerAddress.state }}</span>
+                            </div>
+                            <div *ngIf="qPdfInfo.assetOwnerAddress.country || qPdfInfo.assetOwnerAddress.postalCode">
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.country">{{ qPdfInfo.assetOwnerAddress.country }}</span>
+                                <span *ngIf="qPdfInfo.assetOwnerAddress.postalCode">, {{ qPdfInfo.assetOwnerAddress.postalCode }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="qPdfInfo.assetOwnerContact" style="font-weight: bold; margin-top:20px;">
+                        Attn: {{qPdfInfo.assetOwnerContact.contactName}}
+                    </div>
+                    <div *ngIf="qPdfInfo.quotationInfo" style="margin-top:20px;">
+                        <span style="font-weight: bold; text-decoration: underline;">
+                            QUOTATION FOR {{ qPdfInfo.quotationInfo.title }}
+                        </span>
+                        <br />
+                        <span>We are pleased to quote on the above-mentioned scope of work.</span>
+                    </div>
+                    <table *ngIf="qPdfInfo.quotationDetailList" style="page-break-before: auto; width: 960px; border-collapse: collapse; border: 1.5px solid black; margin-top:15px;" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;text-align: center;font-weight: bold; border: 1.5px solid black;">No.</th>
+                                <th style="width: 620px;text-align: center;font-weight: bold; border: 1.5px solid black;">Description</th>
+                                <th style="width: 50px;text-align: center;font-weight: bold; border: 1.5px solid black;">Qty</th>
+                                <th style="width: 120px;text-align: center;font-weight: bold; border: 1.5px solid black;">Unit Price</th>
+                                <th style="width: 120px;text-align: center;font-weight: bold; border: 1.5px solid black;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;"><span style="font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:10px; text-decoration: underline;">Materials</span></td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                            </tr>
+                            <tr *ngFor="let obj of qPdfInfo.quotationDetailList.detailList; let i = index">
+                                <td style="text-align: center; border-left: 1.5px solid black;">{{ i + 1 }}</td>
+                                <td style="text-align: left; border-left: 1.5px solid black;">
+                                    <span *ngIf="obj.itemTypeType"> {{ obj.itemTypeType }} - </span>
+                                    <span *ngIf="obj.uomUnitOfMeasurement"> {{ obj.uomUnitOfMeasurement }} - </span>
+                                    {{ obj.quotationDetail.description}}
+                                </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">{{ obj.quotationDetail.quantity}}    </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">${{ obj.quotationDetail.calculatedUnitPrice | number : '1.2-2' }}    </td>
+                                <td style="text-align: right; border-left: 1.5px solid black;">${{ obj.quotationDetail.calculatedAmount | number : '1.2-2' }}       </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;"><span style="font-size:15px; margin-top:100px; display:block;">Job quoted has been completed.</span></td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                                <td style="border-left: 1.5px solid black;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="border: 1.5px solid black;">&nbsp;</td>
+                                <td style="text-align: right; font-weight: bold; border: 1.5px solid black;">Total Tax</td>
+                                <td style="text-align: right; font-weight: bold; border: 1.5px solid black;">${{ qPdfInfo.quotationDetailList.totalTax | number : '1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="border: 1.5px solid black;">&nbsp;</th>
+                                <th style="text-align: right;font-weight: bold; border: 1.5px solid black;">Total</th>
+                                <th style="text-align: right;font-weight: bold; border: 1.5px solid black;">${{ qPdfInfo.quotationDetailList.totalAmount | number : '1.2-2' }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:15px; page-break-before: auto;">
+                        Price quoted in SGD subjected to GST. <br />
+                        Any other jobs found during the course of repair shall be quoted separately. <br />
+                        Please do not hesitate to contact {{ vendorContactString }}for further <br />
+                        clarification.
+                    </div>
+                    <table style="page-break-before: auto;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 480px; vertical-align:top;">
+                                    <div style="margin-top:15px;">Thank you and regards.</div>
+                                    <div style="margin-top:15px;">Yours faithfully,</div>
+                                    <div style="text-align:center; margin-top:5px;">
+                                        <span *ngIf="qPdfInfo.vendorInfo" style="font-weight: bold;"> {{ qPdfInfo.vendorInfo.name }} </span>
+                                        <div style="height: 100px;"></div>
+                                        <span style="font-weight: bold;">{{ username }}</span>
+                                    </div>
+                                </td>
+                                <td style="width: 480px;">
+                                    <div style="border: 1px solid black;margin-top:15px;">
+                                        <table cellpadding="5">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span style="font-weight: bold;">ACCEPTANCE OF QUOTATION</span>
+                                                        <p style="margin-top:15px;">
+                                                            We, <span *ngIf="qPdfInfo.assetOwnerInfo">{{ qPdfInfo.assetOwnerInfo.name }},</span>  hereby approve the proposed
+                                                            quotation listed herein and its respective rates.
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            Name:<input type="text" name="name" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 83%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Designation:<input type="text" name="designation" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 74.5%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Date:<input type="text" name="date" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 84.7%; margin-bottom:50px; margin-left: 5px;">
+                                                        </div>
+                                                        <div>
+                                                            Signature & Co. Stamp:<input type="text" name="signature" style="border-top:0; border-right:0; border-left:0; border-bottom:1px solid #000; width: 58%; margin-bottom:15px; margin-left: 5px;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;">
+                    <div style="font-weight: bold; font-size:42px; color:darkorange; margin:25px 50px 15px;">Quotation</div>
+                    <div style="width:100%; height:20px; background-color:darkorange;"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="qPdfInfo" style="text-align:center; margin-top:50px;">
+        <button type="submit" class="btn btn-primary blue" (click)="generatePDF()" [disabled]="saving" [buttonBusy]="saving" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("CreatePDF")}}</span></button>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

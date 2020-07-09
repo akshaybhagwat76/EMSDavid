@@ -1,0 +1,316 @@
+<div [@routerTransition]>
+  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item">
+      <div [class]="containerClass">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Rfqs")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("RfqsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.Main.Rfqs.Create')" (click)="createRfq()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewRfq")}}</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getRfqs()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TitleFilter">{{l("Title")}}</label>
+									<input type="text" class="form-control" id="TitleFilter" name="titleFilter" [(ngModel)]="titleFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinRequestDateFilter">{{l("RequestDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinRequestDateFilter" name="MinRequestDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minRequestDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxRequestDateFilter" name="MaxRequestDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxRequestDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinRequiredByFilter">{{l("RequiredByRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinRequiredByFilter" name="MinRequiredByFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minRequiredByFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxRequiredByFilter" name="MaxRequiredByFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxRequiredByFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="DescriptionFilter">{{l("Description")}}</label>
+									<input type="text" class="form-control" id="DescriptionFilter" name="descriptionFilter" [(ngModel)]="descriptionFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="RequirementsFilter">{{l("Requirements")}}</label>
+									<input type="text" class="form-control" id="RequirementsFilter" name="requirementsFilter" [(ngModel)]="requirementsFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="RfqTypeTypeFilter">({{l("RfqType")}}) {{l("Type")}}</label>
+									<input type="text" class="form-control" id="RfqTypeTypeFilter" name="rfqTypeTypeFilter" [(ngModel)]="rfqTypeTypeFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetOwnerNameFilter">({{l("AssetOwner")}}) {{l("Name")}}</label>
+									<input type="text" class="form-control" id="AssetOwnerNameFilter" name="assetOwnerNameFilter" [(ngModel)]="assetOwnerNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CustomerNameFilter">({{l("Customer")}}) {{l("Name")}}</label>
+									<input type="text" class="form-control" id="CustomerNameFilter" name="customerNameFilter" [(ngModel)]="customerNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetClassClassFilter">({{l("AssetClass")}}) {{l("Class")}}</label>
+									<input type="text" class="form-control" id="AssetClassClassFilter" name="assetClassClassFilter" [(ngModel)]="assetClassClassFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="IncidentDescriptionFilter">({{l("Incident")}}) {{l("Description")}}</label>
+									<input type="text" class="form-control" id="IncidentDescriptionFilter" name="incidentDescriptionFilter" [(ngModel)]="incidentDescriptionFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="VendorNameFilter">({{l("Vendor")}}) {{l("Name")}}</label>
+									<input type="text" class="form-control" id="VendorNameFilter" name="vendorNameFilter" [(ngModel)]="vendorNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="UserNameFilter">({{l("User")}}) {{l("Name")}}</label>
+									<input type="text" class="form-control" id="UserNameFilter" name="userNameFilter" [(ngModel)]="userNameFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getRfqs($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.Rfqs.Edit', 'Pages.Main.Rfqs.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="rfqTypeFk.type">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="rfqTypeType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetOwnerFk.name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="assetOwnerName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="customerFk.name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="customerName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetClassFk.class">
+                                        {{l('Class')}}
+                                        <p-sortIcon field="assetClassClass"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="incidentFk.description">
+                                        {{l('Description')}}
+                                        <p-sortIcon field="incidentDescription"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="vendorFk.name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="vendorName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="userFk.name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="userName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="title">
+                                        {{l('Title')}}
+                                        <p-sortIcon field="rfq.title"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="requestDate">
+                                        {{l('RequestDate')}}
+                                        <p-sortIcon field="rfq.requestDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="requiredBy">
+                                        {{l('RequiredBy')}}
+                                        <p-sortIcon field="rfq.requiredBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="description">
+                                        {{l('Description')}}
+                                        <p-sortIcon field="rfq.description"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="requirements">
+                                        {{l('Requirements')}}
+                                        <p-sortIcon field="rfq.requirements"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.Main.Rfqs.Edit', 'Pages.Main.Rfqs.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewRfqModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Rfqs.Edit')"
+														(click)="createOrEditRfqModal.show(record.rfq.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Rfqs.Delete')"
+														(click)="deleteRfq(record.rfq)">{{l('Delete')}}</a>
+												</li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                       (click)="showHistory(record.rfq)">{{l('History')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Type')}}</span>
+												{{record.rfqTypeType}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Name')}}</span>
+												{{record.assetOwnerName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Name')}}</span>
+												{{record.customerName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Class')}}</span>
+												{{record.assetClassClass}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Description')}}</span>
+												{{record.incidentDescription}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Name')}}</span>
+												{{record.vendorName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Name')}}</span>
+												{{record.userName}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Title')}}</span>
+											{{record.rfq.title}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('RequestDate')}}</span>
+                                        <span *ngIf="record.rfq.requestDate">
+											{{record.rfq.requestDate | momentFormat:'ll'}}
+                                        </span>
+                                        <span *ngIf="!record.rfq.requestDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('RequiredBy')}}</span>
+                                        <span *ngIf="record.rfq.requiredBy">
+											{{record.rfq.requiredBy | momentFormat:'ll'}}
+                                        </span>
+                                        <span *ngIf="!record.rfq.requiredBy">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Description')}}</span>
+											{{record.rfq.description}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Requirements')}}</span>
+											{{record.rfq.requirements}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getRfqs($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditRfqModal #createOrEditRfqModal (modalSave)="getRfqs()"></createOrEditRfqModal>
+    <viewRfqModal #viewRfqModal></viewRfqModal>
+     <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+  </div>
+</div>

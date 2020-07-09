@@ -1,0 +1,90 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Description")}} :</h6>
+                        {{ item.quotationDetail.description }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Quantity")}} :</h6>
+                        {{ item.quotationDetail.quantity }} 
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("UnitPrice")}} :</h6>
+                        {{ item.quotationDetail.unitPrice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Cost")}} :</h6>
+                        {{ item.quotationDetail.cost }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Tax")}} :</h6>
+                        {{ item.quotationDetail.tax }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Charge")}} :</h6>
+                        {{ item.quotationDetail.charge }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Discount")}} :</h6>
+                        {{ item.quotationDetail.discount }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("MarkUp")}} :</h6>
+                        {{ item.quotationDetail.markUp }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsChargeable")}} :</h6>
+                        {{ item.quotationDetail.isChargeable }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsAdHoc")}} :</h6>
+                        {{ item.quotationDetail.isAdHoc }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsStandbyReplacementUnit")}} :</h6>
+                        {{ item.quotationDetail.isStandbyReplacementUnit }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsOptionalItem")}} :</h6>
+                        {{ item.quotationDetail.isOptionalItem }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Remark")}} :</h6>
+                        {{ item.quotationDetail.remark }}
+                    </div>
+                    <!--
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Loc8GUID")}} :</h6>
+                        {{ item.quotationDetail.loc8GUID }}
+                    </div>
+                    -->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ItemType")}} :</h6>
+                        {{item.itemTypeType}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Uom")}} :</h6>
+                        {{item.uomUnitOfMeasurement}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

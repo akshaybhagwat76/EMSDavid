@@ -1,0 +1,140 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #billingRuleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="billingRule.id">{{l("EditBillingRule")}}</span>
+                        <span *ngIf="!billingRule.id">{{l("CreateNewBillingRule")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="BillingRuleTypeType">{{l("BillingRuleType")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="BillingRuleTypeType" name="billingRuleTypeType" [(ngModel)]="billingRuleTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectBillingRuleTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setBillingRuleTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.billingRuleTypeId" [(ngModel)]="billingRule.billingRuleTypeId" type="text" required hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="UsageMetricMetric">{{l("UsageMetric")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UsageMetricMetric" name="usageMetricMetric" [(ngModel)]="usageMetricMetric" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUsageMetricModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUsageMetricIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.usageMetricId" [(ngModel)]="billingRule.usageMetricId" type="text" required hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="LeaseAgreementTitle">{{l("LeaseAgreement")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseAgreementTitle" name="leaseAgreementTitle" [(ngModel)]="leaseAgreementTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseAgreementModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseAgreementIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.leaseAgreementId" [(ngModel)]="billingRule.leaseAgreementId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="VendorName">{{l("Vendor")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorName" name="vendorName" [(ngModel)]="vendorName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.vendorId" [(ngModel)]="billingRule.vendorId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="LeaseItemItem">{{l("LeaseItem")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseItemItem" name="leaseItemItem" [(ngModel)]="leaseItemItem" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.leaseItemId" [(ngModel)]="billingRule.leaseItemId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="CurrencyCode">{{l("Currency")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CurrencyCode" name="currencyCode" [(ngModel)]="currencyCode" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCurrencyModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCurrencyIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="billingRule.currencyId" [(ngModel)]="billingRule.currencyId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="BillingRule_Name">{{l("Name")}} *</label>
+									<input type="text" id="BillingRule_Name" class="form-control" [(ngModel)]="billingRule.name" name="Name"     required/>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="BillingRule_IsParent" class="kt-checkbox">
+										<input id="BillingRule_IsParent" type="checkbox" name="IsParent" [(ngModel)]="billingRule.isParent"> 
+										{{l("IsParent")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingRule_ParentBillingRuleRefId">{{l("ParentBillingRuleRefId")}}</label>
+									<input type="number" id="BillingRule_ParentBillingRuleRefId" class="form-control" [(ngModel)]="billingRule.parentBillingRuleRefId" name="ParentBillingRuleRefId"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingRule_ChargePerUnit">{{l("ChargePerUnit")}}</label>
+									<input type="number" id="BillingRule_ChargePerUnit" class="form-control" [(ngModel)]="billingRule.chargePerUnit" name="ChargePerUnit"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingRule_DefaultInvoiceDescription">{{l("DefaultInvoiceDescription")}}</label>
+									<input type="text" id="BillingRule_DefaultInvoiceDescription" class="form-control" [(ngModel)]="billingRule.defaultInvoiceDescription" name="DefaultInvoiceDescription"    />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!billingRuleForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<billingRuleBillingRuleTypeLookupTableModal #billingRuleBillingRuleTypeLookupTableModal (modalSave)="getNewBillingRuleTypeId()"></billingRuleBillingRuleTypeLookupTableModal>
+		 <billingRuleUsageMetricLookupTableModal #billingRuleUsageMetricLookupTableModal (modalSave)="getNewUsageMetricId()"></billingRuleUsageMetricLookupTableModal>
+		 <billingRuleLeaseAgreementLookupTableModal #billingRuleLeaseAgreementLookupTableModal (modalSave)="getNewLeaseAgreementId()"></billingRuleLeaseAgreementLookupTableModal>
+		 <billingRuleVendorLookupTableModal #billingRuleVendorLookupTableModal (modalSave)="getNewVendorId()"></billingRuleVendorLookupTableModal>
+		 <billingRuleLeaseItemLookupTableModal #billingRuleLeaseItemLookupTableModal (modalSave)="getNewLeaseItemId()"></billingRuleLeaseItemLookupTableModal>
+		 <billingRuleCurrencyLookupTableModal #billingRuleCurrencyLookupTableModal (modalSave)="getNewCurrencyId()"></billingRuleCurrencyLookupTableModal>
+		 
+</div>

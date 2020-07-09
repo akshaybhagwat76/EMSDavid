@@ -1,0 +1,38 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #billingEventTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="billingEventType.id">{{l("EditBillingEventType")}}</span>
+                        <span *ngIf="!billingEventType.id">{{l("CreateNewBillingEventType")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="BillingEventType_Type">{{l("Type")}} *</label>
+									<input type="text" id="BillingEventType_Type" class="form-control" [(ngModel)]="billingEventType.type" name="Type"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="BillingEventType_Description">{{l("Description")}} *</label>
+									<input type="text" id="BillingEventType_Description" class="form-control" [(ngModel)]="billingEventType.description" name="Description"     required/>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!billingEventTypeForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

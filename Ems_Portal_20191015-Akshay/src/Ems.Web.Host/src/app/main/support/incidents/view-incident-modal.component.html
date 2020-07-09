@@ -1,0 +1,75 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Description")}} :</h6>
+                        {{ item.incident.description }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IncidentDate")}} :</h6>
+                        {{ item.incident.incidentDate | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Location")}} :</h6>
+                        {{ item.incident.location }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Remarks")}} :</h6>
+                        {{ item.incident.remarks }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ResolvedAt")}} :</h6>
+                        {{ item.incident.resolvedAt | momentFormat:'ll LT' }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Priority")}} :</h6>
+                        {{item.incidentPriorityPriority}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Status")}} :</h6>
+                        {{item.incidentStatusStatus}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Customer")}} :</h6>
+                        {{item.customerName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AssetReference")}} :</h6>
+                        {{item.assetReference}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Asset")}} :</h6>
+                        {{item.supportItemDescription}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IncidentType")}} :</h6>
+                        {{item.incidentTypeType}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("UserName")}} :</h6>
+                        {{item.userName}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

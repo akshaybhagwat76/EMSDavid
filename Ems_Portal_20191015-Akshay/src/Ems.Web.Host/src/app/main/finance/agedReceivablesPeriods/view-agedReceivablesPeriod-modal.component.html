@@ -1,0 +1,50 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Period")}} :</h6>
+                        {{ item.agedReceivablesPeriod.period | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Current")}} :</h6>
+                        {{ item.agedReceivablesPeriod.current }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Over30")}} :</h6>
+                        {{ item.agedReceivablesPeriod.over30 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Over60")}} :</h6>
+                        {{ item.agedReceivablesPeriod.over60 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Over90")}} :</h6>
+                        {{ item.agedReceivablesPeriod.over90 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Over120")}} :</h6>
+                        {{ item.agedReceivablesPeriod.over120 }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

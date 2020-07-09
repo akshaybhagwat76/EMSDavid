@@ -1,0 +1,86 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #customerForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="customer.id">{{l("EditCustomer")}}</span>
+                        <span *ngIf="!customer.id">{{l("CreateNewCustomer")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="CustomerTypeType">{{l("CustomerType")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CustomerTypeType" name="customerTypeType" [(ngModel)]="customerTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCustomerTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCustomerTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customer.customerTypeId" [(ngModel)]="customer.customerTypeId" type="text" required hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="CurrencyCode">{{l("Currency")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CurrencyCode" name="currencyCode" [(ngModel)]="currencyCode" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCurrencyModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCurrencyIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="customer.currencyId" [(ngModel)]="customer.currencyId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Customer_Reference">{{l("Reference")}} *</label>
+									<input type="text" id="Customer_Reference" class="form-control" [(ngModel)]="customer.reference" name="Reference"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Customer_Name">{{l("Name")}} *</label>
+									<input type="text" id="Customer_Name" class="form-control" [(ngModel)]="customer.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Customer_Identifier">{{l("Identifier")}} *</label>
+									<input type="text" id="Customer_Identifier" class="form-control" [(ngModel)]="customer.identifier" name="Identifier"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Customer_LogoUrl">{{l("LogoUrl")}}</label>
+									<input type="text" id="Customer_LogoUrl" class="form-control" [(ngModel)]="customer.logoUrl" name="LogoUrl"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Customer_Website">{{l("Website")}}</label>
+									<input type="text" id="Customer_Website" class="form-control" [(ngModel)]="customer.website" name="Website"    />
+								</div>
+					
+								<!--<div class="form-group">
+									<label for="Customer_CustomerLoc8UUID">{{l("CustomerLoc8UUID")}}</label>
+									<input type="text" id="Customer_CustomerLoc8UUID" class="form-control" [(ngModel)]="customer.customerLoc8UUID" name="CustomerLoc8UUID"    />
+								</div>-->
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!customerForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<customerCustomerTypeLookupTableModal #customerCustomerTypeLookupTableModal (modalSave)="getNewCustomerTypeId()"></customerCustomerTypeLookupTableModal>
+<customerCurrencyLookupTableModal #customerCurrencyLookupTableModal (modalSave)="getNewCurrencyId()"></customerCurrencyLookupTableModal>
+		 
+</div>

@@ -1,0 +1,81 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #inventoryItemForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="inventoryItem.id">{{l("EditInventoryItem")}}</span>
+                        <span *ngIf="!inventoryItem.id">{{l("CreateNewInventoryItem")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="inventoryItem.itemTypeId" [(ngModel)]="inventoryItem.itemTypeId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="inventoryItem.assetId" [(ngModel)]="inventoryItem.assetId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="InventoryItem_Name">{{l("Name")}} *</label>
+									<input type="text" id="InventoryItem_Name" class="form-control" [(ngModel)]="inventoryItem.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="InventoryItem_Reference">{{l("Reference")}}</label>
+									<input type="text" id="InventoryItem_Reference" class="form-control" [(ngModel)]="inventoryItem.reference" name="Reference"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="InventoryItem_QtyInWarehouse">{{l("QtyInWarehouse")}}</label>
+									<input type="number" id="InventoryItem_QtyInWarehouse" class="form-control" [(ngModel)]="inventoryItem.qtyInWarehouse" name="QtyInWarehouse"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="InventoryItem_RestockLimit">{{l("RestockLimit")}}</label>
+									<input type="number" id="InventoryItem_RestockLimit" class="form-control" [(ngModel)]="inventoryItem.restockLimit" name="RestockLimit"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="InventoryItem_QtyOnOrder">{{l("QtyOnOrder")}}</label>
+									<input type="number" id="InventoryItem_QtyOnOrder" class="form-control" [(ngModel)]="inventoryItem.qtyOnOrder" name="QtyOnOrder"  />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!inventoryItemForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<inventoryItemItemTypeLookupTableModal #inventoryItemItemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></inventoryItemItemTypeLookupTableModal>
+		 <inventoryItemAssetLookupTableModal #inventoryItemAssetLookupTableModal (modalSave)="getNewAssetId()"></inventoryItemAssetLookupTableModal>
+		 
+</div>

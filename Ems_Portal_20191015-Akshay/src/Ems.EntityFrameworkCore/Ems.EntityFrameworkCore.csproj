@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <RootNamespace>Ems</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20191112195457_Regenerated_Quotations.cs" />
+    <Compile Remove="Migrations\20191112195457_Regenerated_Quotations.Designer.cs" />
+    <Compile Remove="Migrations\20200104170844_Added_Locations_Table.cs" />
+    <Compile Remove="Migrations\20200104170844_Added_Locations_Table.Designer.cs" />
+    <Compile Remove="Migrations\20200114203855_Initial.cs" />
+    <Compile Remove="Migrations\20200114203855_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200309122210_Added_WorkOrderAction_Table_And_Updated_WorkOrderUpdates_Table.cs" />
+    <Compile Remove="Migrations\xxxxx20190920232713_Added_WorkOrderLoc8GUID.cs" />
+    <Compile Remove="Migrations\xxxxx20190920232713_Added_WorkOrderLoc8GUID.Designer.cs" />
+    <Compile Remove="Migrations\xxxxx20190920234304_fix_work_orders.cs" />
+    <Compile Remove="Migrations\xxxxx20190920234304_fix_work_orders.Designer.cs" />
+    <Compile Remove="Migrations\xxxxx20190921004813_Regenerated_WorkOrderType8885.cs" />
+    <Compile Remove="Migrations\xxxxx20190921004813_Regenerated_WorkOrderType8885.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ems.Core\Ems.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DevDb\" />
+  </ItemGroup>
+</Project>

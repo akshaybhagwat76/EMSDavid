@@ -1,0 +1,114 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #vendorChargeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="vendorCharge.id">{{l("EditVendorCharge")}}</span>
+                        <span *ngIf="!vendorCharge.id">{{l("CreateNewVendorCharge")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="VendorName">{{l("Vendor")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorName" name="vendorName" [(ngModel)]="vendorName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="vendorCharge.vendorId" [(ngModel)]="vendorCharge.vendorId" type="text" hidden required>
+
+                    <div class="form-group m-form__group">
+                        <label for="SupportContractTitle">{{l("SupportContract")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportContractTitle" name="supportContractTitle" [(ngModel)]="supportContractTitle" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportContractModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportContractIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="vendorCharge.supportContractId" [(ngModel)]="vendorCharge.supportContractId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderSubject">{{l("WorkOrder")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderSubject" name="workOrderSubject" [(ngModel)]="workOrderSubject" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="vendorCharge.workOrderId" [(ngModel)]="vendorCharge.workOrderId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="VendorChargeStatusStatus">{{l("VendorChargeStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorChargeStatusStatus" name="vendorChargeStatusStatus" [(ngModel)]="vendorChargeStatusStatus" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorChargeStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorChargeStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="vendorCharge.vendorChargeStatusId" [(ngModel)]="vendorCharge.vendorChargeStatusId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="VendorCharge_Reference">{{l("Reference")}} *</label>
+                        <input type="text" id="VendorCharge_Reference" class="form-control" [(ngModel)]="vendorCharge.reference" name="Reference" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VendorCharge_Description">{{l("Description")}} *</label>
+                        <input type="text" id="VendorCharge_Description" class="form-control" [(ngModel)]="vendorCharge.description" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VendorCharge_DateIssued">{{l("DateIssued")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="dateIssued" id="VendorCharge_DateIssued" name="VendorCharge_DateIssued" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VendorCharge_DateDue">{{l("DateDue")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="dateDue" id="VendorCharge_DateDue" name="VendorCharge_DateDue">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VendorCharge_TotalTax">{{l("TotalTax")}}</label>
+                        <input type="number" id="VendorCharge_TotalTax" class="form-control" [(ngModel)]="vendorCharge.totalTax" name="TotalTax" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VendorCharge_TotalPrice">{{l("TotalPrice")}}</label>
+                        <input type="number" id="VendorCharge_TotalPrice" class="form-control" [(ngModel)]="vendorCharge.totalPrice" name="TotalPrice" />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!vendorChargeForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <vendorChargeVendorLookupTableModal #vendorChargeVendorLookupTableModal (modalSave)="getNewVendorId()"></vendorChargeVendorLookupTableModal>
+    <vendorChargeSupportContractLookupTableModal #vendorChargeSupportContractLookupTableModal (modalSave)="getNewSupportContractId()"></vendorChargeSupportContractLookupTableModal>
+    <vendorChargeWorkOrderLookupTableModal #vendorChargeWorkOrderLookupTableModal (modalSave)="getNewWorkOrderId()"></vendorChargeWorkOrderLookupTableModal>
+    <vendorChargeVendorChargeStatusLookupTableModal #vendorChargeVendorChargeStatusLookupTableModal (modalSave)="getNewVendorChargeStatusId()"></vendorChargeVendorChargeStatusLookupTableModal>
+
+</div>

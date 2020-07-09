@@ -1,0 +1,463 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{l("Estimates")}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{l("EstimatesHeaderInfo")}}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                        <button *ngIf="isGranted('Pages.Main.Estimates.Create')" (click)="createEstimate()"
+                                class="btn btn-primary blue">
+                            <i class="fa fa-plus"></i> {{l("CreateNewEstimate")}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                            <span class="input-group-btn input-group-btn-left">
+                                                <button class="btn btn-primary" (click)="getEstimates()" type="button"><i class="fa fa-search"></i> {{l("Search")}}</button>
+                                            </span> 
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-danger" type="button" (click)="clearSearch()"><i class="fa fa-times"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="ReferenceFilter">{{l("Reference")}}</label>
+                                        <input type="text" class="form-control" id="ReferenceFilter" name="referenceFilter" [(ngModel)]="referenceFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="TitleFilter">{{l("Title")}}</label>
+                                        <input type="text" class="form-control" id="TitleFilter" name="titleFilter" [(ngModel)]="titleFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="DescriptionFilter">{{l("Description")}}</label>
+                                        <input type="text" class="form-control" id="DescriptionFilter" name="descriptionFilter" [(ngModel)]="descriptionFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinStartDateFilter">{{l("StartDateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinStartDateFilter" name="MinStartDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minStartDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxStartDateFilter" name="MaxStartDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartDateFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinEndDateFilter">{{l("EndDateRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinEndDateFilter" name="MinEndDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minEndDateFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxEndDateFilter" name="MaxEndDateFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxEndDateFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinTotalTaxFilter">{{l("MinMax")}} {{l("TotalTax")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinTotalTaxFilter" [(ngModel)]="minTotalTaxFilter" placeholder="{{l('MinValue')}}" name="minTotalTaxFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxTotalTaxFilter" placeholder="{{l('MaxValue')}}" name="maxTotalTaxFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinTotalPriceFilter">{{l("MinMax")}} {{l("TotalPrice")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinTotalPriceFilter" [(ngModel)]="minTotalPriceFilter" placeholder="{{l('MinValue')}}" name="minTotalPriceFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxTotalPriceFilter" placeholder="{{l('MaxValue')}}" name="maxTotalPriceFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinTotalDiscountFilter">{{l("MinMax")}} {{l("TotalDiscount")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinTotalDiscountFilter" [(ngModel)]="minTotalDiscountFilter" placeholder="{{l('MinValue')}}" name="minTotalDiscountFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxTotalDiscountFilter" placeholder="{{l('MaxValue')}}" name="maxTotalDiscountFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinTotalChargeFilter">{{l("MinMax")}} {{l("TotalCharge")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinTotalChargeFilter" [(ngModel)]="minTotalChargeFilter" placeholder="{{l('MinValue')}}" name="minTotalChargeFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxTotalChargeFilter" placeholder="{{l('MaxValue')}}" name="maxTotalChargeFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinVersionFilter">{{l("MinMax")}} {{l("Version")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinVersionFilter" [(ngModel)]="minVersionFilter" placeholder="{{l('MinValue')}}" name="minVersionFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxVersionFilter" placeholder="{{l('MaxValue')}}" name="maxVersionFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="RemarkFilter">{{l("Remark")}}</label>
+                                        <input type="text" class="form-control" id="RemarkFilter" name="remarkFilter" [(ngModel)]="remarkFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinRequoteRefIdFilter">{{l("MinMax")}} {{l("RequoteRefId")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinRequoteRefIdFilter" [(ngModel)]="minRequoteRefIdFilter" placeholder="{{l('MinValue')}}" name="minRequoteRefIdFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxRequoteRefIdFilter" placeholder="{{l('MaxValue')}}" name="maxRequoteRefIdFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-3">
+        <div class="form-group">
+            <label for="QuotationLoc8GUIDFilter">{{l("QuotationLoc8GUID")}}</label>
+            <input type="text" class="form-control" id="QuotationLoc8GUIDFilter" name="quotationLoc8GUIDFilter" [(ngModel)]="quotationLoc8GUIDFilter">
+        </div>
+    </div>-->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinAcknowledgedByFilter">{{l("MinMax")}} {{l("AcknowledgedBy")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinAcknowledgedByFilter" [(ngModel)]="minAcknowledgedByFilter" placeholder="{{l('MinValue')}}" name="minAcknowledgedByFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxAcknowledgedByFilter" placeholder="{{l('MaxValue')}}" name="maxAcknowledgedByFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinAcknowledgedAtFilter">{{l("AcknowledgedAtRange")}}</label>
+                                        <div class="input-group">
+                                            <input class="form-control m-input" id="MinAcknowledgedAtFilter" name="MinAcknowledgedAtFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MinValue')}}" [(ngModel)]="minAcknowledgedAtFilter">
+                                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                            <input class="form-control m-input" id="MaxAcknowledgedAtFilter" name="MaxAcknowledgedAtFilter" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAcknowledgedAtFilter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="WorkOrderSubjectFilter">({{l("WorkOrder")}}) {{l("Subject")}}</label>
+                                        <input type="text" class="form-control" id="WorkOrderSubjectFilter" name="workOrderSubjectFilter" [(ngModel)]="workOrderSubjectFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="QuotationTitleFilter">({{l("Quotation")}}) {{l("Title")}}</label>
+                                        <input type="text" class="form-control" id="QuotationTitleFilter" name="quotationTitleFilter" [(ngModel)]="quotationTitleFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="CustomerNameFilter">({{l("Customer")}}) {{l("Name")}}</label>
+                                        <input type="text" class="form-control" id="CustomerNameFilter" name="customerNameFilter" [(ngModel)]="customerNameFilter">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="EstimateStatusStatusFilter">({{l("EstimateStatus")}}) {{l("Status")}}</label>
+                                        <input type="text" class="form-control" id="EstimateStatusStatusFilter" name="estimateStatusStatusFilter" [(ngModel)]="estimateStatusStatusFilter">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12"
+                             [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable
+                                     (onLazyLoad)="getEstimates($event, true)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.Estimates.View', 'Pages.Main.Estimates.Edit', 'Pages.Main.Estimates.Delete')">{{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="title">
+                                            {{l('Title')}}
+                                            <p-sortIcon field="estimate.title"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="estimateStatusFk.status">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="estimateStatusStatus"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="reference">
+                                            {{l('Reference')}}
+                                            <p-sortIcon field="estimate.reference"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="description">
+                                            {{l('Description')}}
+                                            <p-sortIcon field="estimate.description"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="workOrderFk.subject">
+                                            {{l('WorkOrder')}}
+                                            <p-sortIcon field="workOrderSubject"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="quotationFk.title">
+                                            {{l('Quotation')}}
+                                            <p-sortIcon field="quotationTitle"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="customerFk.name">
+                                            {{l('Customer')}}
+                                            <p-sortIcon field="customerName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="startDate">
+                                            {{l('StartDate')}}
+                                            <p-sortIcon field="estimate.startDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="endDate">
+                                            {{l('EndDate')}}
+                                            <p-sortIcon field="estimate.endDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="totalTax">
+                                            {{l('TotalTax')}}
+                                            <p-sortIcon field="estimate.totalTax"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="totalPrice">
+                                            {{l('TotalPrice')}}
+                                            <p-sortIcon field="estimate.totalPrice"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="totalDiscount">
+                                            {{l('TotalDiscount')}}
+                                            <p-sortIcon field="estimate.totalDiscount"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="totalCharge">
+                                            {{l('TotalCharge')}}
+                                            <p-sortIcon field="estimate.totalCharge"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="version">
+                                            {{l('Version')}}
+                                            <p-sortIcon field="estimate.version"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="remark">
+                                            {{l('Remark')}}
+                                            <p-sortIcon field="estimate.remark"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="requoteRefId">
+                                            {{l('RequoteRefId')}}
+                                            <p-sortIcon field="estimate.requoteRefId"></p-sortIcon>
+                                        </th>
+                                        <!--<th style="width: 150px" pSortableColumn="quotationLoc8GUID">
+        {{l('QuotationLoc8GUID')}}
+        <p-sortIcon field="estimate.quotationLoc8GUID"></p-sortIcon>
+    </th>-->
+                                        <th style="width: 150px" pSortableColumn="acknowledgedBy">
+                                            {{l('AcknowledgedBy')}}
+                                            <p-sortIcon field="estimate.acknowledgedBy"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="acknowledgedAt">
+                                            {{l('AcknowledgedAt')}}
+                                            <p-sortIcon field="estimate.acknowledgedAt"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!isGrantedAny('Pages.Main.Estimates.View', 'Pages.Main.Estimates.Edit', 'Pages.Main.Estimates.Delete', 'Pages.Main.CustomerInvoices.Create')">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                    <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.View')"
+                                                           (click)="viewEstimate(record.estimate.id)">{{l('View')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.Edit')"
+                                                           (click)="createOrEditEstimateModal.show(record.estimate.id)">{{l('Edit')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.Delete')"
+                                                           (click)="deleteEstimate(record.estimate)">{{l('Delete')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                           (click)="generatePDF(record.estimate.id)">{{l('SubmitEstimate')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.CustomerInvoices.Create')"
+                                                           (click)="createCustomerInvoice(record.estimate.id)">{{l('CreateNewCustomerInvoice')}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                           (click)="showHistory(record.estimate)">{{l('History')}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Title')}}</span>
+                                            {{record.estimate.title}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Status')}}</span>
+                                            {{record.estimateStatusStatus}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Reference')}}</span>
+                                            {{record.estimate.reference}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Description')}}</span>
+                                            {{record.estimate.description}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('WorkOrder')}}</span>
+                                            {{record.workOrderSubject}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Quotation')}}</span>
+                                            {{record.quotationTitle}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Customer')}}</span>
+                                            {{record.customerName}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('StartDate')}}</span>
+                                            <span *ngIf="record.estimate.startDate">
+                                                {{record.estimate.startDate | momentFormat:'ll'}}
+                                            </span>
+                                            <span *ngIf="!record.estimate.startDate">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('EndDate')}}</span>
+                                            <span *ngIf="record.estimate.endDate">
+                                                {{record.estimate.endDate | momentFormat:'ll'}}
+                                            </span>
+                                            <span *ngIf="!record.estimate.endDate">-</span>
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('TotalTax')}}</span>
+                                            {{record.estimate.totalTax}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('TotalPrice')}}</span>
+                                            {{record.estimate.totalPrice}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('TotalDiscount')}}</span>
+                                            {{record.estimate.totalDiscount}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('TotalCharge')}}</span>
+                                            {{record.estimate.totalCharge}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Version')}}</span>
+                                            {{record.estimate.version}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Remark')}}</span>
+                                            {{record.estimate.remark}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('RequoteRefId')}}</span>
+                                            {{record.estimate.requoteRefId}}
+                                        </td>
+                                        <!--<td style="width:150px">
+        <span class="ui-column-title"> {{l('QuotationLoc8GUID')}}</span>
+        {{record.estimate.quotationLoc8GUID}}
+    </td>-->
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('AcknowledgedBy')}}</span>
+                                            {{record.estimate.acknowledgedBy}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('AcknowledgedAt')}}</span>
+                                            <span *ngIf="record.estimate.acknowledgedAt">
+                                                {{record.estimate.acknowledgedAt | momentFormat:'ll'}}
+                                            </span>
+                                            <span *ngIf="!record.estimate.acknowledgedAt">-</span>
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                             #paginator
+                                             (onPageChange)="getEstimates($event)"
+                                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <createOrEditEstimateModal #createOrEditEstimateModal (modalSave)="getEstimates()"></createOrEditEstimateModal>
+        <viewEstimateModal #viewEstimateModal></viewEstimateModal>
+        <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+    </div>
+</div>
+<style>
+    .input-group span.input-group-btn-left button {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+    }
+</style>

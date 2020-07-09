@@ -1,0 +1,53 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #currencyForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="currency.id">{{l("EditCurrency")}}</span>
+                        <span *ngIf="!currency.id">{{l("CreateNewCurrency")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="Currency_Code">{{l("Code")}} *</label>
+									<input type="text" id="Currency_Code" class="form-control" [(ngModel)]="currency.code" name="Code"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Currency_Name">{{l("Name")}} *</label>
+									<input type="text" id="Currency_Name" class="form-control" [(ngModel)]="currency.name" name="Name"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Currency_Symbol">{{l("Symbol")}}</label>
+									<input type="text" id="Currency_Symbol" class="form-control" [(ngModel)]="currency.symbol" name="Symbol"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Currency_Country">{{l("Country")}} *</label>
+									<input type="text" id="Currency_Country" class="form-control" [(ngModel)]="currency.country" name="Country"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Currency_BaseCountry">{{l("BaseCountry")}} *</label>
+									<input type="text" id="Currency_BaseCountry" class="form-control" [(ngModel)]="currency.baseCountry" name="BaseCountry"     required/>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!currencyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

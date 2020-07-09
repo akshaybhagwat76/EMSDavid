@@ -1,0 +1,38 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #workOrderTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="workOrderType.id">{{l("EditWorkOrderType")}}</span>
+                        <span *ngIf="!workOrderType.id">{{l("CreateNewWorkOrderType")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="WorkOrderType_Type">{{l("Type")}} *</label>
+									<input type="text" id="WorkOrderType_Type" class="form-control" [(ngModel)]="workOrderType.type" name="Type"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrderType_Description">{{l("Description")}} *</label>
+									<input type="text" id="WorkOrderType_Description" class="form-control" [(ngModel)]="workOrderType.description" name="Description"     required/>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!workOrderTypeForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

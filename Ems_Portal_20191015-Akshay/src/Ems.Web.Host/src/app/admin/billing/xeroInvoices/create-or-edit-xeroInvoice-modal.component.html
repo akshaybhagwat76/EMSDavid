@@ -1,0 +1,73 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #xeroInvoiceForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="xeroInvoice.id">{{l("EditXeroInvoice")}}</span>
+                        <span *ngIf="!xeroInvoice.id">{{l("CreateNewXeroInvoice")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="CustomerInvoiceCustomerReference">{{l("CustomerInvoice")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CustomerInvoiceCustomerReference" name="customerInvoiceCustomerReference" [(ngModel)]="customerInvoiceCustomerReference" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCustomerInvoiceModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCustomerInvoiceIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="xeroInvoice.customerInvoiceId" [(ngModel)]="xeroInvoice.customerInvoiceId" type="text"  hidden>
+		 
+
+								<br/><div class="m-checkbox-list">
+									<label for="XeroInvoice_XeroInvoiceCreated" class="kt-checkbox">
+										<input id="XeroInvoice_XeroInvoiceCreated" type="checkbox" name="XeroInvoiceCreated" [(ngModel)]="xeroInvoice.xeroInvoiceCreated"> 
+										{{l("XeroInvoiceCreated")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="XeroInvoice_ApiResponse">{{l("ApiResponse")}}</label>
+									<input type="text" id="XeroInvoice_ApiResponse" class="form-control" [(ngModel)]="xeroInvoice.apiResponse" name="ApiResponse"    />
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="XeroInvoice_Failed" class="kt-checkbox">
+										<input id="XeroInvoice_Failed" type="checkbox" name="Failed" [(ngModel)]="xeroInvoice.failed"> 
+										{{l("Failed")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="XeroInvoice_Exception">{{l("Exception")}}</label>
+									<input type="text" id="XeroInvoice_Exception" class="form-control" [(ngModel)]="xeroInvoice.exception" name="Exception"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="XeroInvoice_XeroReference">{{l("XeroReference")}}</label>
+									<input type="text" id="XeroInvoice_XeroReference" class="form-control" [(ngModel)]="xeroInvoice.xeroReference" name="XeroReference"    />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!xeroInvoiceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<xeroInvoiceCustomerInvoiceLookupTableModal #xeroInvoiceCustomerInvoiceLookupTableModal (modalSave)="getNewCustomerInvoiceId()"></xeroInvoiceCustomerInvoiceLookupTableModal>
+		 
+</div>

@@ -1,0 +1,76 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Description")}} :</h6>
+                        {{ item.customerInvoiceDetail.description }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Quantity")}} :</h6>
+                        {{ item.customerInvoiceDetail.quantity }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("UnitPrice")}} :</h6>
+                        {{ item.customerInvoiceDetail.unitPrice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Gross")}} :</h6>
+                        {{ item.customerInvoiceDetail.gross }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Tax")}} :</h6>
+                        {{ item.customerInvoiceDetail.tax }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Net")}} :</h6>
+                        {{ item.customerInvoiceDetail.net }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Discount")}} :</h6>
+                        {{ item.customerInvoiceDetail.discount }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Charge")}} :</h6>
+                        {{ item.customerInvoiceDetail.charge }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("CustomerInvoice")}}) {{l("Description")}} :</h6>
+                        {{item.customerInvoiceDescription}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("LeaseItem")}}) {{l("Item")}} :</h6>
+                        {{item.leaseItemItem}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ItemType")}} :</h6>
+                        {{item.itemTypeType}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Uom")}} :</h6>
+                        {{item.uomUnitOfMeasurement}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Action")}} :</h6>
+                        {{item.actionWorkOrderAction}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

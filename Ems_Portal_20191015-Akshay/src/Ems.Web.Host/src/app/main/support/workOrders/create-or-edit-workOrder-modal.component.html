@@ -1,0 +1,217 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #workOrderForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="workOrder.id">{{l("EditWorkOrder")}}</span>
+                        <span *ngIf="!workOrder.id">{{l("CreateNewWorkOrder")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="IncidentDescription">{{l("Incident")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentDescription" name="incidentDescription" [(ngModel)]="incidentDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectIncidentModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setIncidentIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.incidentId" [(ngModel)]="workOrder.incidentId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetOwnershipAssetDisplayName">{{l("Asset")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetOwnershipAssetDisplayName" name="assetOwnershipAssetDisplayName" [(ngModel)]="assetOwnershipAssetDisplayName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetOwnershipModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetOwnershipIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.assetOwnershipId" [(ngModel)]="workOrder.assetOwnershipId" type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="!isVendorHidden">
+                        <label for="VendorName">{{l("Vendor")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorName" name="vendorName" [(ngModel)]="vendorName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.vendorId" [(ngModel)]="workOrder.vendorId" type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="!isSupportItemHidden">
+                        <label for="SupportItemDescription">{{l("SupportItem")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportItemDescription" name="supportItemDescription" [(ngModel)]="supportItemDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.supportItemId" [(ngModel)]="workOrder.supportItemId" type="text" hidden>
+
+                    <div class="form-group m-form__group" *ngIf="!isCustomerHidden">
+                        <label for="CustomerName">{{l("Customer")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CustomerName" name="customerName" [(ngModel)]="customerName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCustomerModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCustomerIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.customerId" [(ngModel)]="workOrder.customerId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderTypeType">{{l("WorkOrderType")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderTypeType" name="workOrderTypeType" [(ngModel)]="workOrderTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.workOrderTypeId" [(ngModel)]="workOrder.workOrderTypeId" type="text" required hidden>
+
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderPriorityPriority">{{l("WorkOrderPriority")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderPriorityPriority" name="workOrderPriorityPriority" [(ngModel)]="workOrderPriorityPriority" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderPriorityModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderPriorityIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.workOrderPriorityId" [(ngModel)]="workOrder.workOrderPriorityId" type="text" required hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderStatusStatus">{{l("WorkOrderStatus")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderStatusStatus" name="workOrderStatusStatus" [(ngModel)]="workOrderStatusStatus" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.workOrderStatusId" [(ngModel)]="workOrder.workOrderStatusId" type="text" required hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UserName">{{l("AssignedTo")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.userId" [(ngModel)]="workOrder.userId" type="text" required hidden>
+
+                    <!--
+    <span *ngIf="isGranted('Pages.Administration.Host.Settings')">
+        <!-- ONLY SHOW IF HOST IS LOGGED IN
+                    <div class="form-group m-form__group">
+                        <label for="UserName">{{l("User")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.userId" [(ngModel)]="workOrder.userId" type="text" hidden>
+                    </span>
+                        -->
+                    <!--<div class="form-group">
+        <label for="WorkOrder_Loc8GUID">{{l("Loc8GUID")}}</label>
+        <input type="text" id="WorkOrder_Loc8GUID" class="form-control" [(ngModel)]="workOrder.loc8GUID" name="Loc8GUID" />
+    </div>-->
+
+                    <div class="form-group">
+                        <label for="WorkOrder_Subject">{{l("Subject")}} *</label>
+                        <input type="text" id="WorkOrder_Subject" class="form-control" [(ngModel)]="workOrder.subject" name="Subject" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WorkOrder_Description">{{l("Description")}}</label>
+                        <input type="text" id="WorkOrder_Description" class="form-control" [(ngModel)]="workOrder.description" name="Description" />
+                    </div>
+
+                    <!--<div class="form-group">
+        <label for="WorkOrder_Location">{{l("Location")}}</label>
+        <input type="text" id="WorkOrder_Location" class="form-control" [(ngModel)]="workOrder.location" name="Location" />
+    </div>-->
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderLocation">{{l("Location")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderLocation" name="workOrderLocation" [(ngModel)]="workOrderLocation" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLocationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLocationIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrder.location" [(ngModel)]="workOrder.location" type="text" hidden required>
+
+
+                    <div class="form-group">
+                        <label for="WorkOrder_StartDate">{{l("StartDate")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="startDate" id="WorkOrder_StartDate" name="WorkOrder_StartDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WorkOrder_EndDate">{{l("EndDate")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="endDate" id="WorkOrder_EndDate" name="WorkOrder_EndDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WorkOrder_Remarks">{{l("Remarks")}}</label>
+                        <input type="text" id="WorkOrder_Remarks" class="form-control" [(ngModel)]="workOrder.remarks" name="Remarks" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!workOrderForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <workOrderWorkOrderPriorityLookupTableModal #workOrderWorkOrderPriorityLookupTableModal (modalSave)="getNewWorkOrderPriorityId()"></workOrderWorkOrderPriorityLookupTableModal>
+    <workOrderWorkOrderTypeLookupTableModal #workOrderWorkOrderTypeLookupTableModal (modalSave)="getNewWorkOrderTypeId()"></workOrderWorkOrderTypeLookupTableModal>
+    <workOrderWorkOrderStatusLookupTableModal #workOrderWorkOrderStatusLookupTableModal (modalSave)="getNewWorkOrderStatusId()"></workOrderWorkOrderStatusLookupTableModal>
+    <workOrderVendorLookupTableModal #workOrderVendorLookupTableModal (modalSave)="getNewVendorId()"></workOrderVendorLookupTableModal>
+    <workOrderIncidentLookupTableModal #workOrderIncidentLookupTableModal (modalSave)="getNewIncidentId()"></workOrderIncidentLookupTableModal>
+    <workOrderSupportItemLookupTableModal #workOrderSupportItemLookupTableModal (modalSave)="getNewSupportItemId()"></workOrderSupportItemLookupTableModal>
+    <workOrderAssetOwnershipLookupTableModal #workOrderAssetOwnershipLookupTableModal (modalSave)="getNewAssetOwnershipId()"></workOrderAssetOwnershipLookupTableModal>
+    <workOrderUserLookupTableModal #workOrderUserLookupTableModal (modalSave)="getNewUserId()"></workOrderUserLookupTableModal>
+    <workOrderCustomerLookupTableModal #workOrderCustomerLookupTableModal (modalSave)="getNewCustomerId()"></workOrderCustomerLookupTableModal>
+    <workOrderLocationLookupTableModal #workOrderLocationLookupTableModal (modalSave)="getNewLocationId()"></workOrderLocationLookupTableModal>
+</div>

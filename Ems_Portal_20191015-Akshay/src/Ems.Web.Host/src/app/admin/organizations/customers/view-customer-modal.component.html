@@ -1,0 +1,58 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Reference")}} :</h6>
+                        {{ item.customer.reference }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Name")}} :</h6>
+                        {{ item.customer.name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Identifier")}} :</h6>
+                        {{ item.customer.identifier }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LogoUrl")}} :</h6>
+                        {{ item.customer.logoUrl }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Website")}} :</h6>
+                        {{ item.customer.website }}
+                    </div>
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("CustomerLoc8UUID")}} :</h6>
+                        {{ item.customer.customerLoc8UUID }}
+                    </div>-->
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CustomerType")}} :</h6>
+                        {{item.customerTypeType}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Currency")}} :</h6>
+                        {{item.currencyCode}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

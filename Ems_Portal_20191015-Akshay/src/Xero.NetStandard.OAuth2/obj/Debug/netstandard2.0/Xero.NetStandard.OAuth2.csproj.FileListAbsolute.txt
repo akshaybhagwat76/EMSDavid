@@ -1,0 +1,14 @@
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.deps.json
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.dll
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.pdb
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.csprojAssemblyReference.cache
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.csproj.CoreCompileInputs.cache
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.dll
+C:\Sandip Korat\EMS\FullV1\Ems_Portal_20191015\Ems_Portal_20191015\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.pdb
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.deps.json
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.dll
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\bin\Debug\netstandard2.0\Xero.NetStandard.OAuth2.pdb
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.csprojAssemblyReference.cache
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.csproj.CoreCompileInputs.cache
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.dll
+C:\Sandip Korat\EMS\Ems_Portal_20191015-Akshay\src\Xero.NetStandard.OAuth2\obj\Debug\netstandard2.0\Xero.NetStandard.OAuth2.pdb

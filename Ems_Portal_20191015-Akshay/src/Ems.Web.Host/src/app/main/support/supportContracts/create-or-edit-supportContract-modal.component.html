@@ -1,0 +1,107 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #supportContractForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="supportContract.id">{{l("EditSupportContract")}}</span>
+                        <span *ngIf="!supportContract.id">{{l("CreateNewSupportContract")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="VendorName">{{l("Vendor")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="VendorName" name="vendorName" [(ngModel)]="vendorName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectVendorModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setVendorIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportContract.vendorId" [(ngModel)]="supportContract.vendorId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetOwnerName">{{l("AssetOwner")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetOwnerName" name="assetOwnerName" [(ngModel)]="assetOwnerName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetOwnerModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetOwnerIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportContract.assetOwnerId" [(ngModel)]="supportContract.assetOwnerId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="SupportContract_Title">{{l("Title")}} *</label>
+                        <input type="text" id="SupportContract_Title" class="form-control" [(ngModel)]="supportContract.title" name="Title" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportContract_Reference">{{l("Reference")}}</label>
+                        <input type="text" id="SupportContract_Reference" class="form-control" [(ngModel)]="supportContract.reference" name="Reference" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportContract_Description">{{l("Description")}} *</label>
+                        <input type="text" id="SupportContract_Description" class="form-control" [(ngModel)]="supportContract.description" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportContract_StartDate">{{l("StartDate")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="supportContract.startDate._d" id="SupportContract_StartDate" name="SupportContract_StartDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportContract_EndDate">{{l("EndDate")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="supportContract.endDate._d" id="SupportContract_EndDate" name="SupportContract_EndDate">
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="SupportContract_IsRFQTemplate" class="kt-checkbox">
+                            <input id="SupportContract_IsRFQTemplate" type="checkbox" name="IsRFQTemplate" [(ngModel)]="supportContract.isRFQTemplate">
+                            {{l("IsRFQTemplate")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="SupportContract_IsAcknowledged" class="kt-checkbox">
+                            <input id="SupportContract_IsAcknowledged" type="checkbox" name="IsAcknowledged" [(ngModel)]="supportContract.isAcknowledged">
+                            {{l("IsAcknowledged")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="form-group">
+                        <label for="SupportContract_AcknowledgedBy">{{l("AcknowledgedBy")}}</label>
+                        <input type="text" id="SupportContract_AcknowledgedBy" class="form-control" [(ngModel)]="supportContract.acknowledgedBy" name="AcknowledgedBy" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportContract_AcknowledgedAt">{{l("AcknowledgedAt")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="supportContract.acknowledgedAt._d" id="SupportContract_AcknowledgedAt" name="SupportContract_AcknowledgedAt">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!supportContractForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<supportContractVendorLookupTableModal #supportContractVendorLookupTableModal (modalSave)="getNewVendorId()"></supportContractVendorLookupTableModal>
+		 <supportContractAssetOwnerLookupTableModal #supportContractAssetOwnerLookupTableModal (modalSave)="getNewAssetOwnerId()"></supportContractAssetOwnerLookupTableModal>
+		 
+</div>

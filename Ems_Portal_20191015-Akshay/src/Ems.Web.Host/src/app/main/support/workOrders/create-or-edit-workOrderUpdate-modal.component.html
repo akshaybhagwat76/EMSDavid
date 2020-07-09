@@ -1,0 +1,82 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #workOrderUpdateForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="workOrderUpdate.id">{{l("EditWorkOrderUpdate")}}</span>
+                        <span *ngIf="!workOrderUpdate.id">{{l("CreateNewWorkOrderUpdate")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrderUpdate.itemTypeId" [(ngModel)]="workOrderUpdate.itemTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderActionAction">{{l("Action")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderActionAction" name="workOrderActionAction" [(ngModel)]="workOrderActionAction" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectActionModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setActionIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="workOrderUpdate.workOrderActionId" [(ngModel)]="workOrderUpdate.workOrderActionId" type="text" hidden required>
+
+                    <div class="form-group">
+                        <label for="WorkOrderUpdate_Number">{{l("Quantity")}} *</label>
+                        <input type="text" id="WorkOrderUpdate_Number" class="form-control" [(ngModel)]="workOrderUpdate.number" name="Number" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WorkOrderUpdate_Comments">{{l("Comments")}}</label>
+                        <input type="text" id="WorkOrderUpdate_Comments" class="form-control" [(ngModel)]="workOrderUpdate.comments" name="Comments" />
+                    </div>
+
+
+                    <!--<div class="form-group">
+                        <label for="WorkOrderUpdate_UpdatedAt">{{l("UpdatedAt")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="workOrderUpdate.updatedAt._d" id="WorkOrderUpdate_UpdatedAt" name="WorkOrderUpdate_UpdatedAt">
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="WorkOrderUpdate_Complete" class="kt-checkbox">
+                            <input id="WorkOrderUpdate_Complete" type="checkbox" name="Complete" [(ngModel)]="workOrderUpdate.complete">
+                            {{l("Complete")}}
+                            <span></span>
+                        </label>
+                    </div>-->
+
+                    <!--<div class="form-group">
+                        <label for="WorkOrderUpdate_UpdatedByUserId">{{l("UpdatedByUserId")}}</label>
+                        <input type="number" id="WorkOrderUpdate_UpdatedByUserId" class="form-control" [(ngModel)]="workOrderUpdate.updatedByUserId" name="UpdatedByUserId" />
+                    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!workOrderUpdateForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <workOrderWorkOrderActionLookupTableModal #workOrderWorkOrderActionLookupTableModal (modalSave)="getNewActionId()"></workOrderWorkOrderActionLookupTableModal>
+    <itemTypeLookupTableModal #itemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></itemTypeLookupTableModal>
+    <!--<workOrderUpdateWorkOrderLookupTableModal #workOrderUpdateWorkOrderLookupTableModal (modalSave)="getNewWorkOrderId()"></workOrderUpdateWorkOrderLookupTableModal>
+    -->
+</div>

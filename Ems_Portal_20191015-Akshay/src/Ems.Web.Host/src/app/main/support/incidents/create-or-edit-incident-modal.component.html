@@ -1,0 +1,166 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #incidentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="incident.id">{{l("EditIncident")}}</span>
+                        <span *ngIf="!incident.id">{{l("CreateNewIncident")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.assetId" [(ngModel)]="incident.assetId" type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="!isCustomerHidden">
+                        <label for="CustomerName">{{l("Customer")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CustomerName" name="customerName" [(ngModel)]="customerName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCustomerModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCustomerIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.customerId" [(ngModel)]="incident.customerId" type="text" hidden>
+
+
+                    <div class="form-group m-form__group" *ngIf="!isSupportItemHidden">
+                        <label for="SupportItemDescription">{{l("SupportItem")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportItemDescription" name="supportItemDescription" [(ngModel)]="supportItemDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.supportItemId" [(ngModel)]="incident.supportItemId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="IncidentTypeType">{{l("IncidentType")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentTypeType" name="incidentTypeType" [(ngModel)]="incidentTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectIncidentTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setIncidentTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.incidentTypeId" [(ngModel)]="incident.incidentTypeId" type="text" required hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="IncidentPriorityPriority">{{l("IncidentPriority")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentPriorityPriority" name="incidentPriorityPriority" [(ngModel)]="incidentPriorityPriority" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectIncidentPriorityModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setIncidentPriorityIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.incidentPriorityId" [(ngModel)]="incident.incidentPriorityId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="IncidentStatusStatus">{{l("IncidentStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentStatusStatus" name="incidentStatusStatus" [(ngModel)]="incidentStatusStatus" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectIncidentStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setIncidentStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.incidentStatusId" [(ngModel)]="incident.incidentStatusId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UserName">{{l("User")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.userId" [(ngModel)]="incident.userId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="Incident_Description">{{l("Description")}} *</label>
+                        <input type="text" id="Incident_Description" class="form-control" [(ngModel)]="incident.description" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Incident_IncidentDate">{{l("IncidentDate")}}</label>
+                        <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="incident.incidentDate._d" id="Incident_IncidentDate" name="Incident_IncidentDate">
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="Incident_Location">{{l("Location")}} *</label>
+                        <input type="text" id="Incident_Location" class="form-control" [(ngModel)]="incident.location" name="Location" required />
+                    </div>-->
+
+                    <div class="form-group m-form__group">
+                        <label for="IncidentLocation">{{l("Location")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="IncidentLocation" name="incidentLocation" [(ngModel)]="incidentLocation" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLocationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLocationIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="incident.location" [(ngModel)]="incident.location" type="text" hidden required>
+
+
+                    <div class="form-group">
+                        <label for="Incident_Remarks">{{l("Remarks")}}</label>
+                        <input type="text" id="Incident_Remarks" class="form-control" [(ngModel)]="incident.remarks" name="Remarks" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Incident_ResolvedAt">{{l("ResolvedAt")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="resolvedAt" id="Incident_ResolvedAt" name="Incident_ResolvedAt">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!incidentForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <incidentIncidentPriorityLookupTableModal #incidentIncidentPriorityLookupTableModal (modalSave)="getNewIncidentPriorityId()"></incidentIncidentPriorityLookupTableModal>
+    <incidentIncidentStatusLookupTableModal #incidentIncidentStatusLookupTableModal (modalSave)="getNewIncidentStatusId()"></incidentIncidentStatusLookupTableModal>
+    <incidentCustomerLookupTableModal #incidentCustomerLookupTableModal (modalSave)="getNewCustomerId()"></incidentCustomerLookupTableModal>
+    <incidentAssetLookupTableModal #incidentAssetLookupTableModal (modalSave)="getNewAssetId()"></incidentAssetLookupTableModal>
+    <incidentSupportItemLookupTableModal #incidentSupportItemLookupTableModal (modalSave)="getNewSupportItemId()"></incidentSupportItemLookupTableModal>
+    <incidentIncidentTypeLookupTableModal #incidentIncidentTypeLookupTableModal (modalSave)="getNewIncidentTypeId()"></incidentIncidentTypeLookupTableModal>
+    <incidentUserLookupTableModal #incidentUserLookupTableModal (modalSave)="getNewUserId()"></incidentUserLookupTableModal>
+    <incidentLocationLookupTableModal #incidentLocationLookupTableModal (modalSave)="getNewLocationId()"></incidentLocationLookupTableModal>
+
+</div>

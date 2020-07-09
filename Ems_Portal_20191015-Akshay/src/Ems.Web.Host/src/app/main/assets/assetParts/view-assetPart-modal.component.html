@@ -1,0 +1,78 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Name")}} :</h6>
+                        {{ item.assetPart.name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Description")}} :</h6>
+                        {{ item.assetPart.description }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SerialNumber")}} :</h6>
+                        {{ item.assetPart.serialNumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("InstallDate")}} :</h6>
+                        {{ item.assetPart.installDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Code")}} :</h6>
+                        {{ item.assetPart.code }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Installed")}} :</h6>
+                        {{ item.assetPart.installed }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("AssetPartType")}}) {{l("Type")}} :</h6>
+                        {{item.assetPartTypeType}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("AssetPart")}}) {{l("Name")}} :</h6>
+                        {{item.assetPartName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("AssetPartStatus")}}) {{l("Status")}} :</h6>
+                        {{item.assetPartStatusStatus}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("UsageMetric")}}) {{l("Metric")}} :</h6>
+                        {{item.usageMetricMetric}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Attachment")}}) {{l("Filename")}} :</h6>
+                        {{item.attachmentFilename}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Asset")}}) {{l("Reference")}} :</h6>
+                        {{item.assetReference}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("ItemType")}}) {{l("Type")}} :</h6>
+                        {{item.itemTypeType}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

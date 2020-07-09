@@ -1,0 +1,970 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{l("Assets")}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{ asset.reference }}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button *ngIf="isGranted('Pages.Main.Assets.Edit')" (click)=createOrEditAssetModal.show(asset.id)
+                                class="btn btn-primary blue">
+                            <i class="fa fa-pen"></i> {{l("EditAsset")}}
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <tabset>
+                        <tab heading="{{'Asset' | localize}}">
+                            <div class="row align-items-center">
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Reference")}} :</h6>
+                                        {{ asset.reference }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Description")}} :</h6>
+                                        {{ asset.description }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("VehicleRegistrationNo")}} :</h6>
+                                        {{ asset.vehicleRegistrationNo }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("IsExternalAsset")}} :</h6>
+                                        {{ asset.isExternalAsset }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Location")}} :</h6>
+                                        {{ asset.location }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("SerialNumber")}} :</h6>
+                                        {{ asset.serialNumber }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("EngineNo")}} :</h6>
+                                        {{ asset.engineNo }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("ChassisNo")}} :</h6>
+                                        {{ asset.chassisNo }}
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("PurchaseOrderNo")}} :</h6>
+                                        {{ asset.purchaseOrderNo }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("PurchaseDate")}} :</h6>
+                                        {{ asset.purchaseDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("PurchaseCost")}} :</h6>
+                                        {{ asset.purchaseCost }}
+                                    </div>
+                                    <!--<div class="col-6 mb-3">
+                    <h6>{{l("AssetLoc8GUID")}} :</h6>
+                    {{ asset.assetLoc8GUID }}
+                </div>-->
+
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("AssetClass")}}) {{l("Class")}} :</h6>
+                                        {{assetClassClass}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("AssetStatus")}}) {{l("Status")}} :</h6>
+                                        {{assetStatusStatus}}
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </tab>
+                        <tab heading="{{'Components' | localize}}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                    <assetPart-tree #apTree (apUpdated)="apUpdated($event)" (apSelected)="apSelected($event)" [assetId]="assetId" ></assetPart-tree>
+                                </div>
+                            </div>
+                        </tab>
+
+                        <tab heading="{{'Attachments' | localize}}">
+
+                            <!-- TODO: This is BONKERS - somebody please fix this -->
+                            <div class="kt-subheader kt-grid__item" style="padding: 0px; margin-top: -30px; height: 0px">
+                                <div class="kt-container kt-container--fluid" style="padding: 0px; margin-top: -30px; height: 0px">
+                                    <h5 style="padding: -20px; margin: -20px; height: 0px"></h5>
+                                    <div class="kt-subheader__toolbar" style="padding: 0px; margin-top: -30px; height: 0px">
+                                        <div class="kt-subheader__wrapper" style="padding: 0px; margin-top: -30px; height: 0px">
+
+                                            <button *ngIf="isGranted('Pages.Main.Attachments.Create')" (click)="createAttachment()" class="btn btn-primary blue ng-tns-c37-21 ng-star-inserted"><i class="fa fa-plus"></i> {{l("CreateNewAttachment")}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END TODO -->
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper1.isLoading">
+                                    <p-table #dataTable1
+                                             (onLazyLoad)="getAttachments($event)"
+                                             [value]="primengTableHelper1.records"
+                                             rows="{{primengTableHelper1.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper1.isResponsive"
+                                             [resizableColumns]="primengTableHelper1.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+
+                                                <th style="width: 150px" pSortableColumn="filename">
+                                                    {{l('Filename')}}
+                                                    <p-sortIcon field="attachment.filename"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="description">
+                                                    {{l('Description')}}
+                                                    <p-sortIcon field="attachment.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="uploadedAt">
+                                                    {{l('UploadedAt')}}
+                                                    <p-sortIcon field="attachment.uploadedAt"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="uploadedBy">
+                                                    {{l('UploadedBy')}}
+                                                    <p-sortIcon field="attachment.uploadedBy"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="blobFolder">
+                                                    {{l('BlobFolder')}}
+                                                    <p-sortIcon field="attachment.blobFolder"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="blobId">
+                                                    {{l('BlobId')}}
+                                                    <p-sortIcon field="attachment.blobId"></p-sortIcon>
+                                                </th>
+
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <!--<li>
+                                            <a href="javascript:;"
+                                               (click)="viewAttachmentModal.show(record, null, null)">{{l('View')}}</a>
+                                        </li>-->
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Attachments.View')"
+                                                                   (click)="viewAttachment(record.attachment)">{{l('View')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Attachments.Edit')"
+                                                                   (click)="createOrEditAttachmentModal.show(record.attachment.id, 'Asset', asset.id )">{{l('Edit')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Attachments.Delete')"
+                                                                   (click)="deleteAttachment(record.attachment)">{{l('Delete')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Filename')}}</span>
+                                                    {{record.attachment.filename}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.attachment.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UploadedAt')}}</span>
+                                                    <span *ngIf="record.attachment.uploadedAt">
+                                                        {{record.attachment.uploadedAt | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.attachment.uploadedAt">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UploadedBy')}}</span>
+                                                    {{record.uploadedByName }}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('BlobFolder')}}</span>
+                                                    {{record.attachment.blobFolder}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('BlobId')}}</span>
+                                                    {{record.attachment.blobId}}
+                                                </td>
+
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper1.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper1.defaultRecordsCountPerPage"
+                                                     #paginator1
+                                                     (onPageChange)="getAttachments($event)"
+                                                     [totalRecords]="primengTableHelper1.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper1.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper1.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                        <tab heading="{{'UsageMetric' | localize}}">
+                            <!-- TODO: This is BONKERS - somebody please fix this -->
+                            <div class="kt-subheader kt-grid__item" style="padding: 0px; margin-top: -30px; height: 0px">
+                                <div class="kt-container kt-container--fluid" style="padding: 0px; margin-top: -30px; height: 0px">
+                                    <h5 style="padding: -20px; margin: -20px; height: 0px"></h5>
+                                    <div class="kt-subheader__toolbar" style="padding: 0px; margin-top: -30px; height: 0px">
+                                        <div class="kt-subheader__wrapper" style="padding: 0px; margin-top: -30px; height: 0px">
+                                            <button *ngIf="isGranted('Pages.Main.UsageMetrics.Create')" (click)="createUsageMetric()" class="btn btn-primary blue ng-tns-c37-21 ng-star-inserted"><i class="fa fa-plus"></i> {{l("CreateNewUsageMetric")}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END TODO -->
+
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper4.isLoading">
+                                    <p-table #dataTable4
+                                             (onLazyLoad)="getUsageMetrics($event)"
+                                             [value]="primengTableHelper4.records"
+                                             rows="{{primengTableHelper4.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper4.isResponsive"
+                                             [resizableColumns]="primengTableHelper4.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.UsageMetrics.Edit', 'Pages.Main.UsageMetrics.Delete')">{{l('Actions')}}</th>
+                                                <!--<th style="width: 150px" pSortableColumn="assetFk.reference">
+                                {{l('Asset')}}
+                                <p-sortIcon field="assetReference"></p-sortIcon>
+                            </th>-->
+                                                <!--<th style="width: 150px" pSortableColumn="leaseItemFk.item">
+                                {{l('LeaseItem')}}
+                                <p-sortIcon field="leaseItemItem"></p-sortIcon>
+                            </th>-->
+                                                <th style="width: 150px" pSortableColumn="uomFk.unitOfMeasurement">
+                                                    {{l('UnitOfMeasurement')}}
+                                                    <p-sortIcon field="uomUnitOfMeasurement"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="metric">
+                                                    {{l('Metric')}}
+                                                    <p-sortIcon field="usageMetric.metric"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="description">
+                                                    {{l('Description')}}
+                                                    <p-sortIcon field="usageMetric.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="lastModificationTime">
+                                                    {{l('LastModified')}}
+                                                    <p-sortIcon field="usageMetric.lastModificationTime"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px"
+                                                    [hidden]="!isGrantedAny('Pages.Main.UsageMetrics.Edit', 'Pages.Main.UsageMetrics.Delete')">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewUsageMetricRecordModal.show(record.usageMetric.id)">{{l('UsageMetricRecords')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewUsageMetricModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.UsageMetrics.Edit')"
+                                                                   (click)="createOrEditUsageMetricModal.show(false, record.usageMetric.assetId, record.usageMetric.id)">{{l('Edit')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.UsageMetrics.Delete')"
+                                                                   (click)="deleteUsageMetric(record.usageMetric)">{{l('Delete')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <!--<td style="width:150px">
+                                <span class="ui-column-title"> {{l('Asset')}}</span>
+                                {{record.assetReference}}
+                            </td>-->
+                                                <!--<td style="width:150px">
+                                <span class="ui-column-title"> {{l('LeaseItem')}}</span>
+                                {{record.leaseItemItem}}
+                            </td>-->
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitOfMeasurement')}}</span>
+                                                    {{record.uomUnitOfMeasurement}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Metric')}}</span>
+                                                    {{record.usageMetric.metric}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.usageMetric.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('LastModified')}}</span>
+                                                    <span *ngIf="record.usageMetric.lastModificationTime">
+                                                        {{record.usageMetric.lastModificationTime | momentFormat:'ll LT'}}
+                                                    </span>
+                                                    <span *ngIf="!record.usageMetric.lastModificationTime">-</span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper4.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper4.defaultRecordsCountPerPage"
+                                                     #paginator4
+                                                     (onPageChange)="getUsageMetrics($event)"
+                                                     [totalRecords]="primengTableHelper4.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper4.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper4.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                        <tab heading="{{'Notes' | localize}}">
+                            <!-- TODO: This is BONKERS - somebody please fix this -->
+                            <div class="kt-subheader kt-grid__item" style="padding: 0px; margin-top: -30px; height: 0px">
+                                <div class="kt-container kt-container--fluid" style="padding: 0px; margin-top: -30px; height: 0px">
+                                    <h5 style="padding: -20px; margin: -20px; height: 0px"></h5>
+                                    <div class="kt-subheader__toolbar" style="padding: 0px; margin-top: -30px; height: 0px">
+                                        <div class="kt-subheader__wrapper" style="padding: 0px; margin-top: -30px; height: 0px">
+                                            <button *ngIf="isGranted('Pages.Main.Assets.CreateNotes')" (click)="createAssetNotes()" class="btn btn-primary blue ng-tns-c37-21 ng-star-inserted"><i class="fa fa-plus"></i> {{l("CreateNewAssetNotes")}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END TODO -->
+
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable
+                                             (onLazyLoad)="getAssetNotes($event)"
+                                             [value]="primengTableHelper.records"
+                                             rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper.isResponsive"
+                                             [resizableColumns]="primengTableHelper.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.Assets.EditNotes', 'Pages.Main.Assets.DeleteNotes')">{{l('Actions')}}</th>
+                                                <th style="width: 450px" pSortableColumn="title">
+                                                    {{l('Title')}}
+                                                    <p-sortIcon field="assetNotes.title"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px"
+                                                    [hidden]="!isGrantedAny('Pages.Main.Assets.EditNotes', 'Pages.Main.Assets.DeleteNotes')">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewAssetNotesModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Assets.EditNotes')"
+                                                                   (click)="createOrEditAssetNotesModal.show(record.assetNotes.id, record.assetNotes.assetId)">{{l('Edit')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Assets.DeleteNotes')"
+                                                                   (click)="deleteAssetNotes(record.assetNotes)">{{l('Delete')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:450px">
+                                                    <span class="ui-column-title"> {{l('Title')}}</span>
+                                                    {{record.assetNotes.title}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                     #paginator
+                                                     (onPageChange)="getAssetNotes($event)"
+                                                     [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+
+                        </tab>
+                        <tab heading="{{'Lease Items' | localize}}">
+                            <div class="row align-items-center">
+
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper2.isLoading">
+                                    <p-table #dataTable2
+                                             (onLazyLoad)="getLeaseItems($event)"
+                                             [value]="primengTableHelper2.records"
+                                             rows="{{primengTableHelper2.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper2.isResponsive"
+                                             [resizableColumns]="primengTableHelper2.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="assetClassFk.class">
+                                                    {{l('Class')}}
+                                                    <p-sortIcon field="assetClassClass"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="assetFk.reference">
+                                                    {{l('Reference')}}
+                                                    <p-sortIcon field="assetReference"></p-sortIcon>
+                                                </th>
+                                                <!--<th style="width: 150px" pSortableColumn="item">
+                                {{l('Item')}}
+                                <p-sortIcon field="leaseItem.item"></p-sortIcon>
+                            </th>-->
+                                                <th style="width: 450px" pSortableColumn="description">
+                                                    {{l('Notes')}}
+                                                    <p-sortIcon field="leaseItem.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="dateAllocated">
+                                                    {{l('DateAllocated')}}
+                                                    <p-sortIcon field="leaseItem.dateAllocated"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="allocationPercentage">
+                                                    {{l('Allocation %')}}
+                                                    <p-sortIcon field="leaseItem.allocationPercentage"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="unitRentalRate">
+                                                    {{l('UnitRentalRate')}}
+                                                    <p-sortIcon field="leaseItem.unitRentalRate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="unitDepositRate">
+                                                    {{l('UnitDepositRate')}}
+                                                    <p-sortIcon field="leaseItem.unitDepositRate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="startDate">
+                                                    {{l('StartDate')}}
+                                                    <p-sortIcon field="leaseItem.startDate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="endDate">
+                                                    {{l('EndDate')}}
+                                                    <p-sortIcon field="leaseItem.endDate"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewLeaseItemModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Class')}}</span>
+                                                    {{record.assetClassClass}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Reference')}}</span>
+                                                    {{record.assetReference}}
+                                                </td>
+                                                <!--<td style="width:150px">
+                                <span class="ui-column-title"> {{l('Item')}}</span>
+                                {{record.leaseItem.item}}
+                            </td>-->
+                                                <td style="width:450px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.leaseItem.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('DateAllocated')}}</span>
+                                                    <span *ngIf="record.leaseItem.dateAllocated">
+                                                        {{record.leaseItem.dateAllocated | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.leaseItem.dateAllocated">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Allocation %')}}</span>
+                                                    {{record.leaseItem.allocationPercentage}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitRentalRate')}}</span>
+                                                    {{record.leaseItem.unitRentalRate}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitDepositRate')}}</span>
+                                                    {{record.leaseItem.unitDepositRate}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('StartDate')}}</span>
+                                                    <span *ngIf="record.leaseItem.startDate">
+                                                        {{record.leaseItem.startDate | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.leaseItem.startDate">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('EndDate')}}</span>
+                                                    <span *ngIf="record.leaseItem.endDate">
+                                                        {{record.leaseItem.endDate | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.leaseItem.endDate">-</span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper2.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper2.defaultRecordsCountPerPage"
+                                                     #paginator2
+                                                     (onPageChange)="getLeaseItems($event)"
+                                                     [totalRecords]="primengTableHelper2.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper2.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper2.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                        <tab heading="{{'Support Items' | localize}}">
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper3.isLoading">
+                                    <p-table #dataTable3
+                                             (onLazyLoad)="getSupportItems($event)"
+                                             [value]="primengTableHelper3.records"
+                                             rows="{{primengTableHelper3.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper3.isResponsive"
+                                             [resizableColumns]="primengTableHelper3.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="assetFk.reference">
+                                                    {{l('Reference')}}
+                                                    <p-sortIcon field="assetReference"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="assetClassFk.class">
+                                                    {{l('Class')}}
+                                                    <p-sortIcon field="assetClassClass"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="uomFk.unitOfMeasurement">
+                                                    {{l('UnitOfMeasurement')}}
+                                                    <p-sortIcon field="uomUnitOfMeasurement"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="supportContractFk.title">
+                                                    {{l('Title')}}
+                                                    <p-sortIcon field="supportContractTitle"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="consumableTypeFk.type">
+                                                    {{l('Type')}}
+                                                    <p-sortIcon field="consumableTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="supportTypeFk.type">
+                                                    {{l('Type')}}
+                                                    <p-sortIcon field="supportTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="description">
+                                                    {{l('Description')}}
+                                                    <p-sortIcon field="supportItem.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="unitPrice">
+                                                    {{l('UnitPrice')}}
+                                                    <p-sortIcon field="supportItem.unitPrice"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="frequency">
+                                                    {{l('Frequency')}}
+                                                    <p-sortIcon field="supportItem.frequency"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="isAdHoc">
+                                                    {{l('IsAdHoc')}}
+                                                    <p-sortIcon field="supportItem.isAdHoc"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="isChargeable">
+                                                    {{l('IsChargeable')}}
+                                                    <p-sortIcon field="supportItem.isChargeable"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="isStandbyReplacementUnit">
+                                                    {{l('IsStandbyReplacementUnit')}}
+                                                    <p-sortIcon field="supportItem.isStandbyReplacementUnit"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewSupportItemModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Reference')}}</span>
+                                                    {{record.assetReference}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Class')}}</span>
+                                                    {{record.assetClassClass}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitOfMeasurement')}}</span>
+                                                    {{record.uomUnitOfMeasurement}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Title')}}</span>
+                                                    {{record.supportContractTitle}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Type')}}</span>
+                                                    {{record.consumableTypeType}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Type')}}</span>
+                                                    {{record.supportTypeType}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.supportItem.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitPrice')}}</span>
+                                                    {{record.supportItem.unitPrice}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Frequency')}}</span>
+                                                    {{record.supportItem.frequency}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('IsAdHoc')}}</span>
+                                                    <div *ngIf="record.supportItem.isAdHoc" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                                    <div *ngIf="!record.supportItem.isAdHoc" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('IsChargeable')}}</span>
+                                                    <div *ngIf="record.supportItem.isChargeable" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                                    <div *ngIf="!record.supportItem.isChargeable" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('IsStandbyReplacementUnit')}}</span>
+                                                    <div *ngIf="record.supportItem.isStandbyReplacementUnit" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                                    <div *ngIf="!record.supportItem.isStandbyReplacementUnit" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper3.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper3.defaultRecordsCountPerPage"
+                                                     #paginator3
+                                                     (onPageChange)="getSupportItems($event)"
+                                                     [totalRecords]="primengTableHelper3.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper3.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper3.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                        <tab heading="{{'WorkOrders' | localize}}">
+                            <div class="row align-items-center">
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable5
+                                             (onLazyLoad)="getWorkOrders($event)"
+                                             [value]="primengTableHelper5.records"
+                                             rows="{{primengTableHelper5.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper5.isResponsive"
+                                             [resizableColumns]="primengTableHelper5.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.WorkOrders.View')">{{l('Actions')}}</th>
+                                                <th style="width: 100px" pSortableColumn="id">
+                                                    {{l('ID')}}
+                                                    <p-sortIcon field="workOrder.id"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="assetOwnershipFk.AssetFk.Reference">
+                                                    {{l('Asset')}}
+                                                    <p-sortIcon field="assetDisplayName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="subject">
+                                                    {{l('Subject')}}
+                                                    <p-sortIcon field="workOrder.subject"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 350px" pSortableColumn="remarks">
+                                                    {{l('Remarks')}}
+                                                    <p-sortIcon field="workOrder.remarks"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="workOrderStatusFk.status">
+                                                    {{l('Status')}}
+                                                    <p-sortIcon field="workOrderStatusStatus"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="workOrderTypeFk.type">
+                                                    {{l('Type')}}
+                                                    <p-sortIcon field="workOrderTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="startDate">
+                                                    {{l('StartDate')}}
+                                                    <p-sortIcon field="workOrder.startDate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="endDate">
+                                                    {{l('EndDate')}}
+                                                    <p-sortIcon field="workOrder.endDate"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="userFk.name">
+                                                    {{l('AssignedTo')}}
+                                                    <p-sortIcon field="userName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="location">
+                                                    {{l('Location')}}
+                                                    <p-sortIcon field="workOrder.location"></p-sortIcon>
+                                                </th>
+
+                                                <th style="width: 150px" pSortableColumn="workOrderPriorityFk.priority">
+                                                    {{l('Priority')}}
+                                                    <p-sortIcon field="workOrderPriorityPriority"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="customerFk.name">
+                                                    {{l('CustomerName')}}
+                                                    <p-sortIcon field="customerName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="vendorFk.name">
+                                                    {{l('Vendor')}}
+                                                    <p-sortIcon field="vendorName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 350px" pSortableColumn="incidentFk.description">
+                                                    {{l('Incident')}}
+                                                    <p-sortIcon field="incidentDescription"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 350px" pSortableColumn="supportItemFk.description">
+                                                    {{l('SupportItem')}}
+                                                    <p-sortIcon field="supportItemDescription"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px"
+                                                    [hidden]="!isGrantedAny('Pages.Main.WorkOrders.View')">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.WorkOrders.View')"
+                                                                   (click)="viewWorkOrder(record.workOrder.id)">{{l('View')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:100px">
+                                                    <span class="ui-column-title"> {{l('ID')}}</span>
+                                                    <span>
+                                                        WO-{{record.workOrder.id}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:200px">
+                                                    <span class="ui-column-title"> {{l('Asset')}}</span>
+                                                    {{record.assetOwnershipAssetDisplayName}}
+                                                </td>
+                                                <td style="width:200px">
+                                                    <span class="ui-column-title"> {{l('Subject')}}</span>
+                                                    {{record.workOrder.subject}}
+                                                </td>
+                                                <td style="width:350px">
+                                                    <span class="ui-column-title"> {{l('Remarks')}}</span>
+                                                    {{record.workOrder.remarks}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Status')}}</span>
+                                                    {{record.workOrderStatusStatus}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Type')}}</span>
+                                                    {{record.workOrderTypeType}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('StartDate')}}</span>
+                                                    <span *ngIf="record.workOrder.startDate">
+                                                        {{record.workOrder.startDate | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.workOrder.startDate">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('EndDate')}}</span>
+                                                    <span *ngIf="record.workOrder.endDate">
+                                                        {{record.workOrder.endDate | momentFormat:'ll'}}
+                                                    </span>
+                                                    <span *ngIf="!record.workOrder.endDate">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('AssignedTo')}}</span>
+                                                    {{record.userName}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Location')}}</span>
+                                                    {{record.workOrder.location}}
+                                                </td>
+
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Priority')}}</span>
+                                                    {{record.workOrderPriorityPriority}}
+                                                </td>
+                                                <td style="width:200px">
+                                                    <span class="ui-column-title"> {{l('Name')}}</span>
+                                                    {{record.customerName}}
+                                                </td>
+                                                <td style="width:200px">
+                                                    <span class="ui-column-title"> {{l('Name')}}</span>
+                                                    {{record.vendorName}}
+                                                </td>
+                                                <td style="width:350px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.incidentDescription}}
+                                                </td>
+                                                <td style="width:350px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.supportItemDescription}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper5.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper5.defaultRecordsCountPerPage"
+                                                     #paginator5
+                                                     (onPageChange)="getWorkOrders($event)"
+                                                     [totalRecords]="primengTableHelper5.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper5.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper5.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+        <createOrEditAssetPartModal #createOrEditAssetPartModal></createOrEditAssetPartModal>
+        <viewAssetPartModal #viewAssetPartModal></viewAssetPartModal>
+        <viewAttachmentModal #viewAttachmentModal></viewAttachmentModal>
+        <createOrEditAttachmentModal #createOrEditAttachmentModal (attachmentModalSave)="getAttachments()"></createOrEditAttachmentModal>
+        <createOrEditAssetModal #createOrEditAssetModal (modalSave)="getAsset()"></createOrEditAssetModal>
+        <createOrEditAssetNotesModal #createOrEditAssetNotesModal (modalSave)="getAssetNotes()"></createOrEditAssetNotesModal>
+        <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+        <viewLeaseItemModal #viewLeaseItemModal></viewLeaseItemModal>
+        <viewSupportItemModal #viewSupportItemModal></viewSupportItemModal>
+        <viewAssetNotesModal #viewAssetNotesModal></viewAssetNotesModal>
+        <createOrEditAssetNotesModal #createOrEditAssetNotesModal (modalSave)="getAssetNotes()"></createOrEditAssetNotesModal>
+        <createOrEditUsageMetricModal #createOrEditUsageMetricModal (modalSave)="getUsageMetrics()"></createOrEditUsageMetricModal>
+        <viewUsageMetricModal #viewUsageMetricModal></viewUsageMetricModal>
+        <viewUsageMetricRecordModal #viewUsageMetricRecordModal></viewUsageMetricRecordModal>
+    </div>
+</div>

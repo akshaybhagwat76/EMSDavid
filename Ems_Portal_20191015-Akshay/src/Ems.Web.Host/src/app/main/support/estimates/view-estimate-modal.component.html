@@ -1,0 +1,94 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Reference")}} :</h6>
+                        {{ item.estimate.reference }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Title")}} :</h6>
+                        {{ item.estimate.title }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Description")}} :</h6>
+                        {{ item.estimate.description }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.estimate.startDate | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EndDate")}} :</h6>
+                        {{ item.estimate.endDate | momentFormat:'ll LT' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalTax")}} :</h6>
+                        {{ item.estimate.totalTax }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalPrice")}} :</h6>
+                        {{ item.estimate.totalPrice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalDiscount")}} :</h6>
+                        {{ item.estimate.totalDiscount }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalCharge")}} :</h6>
+                        {{ item.estimate.totalCharge }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Version")}} :</h6>
+                        {{ item.estimate.version }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Remark")}} :</h6>
+                        {{ item.estimate.remark }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("RequoteRefId")}} :</h6>
+                        {{ item.estimate.requoteRefId }}
+                    </div>
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("QuotationLoc8GUID")}} :</h6>
+                        {{ item.estimate.quotationLoc8GUID }}
+                    </div>-->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AcknowledgedBy")}} :</h6>
+                        {{ item.estimate.acknowledgedBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AcknowledgedAt")}} :</h6>
+                        {{ item.estimate.acknowledgedAt | momentFormat:'ll LT' }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Quotation")}}) {{l("Title")}} :</h6>
+                        {{item.quotationTitle}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("EstimateStatus")}}) {{l("Status")}} :</h6>
+                        {{item.estimateStatusStatus}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

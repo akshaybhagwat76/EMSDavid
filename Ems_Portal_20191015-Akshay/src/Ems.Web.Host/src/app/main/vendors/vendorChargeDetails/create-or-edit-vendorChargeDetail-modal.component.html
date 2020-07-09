@@ -1,0 +1,53 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #vendorChargeDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="vendorChargeDetail.id">{{l("EditVendorChargeDetail")}}</span>
+                        <span *ngIf="!vendorChargeDetail.id">{{l("CreateNewVendorChargeDetail")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="VendorChargeDetail_InvoiceDetail">{{l("InvoiceDetail")}} *</label>
+									<input type="text" id="VendorChargeDetail_InvoiceDetail" class="form-control" [(ngModel)]="vendorChargeDetail.invoiceDetail" name="InvoiceDetail"     required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="VendorChargeDetail_Quantity">{{l("Quantity")}}</label>
+									<input type="number" id="VendorChargeDetail_Quantity" class="form-control" [(ngModel)]="vendorChargeDetail.quantity" name="Quantity"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="VendorChargeDetail_UnitPrice">{{l("UnitPrice")}}</label>
+									<input type="number" id="VendorChargeDetail_UnitPrice" class="form-control" [(ngModel)]="vendorChargeDetail.unitPrice" name="UnitPrice"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="VendorChargeDetail_Tax">{{l("Tax")}}</label>
+									<input type="number" id="VendorChargeDetail_Tax" class="form-control" [(ngModel)]="vendorChargeDetail.tax" name="Tax"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="VendorChargeDetail_SubTotal">{{l("SubTotal")}}</label>
+									<input type="number" id="VendorChargeDetail_SubTotal" class="form-control" [(ngModel)]="vendorChargeDetail.subTotal" name="SubTotal"  />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!vendorChargeDetailForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

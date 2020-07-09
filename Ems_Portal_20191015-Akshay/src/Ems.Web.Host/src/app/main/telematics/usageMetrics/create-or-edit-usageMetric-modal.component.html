@@ -1,0 +1,76 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #usageMetricForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="usageMetric.id">{{l("EditUsageMetric")}}</span>
+                        <span *ngIf="!usageMetric.id">{{l("CreateNewUsageMetric")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group" *ngIf="showAsset">
+                        <label for="AssetReference">{{l("Assets")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="usageMetric.assetId" [(ngModel)]="usageMetric.assetId" type="text" hidden required>
+
+                    <div class="form-group m-form__group">
+                        <label for="UomUnitOfMeasurement">{{l("Uom")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UomUnitOfMeasurement" name="uomUnitOfMeasurement" [(ngModel)]="uomUnitOfMeasurement" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="usageMetric.uomId" [(ngModel)]="usageMetric.uomId" type="text" required hidden>
+
+                    <!--<div class="form-group m-form__group">
+                        <label for="LeaseItemItem">{{l("LeaseItem")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="LeaseItemItem" name="leaseItemItem" [(ngModel)]="leaseItemItem" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectLeaseItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setLeaseItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="usageMetric.leaseItemId" [(ngModel)]="usageMetric.leaseItemId" type="text" hidden>-->
+
+                    <div class="form-group">
+                        <label for="UsageMetric_Metric">{{l("Metric")}} *</label>
+                        <input type="text" id="UsageMetric_Metric" class="form-control" [(ngModel)]="usageMetric.metric" name="Metric" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="UsageMetric_Description">{{l("Description")}}</label>
+                        <input type="text" id="UsageMetric_Description" class="form-control" [(ngModel)]="usageMetric.description" name="Description" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!usageMetricForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<usageMetricLeaseItemLookupTableModal #usageMetricLeaseItemLookupTableModal (modalSave)="getNewLeaseItemId()"></usageMetricLeaseItemLookupTableModal>-->
+    <usageMetricAssetLookupTableModal #usageMetricAssetLookupTableModal (modalSave)="getNewAssetId()"></usageMetricAssetLookupTableModal>
+    <uomLookupTableModal #uomLookupTableModal (modalSave)="getNewUomId()"></uomLookupTableModal>
+
+</div>

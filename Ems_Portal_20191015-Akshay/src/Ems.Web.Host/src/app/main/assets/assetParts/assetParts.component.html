@@ -1,0 +1,392 @@
+﻿<div [@routerTransition]>
+  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item">
+      <div [class]="containerClass">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("AssetParts")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("AssetPartsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <!--<button *ngIf="isGranted('Pages.Main.AssetParts.Create')" (click)="createAssetPart()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewAssetPart")}}</button>-->
+            </div>
+        </div>
+      </div>
+    </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+
+            <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <assetPart-tree #apTree (apUpdated)="apUpdated($event)" (apSelected)="apSelected($event)"></assetPart-tree>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        <span *ngIf="assetPart">{{assetPart.name}}</span>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body">
+                                <tabset class="tab-container">
+                                    <tab heading="{{'Info' | localize}}"[active]="true">
+                                        <div *ngIf="assetPart.description != '' " class="row">
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("Description")}} :</h6>
+                                                {{ assetPart.description }}
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("SerialNumber")}} :</h6>
+                                                {{ assetPart.serialNumber }}
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("InstallDate")}} :</h6>
+                                                {{ assetPart.installDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("Installed")}} :</h6>
+                                                {{ assetPart.installed }}
+                                            </div>
+                        
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("AssetPartType")}} :</h6>
+                                                {{assetPart.assetPartType}}
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("AssetPartStatus")}} :</h6>
+                                                {{assetPart.assetPartStatus}}
+                                            </div>
+
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("AssetReference")}} :</h6>
+                                                {{assetPart.assetReference}}
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>{{l("ItemType")}} :</h6>
+                                                {{assetPart.itemType}}
+                                            </div>
+                        
+                                        </div>
+
+                                    </tab>
+                                    <tab heading="{{'Metrics' | localize}}">
+                                        <!--  This is a good way to add Metrics
+                                            <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)"
+                                            (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
+                                        -->
+                                    </tab>
+                                    <tab heading="{{'Attachments' | localize}}">
+                                        <!--
+                                            <organization-unit-roles #ouRoles (rolesAdded)="ouTree.rolesAdded($event)"
+                                            (roleRemoved)="ouTree.roleRemoved($event)"></organization-unit-roles>
+                                        -->
+                                    </tab>
+                                </tabset>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAssetParts()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="NameFilter">{{l("Name")}}</label>
+									<input type="text" class="form-control" id="NameFilter" name="nameFilter" [(ngModel)]="nameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="DescriptionFilter">{{l("Description")}}</label>
+									<input type="text" class="form-control" id="DescriptionFilter" name="descriptionFilter" [(ngModel)]="descriptionFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="SerialNumberFilter">{{l("SerialNumber")}}</label>
+									<input type="text" class="form-control" id="SerialNumberFilter" name="serialNumberFilter" [(ngModel)]="serialNumberFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinInstallDateFilter">{{l("InstallDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinInstallDateFilter" name="MinInstallDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minInstallDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxInstallDateFilter" name="MaxInstallDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxInstallDateFilter">
+									</div>
+                                </div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="InstalledFilterSelect">{{l("Installed")}}</label>
+								<select class="form-control" name="InstalledFilter" id="InstalledFilterSelect" [(ngModel)]="installedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetPartTypeTypeFilter">({{l("AssetPartType")}}) {{l("Type")}}</label>
+									<input type="text" class="form-control" id="AssetPartTypeTypeFilter" name="assetPartTypeTypeFilter" [(ngModel)]="assetPartTypeTypeFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetPartNameFilter">({{l("AssetPart")}}) {{l("Name")}}</label>
+									<input type="text" class="form-control" id="AssetPartNameFilter" name="assetPartNameFilter" [(ngModel)]="assetPartNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetPartStatusStatusFilter">({{l("AssetPartStatus")}}) {{l("Status")}}</label>
+									<input type="text" class="form-control" id="AssetPartStatusStatusFilter" name="assetPartStatusStatusFilter" [(ngModel)]="assetPartStatusStatusFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="UsageMetricMetricFilter">({{l("UsageMetric")}}) {{l("Metric")}}</label>
+									<input type="text" class="form-control" id="UsageMetricMetricFilter" name="usageMetricMetricFilter" [(ngModel)]="usageMetricMetricFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AttachmentFilenameFilter">({{l("Attachment")}}) {{l("Filename")}}</label>
+									<input type="text" class="form-control" id="AttachmentFilenameFilter" name="attachmentFilenameFilter" [(ngModel)]="attachmentFilenameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetReferenceFilter">({{l("Asset")}}) {{l("Reference")}}</label>
+									<input type="text" class="form-control" id="AssetReferenceFilter" name="assetReferenceFilter" [(ngModel)]="assetReferenceFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ItemTypeTypeFilter">({{l("ItemType")}}) {{l("Type")}}</label>
+									<input type="text" class="form-control" id="ItemTypeTypeFilter" name="itemTypeTypeFilter" [(ngModel)]="itemTypeTypeFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getAssetParts($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.AssetParts.Edit', 'Pages.Main.AssetParts.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="assetPartTypeFk.type">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="assetPartTypeType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="parentFk.name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="assetPartName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetPartStatusFk.status">
+                                        {{l('Status')}}
+                                        <p-sortIcon field="assetPartStatusStatus"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="usageMetricFk.metric">
+                                        {{l('Metric')}}
+                                        <p-sortIcon field="usageMetricMetric"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="attachmentFk.filename">
+                                        {{l('Filename')}}
+                                        <p-sortIcon field="attachmentFilename"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetFk.reference">
+                                        {{l('Reference')}}
+                                        <p-sortIcon field="assetReference"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="itemTypeFk.type">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="itemTypeType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="assetPart.name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="description">
+                                        {{l('Description')}}
+                                        <p-sortIcon field="assetPart.description"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="serialNumber">
+                                        {{l('SerialNumber')}}
+                                        <p-sortIcon field="assetPart.serialNumber"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="installDate">
+                                        {{l('InstallDate')}}
+                                        <p-sortIcon field="assetPart.installDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="code">
+                                        {{l('Code')}}
+                                        <p-sortIcon field="assetPart.code"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="installed">
+                                        {{l('Installed')}}
+                                        <p-sortIcon field="assetPart.installed"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.Main.AssetParts.Edit', 'Pages.Main.AssetParts.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewAssetPartModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.AssetParts.Edit')"
+														(click)="createOrEditAssetPartModal.show(record.assetPart.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.AssetParts.Delete')"
+														(click)="deleteAssetPart(record.assetPart)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Type')}}</span>
+												{{record.assetPartTypeType}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Name')}}</span>
+												{{record.assetPartName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Status')}}</span>
+												{{record.assetPartStatusStatus}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Metric')}}</span>
+												{{record.usageMetricMetric}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Filename')}}</span>
+												{{record.attachmentFilename}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Reference')}}</span>
+												{{record.assetReference}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Type')}}</span>
+												{{record.itemTypeType}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Name')}}</span>
+											{{record.assetPart.name}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Description')}}</span>
+											{{record.assetPart.description}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('SerialNumber')}}</span>
+											{{record.assetPart.serialNumber}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('InstallDate')}}</span>
+                                        <span *ngIf="record.assetPart.installDate">
+											{{record.assetPart.installDate | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.assetPart.installDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Code')}}</span>
+											{{record.assetPart.code}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('Installed')}}</span>
+                                        <div *ngIf="record.assetPart.installed" class="text-center"><i class="fa fa-check-circle kt--font-success" title="True"></i></div>
+										<div *ngIf="!record.assetPart.installed" class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getAssetParts($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditAssetPartModal #createOrEditAssetPartModal (modalSave)="getAssetParts()"></createOrEditAssetPartModal>
+    <viewAssetPartModal #viewAssetPartModal></viewAssetPartModal>
+    
+  </div>
+</div>

@@ -1,0 +1,693 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{l("Estimates")}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{ estimate.title }}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="close()" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> {{l("Back")}}</button>
+
+                        <div class="btn-group dropdown" dropdown container="body" [hidden]="!isGrantedAny('Pages.Main.Estimates.Edit', 'Pages.Main.Estimates.Delete')">
+                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                            </button>
+                            <ul class="dropdown-menu" *dropdownMenu>
+                                <li>
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.Edit')"
+                                       (click)="createOrEditEstimateModal.show(record.estimate.id)">{{l('Edit')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.Delete')"
+                                       (click)="deleteEstimate(record.estimate)">{{l('Delete')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;"
+                                       (click)="generatePDF(record.estimate.id)">{{l('SubmitEstimate')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.CustomerInvoices.Create')"
+                                       (click)="createCustomerInvoice(record.estimate.id)">{{l('CreateNewCustomerInvoice')}}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                       (click)="showHistory(record.estimate)">{{l('History')}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <tabset>
+
+                        <tab heading="{{'Estimate' | localize}}">
+                            <div class="row align-items-center">
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Reference")}} :</h6>
+                                        {{ estimate.reference }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("EstimateStatus")}}) {{l("Status")}} :</h6>
+                                        {{estimateStatusStatus}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Title")}} :</h6>
+                                        {{ estimate.title }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Description")}} :</h6>
+                                        {{ estimate.description }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("StartDate")}} :</h6>
+                                        {{ estimate.startDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("EndDate")}} :</h6>
+                                        {{ estimate.endDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalTax")}} :</h6>
+                                        {{ estimate.totalTax }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalPrice")}} :</h6>
+                                        {{ estimate.totalPrice }}
+                                    </div>
+
+
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalDiscount")}} :</h6>
+                                        {{estimate.totalDiscount}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalCharge")}} :</h6>
+                                        {{estimate.totalCharge}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Version")}} :</h6>
+                                        {{estimate.version}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Remark")}} :</h6>
+                                        {{estimate.remark}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("RequoteRefId")}} :</h6>
+                                        {{estimate.requoteRefId}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AcknowledgedBy")}} :</h6>
+                                        {{estimate.acknowledgedBy}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AcknowledgedAt")}} :</h6>
+                                        {{estimate.acknowledgedAt | momentFormat:'ll LT'}}
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("EstimateStatus")}}) {{l("Status")}} :</h6>
+                                        {{estimateStatusStatus}}
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("WorkOrder")}}) {{l("Subject")}} :</h6>
+                                        {{workOrderSubject}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("Quotation")}}) {{l("Title")}} :</h6>
+                                        {{quotationTitle}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>({{l("Customer")}}) {{l("Name")}} :</h6>
+                                        {{customerName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'EstimateDetails' | localize}}">
+
+                            <div class="kt-subheader kt-grid__item">
+                                <div class="kt-container kt-container--fluid">
+                                    <h5 style="padding: -20px; margin: -20px; height: 0px"></h5>
+                                    <div class="kt-subheader__toolbar" style="padding: 0px; margin-top: -20px; height: 0px">
+                                        <div class="kt-subheader__wrapper" style="padding: 0px; margin-top: -30px; height: 0px">
+                                            <button *ngIf="isGranted('Pages.Main.Estimates.EstimateDetailsCreate')" (click)="createEstimateDetail()" class="btn btn-primary blue ng-tns-c37-21 ng-star-inserted" style=""><i class="fa fa-plus"></i> {{l("CreateNewEstimateDetail")}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center" style="margin-top:-75px;">
+
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable
+                                             (onLazyLoad)="getEstimateDetails($event)"
+                                             [value]="primengTableHelper.records"
+                                             rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper.isResponsive"
+                                             [resizableColumns]="primengTableHelper.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="itemTypeFk.type">
+                                                    {{l('ItemType')}}
+                                                    <p-sortIcon field="itemTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="uomFk.unitOfMeasurement">
+                                                    {{l('Uom')}}
+                                                    <p-sortIcon field="uomUnitOfMeasurement"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="workOrderActionFk.action">
+                                                    {{l('Action')}}
+                                                    <p-sortIcon field="actionWorkOrderAction"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="description">
+                                                    {{l('Description')}}
+                                                    <p-sortIcon field="estimateDetail.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="quantity">
+                                                    {{l('Quantity')}}
+                                                    <p-sortIcon field="estimateDetail.quantity"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="unitPrice">
+                                                    {{l('UnitPrice')}}
+                                                    <p-sortIcon field="estimateDetail.unitPrice"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="cost">
+                                                    {{l('Cost')}}
+                                                    <p-sortIcon field="estimateDetail.cost"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px">
+                                                    {{l('Tax')}}
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="charge">
+                                                    {{l('Charge')}}
+                                                    <p-sortIcon field="estimateDetail.charge"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="viewEstimateDetailModal.show(record)">{{l('View')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.EstimateDetailsEdit')"
+                                                                   (click)="createOrEditEstimateDetailModal.show(record.estimateDetail.id, estimate.id)">{{l('Edit')}}</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Estimates.EstimateDetailsDelete')"
+                                                                   (click)="deleteEstimateDetail(record.estimateDetail)">{{l('Delete')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('ItemType')}}</span>
+                                                    <span *ngIf="record.itemTypeType">
+                                                        {{ record.itemTypeType }}
+                                                    </span>
+                                                    <span *ngIf="!record.itemTypeType">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Uom')}}</span>
+                                                    <span *ngIf="record.uomUnitOfMeasurement">
+                                                        {{ record.uomUnitOfMeasurement }}
+                                                    </span>
+                                                    <span *ngIf="!record.uomUnitOfMeasurement">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Action')}}</span>
+                                                    <span *ngIf="record.actionWorkOrderAction">
+                                                        {{ record.actionWorkOrderAction }}
+                                                    </span>
+                                                    <span *ngIf="!record.actionWorkOrderAction">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.estimateDetail.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Quantity')}}</span>
+                                                    {{record.estimateDetail.quantity}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitPrice')}}</span>
+                                                    {{record.estimateDetail.unitPrice}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Cost')}}</span>
+                                                    {{record.estimateDetail.cost}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Tax')}}</span>
+                                                    {{ (record.estimateDetail.cost * record.estimateDetail.tax) / 100 }}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Charge')}}</span>
+                                                    {{record.estimateDetail.charge}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                     #paginator
+                                                     (onPageChange)="getEstimateDetails($event)"
+                                                     [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'Quotation' | localize}}">
+                            <div class="row align-items-center" *ngIf="quotation" >
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Reference")}} :</h6>
+                                        {{ quotation.reference }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Title")}} :</h6>
+                                        {{ quotation.title }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Description")}} :</h6>
+                                        {{ quotation.description }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("StartDate")}} :</h6>
+                                        {{ quotation.startDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("EndDate")}} :</h6>
+                                        {{ quotation.endDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalTax")}} :</h6>
+                                        {{ quotation.totalTax }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalPrice")}} :</h6>
+                                        {{ quotation.totalPrice }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalDiscount")}} :</h6>
+                                        {{ quotation.totalDiscount }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("TotalCharge")}} :</h6>
+                                        {{ quotation.totalCharge }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Version")}} :</h6>
+                                        {{ quotation.version }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("IsFinal")}} :</h6>
+                                        {{ quotation.isFinal }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Remark")}} :</h6>
+                                        {{ quotation.remark }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("RequoteRefId")}} :</h6>
+                                        {{ quotation.requoteRefId }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AcknowledgedBy")}} :</h6>
+                                        User ID: {{ quotation.acknowledgedBy }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AcknowledgedAt")}} :</h6>
+                                        {{ quotation.acknowledgedAt | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Status")}} :</h6>
+                                        {{qQuotationStatusStatus}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Asset")}} :</h6>
+                                        {{qAssetReference}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AssetClass")}} :</h6>
+                                        {{qAssetClassClass}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("SupportType")}} :</h6>
+                                        {{qSupportTypeType}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("SupportItem")}} :</h6>
+                                        {{qSupportItemDescription}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("WorkOrder")}} :</h6>
+                                        {{qWorkOrderSubject}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("SupportContract")}} :</h6>
+                                        {{qSupportContractTitle}}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div *ngIf="!quotation" style="text-align:center">
+                                <h6>{{l("NoData")}} </h6>
+                            </div>
+                        </tab>
+                        <tab heading="{{'Vendor Quotation Details' | localize}}">
+                            <div class="row align-items-center">
+
+                                <!--<Primeng-Datatable-Start>-->
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper1.isLoading">
+                                    <p-table #dataTable1
+                                             (onLazyLoad)="getQuotationInfo($event)"
+                                             [value]="primengTableHelper1.records"
+                                             rows="{{primengTableHelper1.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper1.isResponsive"
+                                             [resizableColumns]="primengTableHelper1.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="itemTypeFk.type">
+                                                    {{l('ItemType')}}
+                                                    <p-sortIcon field="itemTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="uomFk.unitOfMeasurement">
+                                                    {{l('Uom')}}
+                                                    <p-sortIcon field="uomUnitOfMeasurement"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="description">
+                                                    {{l('Description')}}
+                                                    <p-sortIcon field="quotationDetail.description"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="quantity">
+                                                    {{l('Quantity')}}
+                                                    <p-sortIcon field="quotationDetail.quantity"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="unitPrice">
+                                                    {{l('UnitPrice')}}
+                                                    <p-sortIcon field="quotationDetail.unitPrice"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="cost">
+                                                    {{l('Cost')}}
+                                                    <p-sortIcon field="quotationDetail.cost"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px">
+                                                    {{l('Tax')}}
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="charge">
+                                                    {{l('Charge')}}
+                                                    <p-sortIcon field="quotationDetail.charge"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="createOrEditEstimateDetailModal.cloneQuotationDetail(record.quotationDetail.id, estimate.id)">{{l('Clone to Estimate')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('ItemType')}}</span>
+                                                    <span *ngIf="record.itemTypeType">
+                                                        {{ record.itemTypeType }}
+                                                    </span>
+                                                    <span *ngIf="!record.itemTypeType">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Uom')}}</span>
+                                                    <span *ngIf="record.uomUnitOfMeasurement">
+                                                        {{ record.uomUnitOfMeasurement }}
+                                                    </span>
+                                                    <span *ngIf="!record.uomUnitOfMeasurement">-</span>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Description')}}</span>
+                                                    {{record.quotationDetail.description}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Quantity')}}</span>
+                                                    {{record.quotationDetail.quantity}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('UnitPrice')}}</span>
+                                                    {{record.quotationDetail.unitPrice}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Cost')}}</span>
+                                                    {{record.quotationDetail.cost}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Tax')}}</span>
+                                                    {{ (record.quotationDetail.cost * record.quotationDetail.tax) / 100 }}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Charge')}}</span>
+                                                    {{record.quotationDetail.charge}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper1.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper1.defaultRecordsCountPerPage"
+                                                     #paginator1
+                                                     (onPageChange)="getQuotationInfo($event)"
+                                                     [totalRecords]="primengTableHelper1.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper1.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper1.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-Datatable-End>-->
+                            </div>
+                        </tab>
+                        <tab heading="{{'WorkOrder' | localize}}">
+                            <div class="row align-items-center" *ngIf="workOrder">
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Subject")}} :</h6>
+                                        {{ workOrder.subject }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Description")}} :</h6>
+                                        {{ workOrder.description }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Status")}} :</h6>
+                                        {{ woWorkOrderStatus }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Location")}} :</h6>
+                                        {{ workOrder.location }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("StartDate")}} :</h6>
+                                        {{ workOrder.startDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("EndDate")}} :</h6>
+                                        {{ workOrder.endDate | momentFormat:'ll LT' }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Remarks")}} :</h6>
+                                        {{ workOrder.remarks }}
+                                    </div>
+
+
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Priority")}} :</h6>
+                                        {{woWorkOrderPriority}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("WorkOrderType")}} :</h6>
+                                        {{woWorkOrderType}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("VendorName")}} :</h6>
+                                        {{ woVendorName}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("IncidentDescription")}} :</h6>
+                                        {{woIncidentDescription}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("SupportItem")}} :</h6>
+                                        {{woSupportItemDescription}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Asset")}} :</h6>
+                                        {{woAssetDisplayName}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("AssignedTo")}} :</h6>
+                                        {{woUserName}}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>{{l("Customer")}} :</h6>
+                                        {{woCustomerName}}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div *ngIf="!workOrder" style="text-align:center">
+                                <h6>{{l("NoData")}} </h6>
+                            </div>
+                        </tab>
+                        <tab heading="{{'WorkOrderUpdates' | localize}}">
+                            <div class="row align-items-center">
+
+                                <div class="primeng-datatable-container col-12"
+                                     [busyIf]="primengTableHelper2.isLoading">
+                                    <p-table #dataTable2
+                                             (onLazyLoad)="getWorkOrderInfo($event)"
+                                             [value]="primengTableHelper2.records"
+                                             rows="{{primengTableHelper2.defaultRecordsCountPerPage}}"
+                                             [paginator]="false"
+                                             [lazy]="true"
+                                             [scrollable]="true"
+                                             ScrollWidth="100%"
+                                             [responsive]="primengTableHelper2.isResponsive"
+                                             [resizableColumns]="primengTableHelper2.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px">{{l('Actions')}}</th>
+                                                <th style="width: 150px" pSortableColumn="itemTypeFk.type">
+                                                    {{l('ItemType')}}
+                                                    <p-sortIcon field="itemTypeType"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="workOrderActionFk.action">
+                                                    {{l('Action')}}
+                                                    <p-sortIcon field="workOrderActionAction"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="number">
+                                                    {{l('Quantity')}}
+                                                    <p-sortIcon field="workOrderUpdate.number"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 350px" pSortableColumn="comments">
+                                                    {{l('Comments')}}
+                                                    <p-sortIcon field="workOrderUpdate.comments"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 130px">
+                                                    <div class="btn-group dropdown" dropdown container="body">
+                                                        <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                            <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                                        </button>
+                                                        <ul class="dropdown-menu" *dropdownMenu>
+                                                            <li>
+                                                                <a href="javascript:;"
+                                                                   (click)="createOrEditEstimateDetailModal.cloneWorkOrderUpdate(record.workOrderUpdate.id, estimate.id)">{{l('Clone to Estimate')}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('ItemType')}}</span>
+                                                    {{record.itemTypeType}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Action')}}</span>
+                                                    {{record.workOrderActionAction}}
+                                                </td>
+                                                <td style="width:150px">
+                                                    <span class="ui-column-title"> {{l('Quantity')}}</span>
+                                                    {{record.workOrderUpdate.number}}
+                                                </td>
+                                                <td style="width:350px">
+                                                    <span class="ui-column-title"> {{l('Comments')}}</span>
+                                                    {{record.workOrderUpdate.comments}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper2.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="primengTableHelper2.defaultRecordsCountPerPage"
+                                                     #paginator2
+                                                     (onPageChange)="getWorkOrderInfo($event)"
+                                                     [totalRecords]="primengTableHelper2.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper2.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper2.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <!--<tab heading="{{'Attachments' | localize}}">
+                        </tab>-->
+                    </tabset>
+                </div>
+            </div>
+        </div>
+        <createOrEditEstimateModal #createOrEditEstimateModal (modalSave)="getEstimate()"></createOrEditEstimateModal>
+        <createOrEditEstimateDetailModal #createOrEditEstimateDetailModal (estimateDetailModalSave)="getEstimate(null)"></createOrEditEstimateDetailModal>
+        <viewEstimateDetailModal #viewEstimateDetailModal></viewEstimateDetailModal>
+    </div>
+</div>

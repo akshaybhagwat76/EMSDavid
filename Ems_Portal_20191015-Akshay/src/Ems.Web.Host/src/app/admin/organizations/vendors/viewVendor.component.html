@@ -1,0 +1,184 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                    <span>{{l("Vendor")}}</span>
+                </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">
+                    {{ vendor.name }}
+                </span>
+            </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                    <button *ngIf="isGranted('Pages.Main.Vendors.Edit')" (click)=createOrEditVendorModal.show(vendor.id)
+                class="btn btn-primary blue"><i class="fa fa-pen"></i> {{l("Edit Profile")}}</button>
+                </div>
+            </div>
+
+        </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row align-items-center">
+                        <div class="row" >
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Reference")}} :</h6>
+                                {{ vendor.reference }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Name")}} :</h6>
+                                {{ vendor.name }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Identifier")}} :</h6>
+                                {{ vendor.identifier }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("LogoUrl")}} :</h6>
+                                {{ vendor.logoUrl }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Website")}} :</h6>
+                                {{ vendor.website }}
+                            </div>
+                            <!--<div class="col-6 mb-3">
+                                <h6>{{l("VendorLoc8GUID")}} :</h6>
+                                {{ vendor.vendorLoc8GUID }}
+                            </div>-->
+
+                            <div class="col-6 mb-3">
+                                <h6>{{l("SsicCode")}} :</h6>
+                                {{ ssic}}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Currency")}} :</h6>
+                                {{ currencyCode}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-portlet kt-portlet--mobile" >
+                <div class="kt-portlet__body" style="margin-top:5px; padding-top:5px;">
+
+                    <div class="containerClass" >
+                        <div class="kt-subheader__main">
+                            <button *ngIf="isGranted('Pages.Main.Addresses.Create')" (click)="createAddress()" style="float: right; margin-bottom:10px; margin-top:0px; " class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewAddress")}}</button> 
+                            <h5 class="kt-subheader__title">
+                                <span>{{l("Addresses")}}</span>
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12"
+                        [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                        (onLazyLoad)="getAddresses($event)"
+                                        [value]="primengTableHelper.records"
+                                        rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                        [paginator]="false"
+                                        [lazy]="true"
+                                        [scrollable]="true"
+                                        ScrollWidth="100%"
+                                        [responsive]="primengTableHelper.isResponsive"
+                                        [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.Main.Vendors.EditAddress','Pages.Main.Vendors.DeleteAddress', 'Pages.Main.Vendor.DeleteAdress')">{{l('Actions')}}</th>
+                                    
+                                    <th style="width: 150px" pSortableColumn="addressEntryName">
+                                        {{l('AddressEntryName')}}
+                                        <p-sortIcon field="address.addressEntryName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="addressLine1">
+                                        {{l('AddressLine1')}}
+                                        <p-sortIcon field="address.addressLine1"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="city">
+                                        {{l('City')}}
+                                        <p-sortIcon field="address.city"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.Main.Vendors.EditAddress', 'Pages.Main.Vendors.DeleteAddress')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+                                                <ul class="dropdown-menu"  *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewVendorAddressModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Vendors.EditAddress')"
+                                                        (click)="createOrEditVendorAddressModal.show(record.address.id, vendor.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.Vendors.DeleteAddress')"
+                                                        (click)="deleteAddress(record.address)">{{l('Delete')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="entityHistoryEnabled"
+                                                        (click)="showHistory(record.address)">{{l('History')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+
+                                    <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('AddressEntryName')}}</span>
+                                            {{record.address.addressEntryName}}
+                                        </td>
+                                    <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('AddressLine1')}}</span>
+                                            {{record.address.addressLine1}}
+                                        </td>
+                                    
+                                    <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('City')}}</span>
+                                            {{record.address.city}}
+                                        </td>
+                                    
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                #paginator
+                                                (onPageChange)="getAddresses($event)"
+                                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <createOrEditVendorModal #createOrEditVendorModal (vendorModalSave)="getVendor()"></createOrEditVendorModal> 
+        <createOrEditVendorAddressModal #createOrEditVendorAddressModal (addressModalSave)="getAddresses()"></createOrEditVendorAddressModal>
+        <viewVendorAddressModal #viewVendorAddressModal></viewVendorAddressModal>
+    </div>
+</div>
+      

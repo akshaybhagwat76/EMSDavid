@@ -1,0 +1,341 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #quotationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <!--<span *ngIf="quotationWithDetail.id">{{l("EditQuotation")}}</span>-->
+                        {{l("CreateNewQuotation")}}
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="WorkOrderSubject">{{l("WorkOrder")}} </label>
+                        <div class="input-group">
+                            <input class="form-control" id="WorkOrderSubject" name="workOrderSubject" [(ngModel)]="workOrderSubject" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWorkOrderModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWorkOrderIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.workOrderId" [(ngModel)]="quotationWithDetail.workOrderId" type="text" hidden>
+
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.assetId" [(ngModel)]="quotationWithDetail.assetId" type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="quotationWithDetail.assetId">
+                        <label for="AssetClassClass">{{l("AssetClass")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetClassClass" name="assetClassClass" [(ngModel)]="assetClassClass" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetClassIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.assetClassId" [(ngModel)]="quotationWithDetail.assetClassId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="SupportContractTitle">{{l("SupportContract")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportContractTitle" name="supportContractTitle" [(ngModel)]="supportContractTitle" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportContractModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportContractIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.supportContractId" [(ngModel)]="quotationWithDetail.supportContractId" type="text" required hidden>
+
+
+                    <div class="form-group m-form__group" *ngIf="quotationWithDetail.supportContractId">
+                        <label for="SupportItemDescription">{{l("SupportItem")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportItemDescription" name="supportItemDescription" [(ngModel)]="supportItemDescription" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportItemIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.supportItemId" [(ngModel)]="quotationWithDetail.supportItemId" type="text" required hidden>
+
+                    <div class="form-group m-form__group" *ngIf="quotationWithDetail.assetId">
+                        <label for="SupportTypeType">{{l("SupportType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportTypeType" name="supportTypeType" [(ngModel)]="supportTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.supportTypeId" [(ngModel)]="quotationWithDetail.supportTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group" *ngIf="quotationWithDetail.assetId">
+                        <label for="AO_Address">{{l("Address")}}</label>
+                        <input class="form-control" id="AO_Address" name="ao_address" [(ngModel)]="ao_address" type="text" disabled>
+                    </div>
+
+
+                    <div class="form-group m-form__group">
+                        <label for="QuotationStatusStatus">{{l("QuotationStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="QuotationStatusStatus" name="quotationStatusStatus" [(ngModel)]="quotationStatusStatus" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectQuotationStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setQuotationStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.quotationStatusId" [(ngModel)]="quotationWithDetail.quotationStatusId" type="text" hidden>
+
+                    <div class="form-group">
+                        <label for="Quotation_Reference">{{l("Reference")}} *</label>
+                        <input type="text" id="Quotation_Reference" class="form-control" [(ngModel)]="quotationWithDetail.reference" name="Reference" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_Title">{{l("Title")}} *</label>
+                        <input type="text" id="Quotation_Title" class="form-control" [(ngModel)]="quotationWithDetail.title" name="Title" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_Description">{{l("Description")}}</label>
+                        <input type="text" id="Quotation_Description" class="form-control" [(ngModel)]="quotationWithDetail.quotationDescription" name="Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_StartDate">{{l("StartDate")}} *</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="startDate" id="Quotation_StartDate" name="Quotation_StartDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_EndDate">{{l("EndDate")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'MMM DD, YYYY' }" [(ngModel)]="endDate" id="Quotation_EndDate" name="Quotation_EndDate">
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="Quotation_TotalTax">{{l("TotalTax")}}</label>
+                        <input type="number" id="Quotation_TotalTax" class="form-control" [(ngModel)]="quotationWithDetail.totalTax" name="TotalTax" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_TotalPrice">{{l("TotalPrice")}} *</label>
+                        <input type="number" id="Quotation_TotalPrice" class="form-control" [(ngModel)]="quotationWithDetail.totalPrice" name="TotalPrice" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_TotalDiscount">{{l("TotalDiscount")}}</label>
+                        <input type="number" id="Quotation_TotalDiscount" class="form-control" [(ngModel)]="quotationWithDetail.totalDiscount" name="TotalDiscount" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_TotalCharge">{{l("TotalCharge")}} *</label>
+                        <input type="number" id="Quotation_TotalCharge" class="form-control" [(ngModel)]="quotationWithDetail.totalCharge" name="TotalCharge" required/>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label for="Quotation_Version">{{l("Version")}}</label>
+                        <input type="number" id="Quotation_Version" class="form-control" [(ngModel)]="quotationWithDetail.version" name="Version" />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="Quotation_IsFinal" class="kt-checkbox">
+                            <input id="Quotation_IsFinal" type="checkbox" name="IsFinal" [(ngModel)]="quotationWithDetail.isFinal">
+                            {{l("IsFinal")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="form-group">
+                        <label for="Quotation_Remark">{{l("Remark")}}</label>
+                        <input type="text" id="Quotation_Remark" class="form-control" [(ngModel)]="quotationWithDetail.quotationRemark" name="Remark" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_RequoteRefId">{{l("RequoteRefId")}}</label>
+                        <input type="number" id="Quotation_RequoteRefId" class="form-control" [(ngModel)]="quotationWithDetail.requoteRefId" name="RequoteRefId" />
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="Quotation_QuotationLoc8GUID">{{l("QuotationLoc8GUID")}}</label>
+                        <input type="text" id="Quotation_QuotationLoc8GUID" class="form-control" [(ngModel)]="quotationWithDetail.quotationLoc8GUID" name="QuotationLoc8GUID" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_AcknowledgedBy">{{l("AcknowledgedBy")}}</label>
+                        <input type="text" id="Quotation_AcknowledgedBy" class="form-control" [(ngModel)]="quotationWithDetail.acknowledgedBy" name="AcknowledgedBy" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quotation_AcknowledgedAt">{{l("AcknowledgedAt")}}</label>
+                        <input class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ adaptivePosition: true }" [(ngModel)]="acknowledgedAt" id="Quotation_AcknowledgedAt" name="Quotation_AcknowledgedAt">
+                    </div>-->
+                    <!--DETAILS START-->
+
+
+                    <br /> <br /> <br /> <br />
+
+                    <div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.itemTypeId" [(ngModel)]="quotationWithDetail.itemTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UomUnitOfMeasurement">{{l("Uom")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UomUnitOfMeasurement" name="uomUnitOfMeasurement" [(ngModel)]="uomUnitOfMeasurement" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="quotationWithDetail.uomId" [(ngModel)]="quotationWithDetail.uomId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_Description">{{l("Description")}} *</label>
+                        <input type="text" id="QuotationDetail_Description" class="form-control" [(ngModel)]="quotationWithDetail.detailDescription" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_Quantity">{{l("Quantity")}} *</label>
+                        <input type="number" id="QuotationDetail_Quantity" class="form-control" [(ngModel)]="quotationWithDetail.quantity" name="Quantity" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_UnitPrice">{{l("UnitPrice")}} *</label>
+                        <input type="number" id="QuotationDetail_UnitPrice" class="form-control" [(ngModel)]="quotationWithDetail.unitPrice" name="UnitPrice" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_MarkUp">{{l("MarkUp")}} in (%)</label>
+                        <input type="number" id="QuotationDetail_MarkUp" class="form-control" [(ngModel)]="quotationWithDetail.markUp" name="MarkUp" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_Cost">{{l("Cost")}}</label>
+                        <input type="number" id="QuotationDetail_Cost" class="form-control" [(ngModel)]="quotationWithDetail.cost" name="Cost" required min="0" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_Discount">{{l("Discount")}} in (%)</label>
+                        <input type="number" id="QuotationDetail_Discount" class="form-control" [(ngModel)]="quotationWithDetail.discount" name="Discount" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="QuotationDetail_Tax">{{l("Tax")}} in (%) *</label>
+                        <input type="number" id="QuotationDetail_Tax" class="form-control" [(ngModel)]="quotationWithDetail.tax" name="Tax" required min="0" (focusout)="calculateAmount()" />
+                    </div>-->
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="QuotationDetail_IsTaxable" class="kt-checkbox">
+                            <input id="QuotationDetail_IsTaxable" type="checkbox" name="IsTaxable" [(ngModel)]="quotationWithDetail.isTaxable" (change)="calculateAmount()">
+                            {{l("IsTaxable")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <label for="QuotationDetail_Charge">{{l("Charge")}} *</label>
+                        <input type="number" id="QuotationDetail_Charge" class="form-control" [(ngModel)]="quotationWithDetail.charge" name="Charge" required min="0" disabled />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="QuotationDetail_IsChargeable" class="kt-checkbox">
+                            <input id="QuotationDetail_IsChargeable" type="checkbox" name="IsChargeable" [(ngModel)]="quotationWithDetail.isChargeable">
+                            {{l("IsChargeable")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="QuotationDetail_IsAdHoc" class="kt-checkbox">
+                            <input id="QuotationDetail_IsAdHoc" type="checkbox" name="IsAdHoc" [(ngModel)]="quotationWithDetail.isAdHoc">
+                            {{l("IsAdHoc")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="QuotationDetail_IsStandbyReplacementUnit" class="kt-checkbox">
+                            <input id="QuotationDetail_IsStandbyReplacementUnit" type="checkbox" name="IsStandbyReplacementUnit" [(ngModel)]="quotationWithDetail.isStandbyReplacementUnit">
+                            {{l("IsStandbyReplacementUnit")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="QuotationDetail_IsOptionalItem" class="kt-checkbox">
+                            <input id="QuotationDetail_IsOptionalItem" type="checkbox" name="IsOptionalItem" [(ngModel)]="quotationWithDetail.isOptionalItem">
+                            {{l("IsOptionalItem")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="form-group">
+                        <label for="QuotationDetail_Remark">{{l("Remark")}}</label>
+                        <input type="text" id="QuotationDetail_Remark" class="form-control" [(ngModel)]="quotationWithDetail.detailRemark" name="Remark" />
+                    </div>
+
+
+
+                    <!--<div class="form-group">
+                        <label for="QuotationDetail_Loc8GUID">{{l("Loc8GUID")}}</label>
+                        <input type="text" id="QuotationDetail_Loc8GUID" class="form-control" [(ngModel)]="quotationWithDetail.detailLoc8GUID" name="Loc8GUID" />
+                    </div>-->
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!quotationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <quotationAssetLookupTableModal #quotationAssetLookupTableModal (modalSave)="getNewAssetId()"></quotationAssetLookupTableModal>
+    <quotationAssetClassLookupTableModal #quotationAssetClassLookupTableModal (modalSave)="getNewAssetClassId()"></quotationAssetClassLookupTableModal>
+    <itemTypeLookupTableModal #itemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></itemTypeLookupTableModal>
+    <quotationSupportTypeLookupTableModal #quotationSupportTypeLookupTableModal (modalSave)="getNewSupportTypeId()"></quotationSupportTypeLookupTableModal>
+    <uomLookupTableModal #uomLookupTableModal (modalSave)="getNewUomId()"></uomLookupTableModal>
+    <quotationSupportItemLookupTableModal #quotationSupportItemLookupTableModal (modalSave)="getNewSupportItemId()"></quotationSupportItemLookupTableModal>
+    <quotationWorkOrderLookupTableModal #quotationWorkOrderLookupTableModal (modalSave)="getNewWorkOrderId()"></quotationWorkOrderLookupTableModal>
+
+    <quotationSupportContractLookupTableModal #quotationSupportContractLookupTableModal (modalSave)="getNewSupportContractId()"></quotationSupportContractLookupTableModal>
+    <quotationQuotationStatusLookupTableModal #quotationQuotationStatusLookupTableModal (modalSave)="getNewQuotationStatusId()"></quotationQuotationStatusLookupTableModal>
+</div>

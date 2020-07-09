@@ -1,0 +1,85 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("UsageMetricRecords")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="item">
+                    <div style="margin: 35px auto; text-align: center;" *ngIf="!item.usageMetricRecord && isGranted('Pages.Main.UsageMetricRecords.Create')">
+                        <p>Usage Metric Record not yet added.</p>
+                        <button (click)="createUsageMetricRecord()"
+                                class="btn btn-primary blue">
+                            <i class="fa fa-plus"></i> {{l("CreateNewUsageMetricRecord")}}
+                        </button>
+                    </div>
+                    <div *ngIf="item.usageMetricRecord">
+                        <div style="margin-bottom:15px; text-align:right;">
+                            <div class="btn-group dropdown" dropdown container="body" style="z-index:1050;">
+                                <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                    <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                </button>
+                                <ul class="dropdown-menu" *dropdownMenu>
+                                    <li>
+                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.UsageMetricRecords.Edit')"
+                                           (click)="createOrEditUsageMetricRecordModal.show(item.usageMetricRecord.usageMetricId, item.usageMetricRecord.id)">{{l('Edit')}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Main.UsageMetricRecords.Delete')"
+                                           (click)="deleteUsageMetricRecord(item.usageMetricRecord)">{{l('Delete')}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <h6>({{l("UsageMetric")}}) {{l("Metric")}} :</h6>
+                                {{item.usageMetricMetric}}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("UnitsConsumed")}} :</h6>
+                                {{ item.usageMetricRecord.unitsConsumed }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("Reference")}} :</h6>
+                                {{ item.usageMetricRecord.reference }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("StartTime")}} :</h6>
+                                {{ item.usageMetricRecord.startTime | momentFormat:'ll LT' }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("EndTime")}} :</h6>
+                                {{ item.usageMetricRecord.endTime | momentFormat:'ll LT' }}
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>{{l("LastModified")}} :</h6>
+                                <span *ngIf="item.usageMetricRecord.lastModificationTime">
+                                    {{item.usageMetricRecord.lastModificationTime | momentFormat:'ll LT'}}
+                                </span>
+                                <span *ngIf="!item.usageMetricRecord.lastModificationTime">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+               <!-- <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>-->
+            </div>
+            <createOrEditUsageMetricRecordModal #createOrEditUsageMetricRecordModal (modalSave)="getUsageMetricRecord()"></createOrEditUsageMetricRecordModal>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

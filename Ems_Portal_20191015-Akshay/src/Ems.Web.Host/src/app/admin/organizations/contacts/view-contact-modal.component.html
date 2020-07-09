@@ -1,0 +1,82 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("HeadOfficeContact")}} :</h6>
+                        {{ item.contact.headOfficeContact }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ContactName")}} :</h6>
+                        {{ item.contact.contactName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PhoneOffice")}} :</h6>
+                        {{ item.contact.phoneOffice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PhoneMobile")}} :</h6>
+                        {{ item.contact.phoneMobile }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Fax")}} :</h6>
+                        {{ item.contact.fax }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Address")}} :</h6>
+                        {{ item.contact.address }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmailAddress")}} :</h6>
+                        {{ item.contact.emailAddress }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Position")}} :</h6>
+                        {{ item.contact.position }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Department")}} :</h6>
+                        {{ item.contact.department }}
+                    </div>
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("ContactLoc8GUID")}} :</h6>
+                        {{ item.contact.contactLoc8GUID }}
+                    </div>-->
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("User")}}) {{l("Name")}} :</h6>
+                        {{item.userName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Vendor")}}) {{l("Name")}} :</h6>
+                        {{item.vendorName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("AssetOwner")}}) {{l("Name")}} :</h6>
+                        {{item.assetOwnerName}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Customer")}}) {{l("Name")}} :</h6>
+                        {{item.customerName}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

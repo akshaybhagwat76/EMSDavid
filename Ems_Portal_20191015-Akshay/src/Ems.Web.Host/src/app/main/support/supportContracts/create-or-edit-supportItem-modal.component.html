@@ -1,0 +1,150 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #supportItemForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="supportItem.id">{{l("EditSupportItem")}}</span>
+                        <span *ngIf="!supportItem.id">{{l("CreateNewSupportItem")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.assetId" [(ngModel)]="supportItem.assetId" type="text" required hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="AssetClassClass">{{l("AssetClass")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetClassClass" name="assetClassClass" [(ngModel)]="assetClassClass" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetClassModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetClassIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.assetClassId" [(ngModel)]="supportItem.assetClassId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UomUnitOfMeasurement">{{l("Uom")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UomUnitOfMeasurement" name="uomUnitOfMeasurement" [(ngModel)]="uomUnitOfMeasurement" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.uomId" [(ngModel)]="supportItem.uomId" type="text" required hidden>
+
+                    <!--<div class="form-group m-form__group">
+                        <label for="SupportContractTitle">{{l("SupportContract")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportContractTitle" name="supportContractTitle" [(ngModel)]="supportContractTitle" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportContractModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportContractIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.supportContractId" [(ngModel)]="supportItem.supportContractId" type="text"  hidden>-->
+
+                    <div class="form-group m-form__group">
+                        <label for="ConsumableTypeType">{{l("ConsumableType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ConsumableTypeType" name="consumableTypeType" [(ngModel)]="consumableTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectConsumableTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setConsumableTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.consumableTypeId" [(ngModel)]="supportItem.consumableTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="SupportTypeType">{{l("SupportType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SupportTypeType" name="supportTypeType" [(ngModel)]="supportTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSupportTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSupportTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="supportItem.supportTypeId" [(ngModel)]="supportItem.supportTypeId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="SupportItem_Description">{{l("Description")}} *</label>
+                        <input type="text" id="SupportItem_Description" class="form-control" [(ngModel)]="supportItem.description" name="Description" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportItem_UnitPrice">{{l("UnitPrice")}}</label>
+                        <input type="number" id="SupportItem_UnitPrice" class="form-control" [(ngModel)]="supportItem.unitPrice" name="UnitPrice" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SupportItem_Frequency">{{l("Frequency")}}</label>
+                        <input type="number" id="SupportItem_Frequency" class="form-control" [(ngModel)]="supportItem.frequency" name="Frequency" />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="SupportItem_IsAdHoc" class="kt-checkbox">
+                            <input id="SupportItem_IsAdHoc" type="checkbox" name="IsAdHoc" [(ngModel)]="supportItem.isAdHoc">
+                            {{l("IsAdHoc")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="SupportItem_IsChargeable" class="kt-checkbox">
+                            <input id="SupportItem_IsChargeable" type="checkbox" name="IsChargeable" [(ngModel)]="supportItem.isChargeable">
+                            {{l("IsChargeable")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="SupportItem_IsStandbyReplacementUnit" class="kt-checkbox">
+                            <input id="SupportItem_IsStandbyReplacementUnit" type="checkbox" name="IsStandbyReplacementUnit" [(ngModel)]="supportItem.isStandbyReplacementUnit">
+                            {{l("IsStandbyReplacementUnit")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!supportItemForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <supportItemAssetLookupTableModal #supportItemAssetLookupTableModal (modalSave)="getNewAssetId()"></supportItemAssetLookupTableModal>
+    <supportItemAssetClassLookupTableModal #supportItemAssetClassLookupTableModal (modalSave)="getNewAssetClassId()"></supportItemAssetClassLookupTableModal>
+    <uomLookupTableModal #uomLookupTableModal (modalSave)="getNewUomId()"></uomLookupTableModal>
+    <!--<supportItemSupportContractLookupTableModal #supportItemSupportContractLookupTableModal (modalSave)="getNewSupportContractId()"></supportItemSupportContractLookupTableModal>-->
+    <supportItemConsumableTypeLookupTableModal #supportItemConsumableTypeLookupTableModal (modalSave)="getNewConsumableTypeId()"></supportItemConsumableTypeLookupTableModal>
+    <supportItemSupportTypeLookupTableModal #supportItemSupportTypeLookupTableModal (modalSave)="getNewSupportTypeId()"></supportItemSupportTypeLookupTableModal>
+
+</div>

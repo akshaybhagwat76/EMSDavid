@@ -1,0 +1,87 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #addressForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="address.id">{{l("EditAddress")}}</span>
+                        <span *ngIf="!address.id">{{l("CreateNewAddress")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+					<div class="form-group">
+						<label for="Address_AddressEntryName">{{l("AddressEntryName")}} *</label>
+						<input type="text" id="Address_AddressEntryName" class="form-control" [(ngModel)]="address.addressEntryName" name="AddressEntryName"     required/>
+					</div>
+		
+					<br/><div class="m-checkbox-list">
+						<label for="Address_IsHeadOffice" class="kt-checkbox">
+							<input id="Address_IsHeadOffice" type="checkbox" name="IsHeadOffice" [(ngModel)]="address.isHeadOffice"> 
+							{{l("IsHeadOffice")}}
+							<span></span>
+						</label>
+					</div>
+					<br/><div class="m-checkbox-list">
+						<label for="Address_IsDefaultForBilling" class="kt-checkbox">
+							<input id="Address_IsDefaultForBilling" type="checkbox" name="IsDefaultForBilling" [(ngModel)]="address.isDefaultForBilling"> 
+							{{l("IsDefaultForBilling")}}
+							<span></span>
+						</label>
+					</div>
+		
+					<br/><div class="m-checkbox-list">
+						<label for="Address_IsDefaultForShipping" class="kt-checkbox">
+							<input id="Address_IsDefaultForShipping" type="checkbox" name="IsDefaultForShipping" [(ngModel)]="address.isDefaultForShipping"> 
+							{{l("IsDefaultForShipping")}}
+							<span></span>
+						</label>
+					</div>
+		
+                    <br /><div class="form-group">
+						<label for="Address_AddressLine1">{{l("AddressLine1")}} *</label>
+						<input type="text" id="Address_AddressLine1" class="form-control" [(ngModel)]="address.addressLine1" name="AddressLine1"     required/>
+					</div>
+		
+					<div class="form-group">
+						<label for="Address_AddressLine2">{{l("AddressLine2")}}</label>
+						<input type="text" id="Address_AddressLine2" class="form-control" [(ngModel)]="address.addressLine2" name="AddressLine2"    />
+					</div>
+		
+					<div class="form-group">
+						<label for="Address_PostalCode">{{l("PostalCode")}} *</label>
+						<input type="text" id="Address_PostalCode" class="form-control" [(ngModel)]="address.postalCode" name="PostalCode"  required  />
+					</div>
+		
+					<div class="form-group">
+						<label for="Address_City">{{l("City")}} *</label>
+						<input type="text" id="Address_City" class="form-control" [(ngModel)]="address.city" name="City"  required  />
+					</div>
+		
+					<div class="form-group">
+						<label for="Address_State">{{l("State")}} *</label>
+						<input type="text" id="Address_State" class="form-control" [(ngModel)]="address.state" name="State"  required  />
+					</div>
+		
+					<div class="form-group">
+						<label for="Address_Country">{{l("Country")}} *</label>
+						<input type="text" id="Address_Country" class="form-control" [(ngModel)]="address.country" name="Country" required   />
+					</div>
+		
+					<!--<div class="form-group">
+						<label for="Address_AddressLoc8GUID">Loc8 Address GUID</label>
+						<input type="text" id="Address_AddressLoc8GUID" class="form-control" [(ngModel)]="address.addressLoc8GUID" name="AddressLoc8GUID"    />
+					</div>-->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!addressForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>

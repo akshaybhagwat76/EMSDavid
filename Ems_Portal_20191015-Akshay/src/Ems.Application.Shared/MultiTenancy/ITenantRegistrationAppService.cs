@@ -1,0 +1,16 @@
+using System.Threading.Tasks;
+using Abp.Application.Services;
+using Ems.Editions.Dto;
+using Ems.MultiTenancy.Dto;
+
+namespace Ems.MultiTenancy
+{
+    public interface ITenantRegistrationAppService: IApplicationService
+    {
+        Task<RegisterTenantOutput> RegisterTenant(RegisterTenantInput input);
+
+        Task<EditionsSelectOutput> GetEditionsForSelect();
+
+        Task<EditionSelectDto> GetEdition(int editionId);
+    }
+}

@@ -1,0 +1,164 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #assetPartForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="assetPart.id">{{l("EditAssetPart")}}</span>
+                        <span *ngIf="!assetPart.id">{{l("CreateNewAssetPart")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="AssetPart_Name">{{l("Name")}} *</label>
+                        <input type="text" id="AssetPart_Name" class="form-control" [(ngModel)]="assetPart.name" name="Name"     required/>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="AssetPart_Description">{{l("Description")}}</label>
+                        <input type="text" id="AssetPart_Description" class="form-control" [(ngModel)]="assetPart.description" name="Description"/>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="AssetPart_SerialNumber">{{l("SerialNumber")}}</label>
+                        <input type="text" id="AssetPart_SerialNumber" class="form-control" [(ngModel)]="assetPart.serialNumber" name="SerialNumber"/>
+                    </div>
+
+                    <br/><div class="m-checkbox-list">
+                        <label for="AssetPart_Installed" class="kt-checkbox">
+                            <input id="AssetPart_Installed" type="checkbox" name="Installed" [(ngModel)]="assetPart.installed"> 
+                            {{l("Installed")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AssetPart_InstallDate">{{l("InstallDate")}}</label>
+                         <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="installDate" id="AssetPart_InstallDate" name="AssetPart_InstallDate">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="AssetPart_Code">{{l("Code")}}</label>
+                        <input type="text" id="AssetPart_Code" class="form-control" [(ngModel)]="assetPart.code" name="Code"/>
+                    </div>
+        
+
+
+					<div class="form-group m-form__group">
+                        <label for="AssetPartTypeType">{{l("AssetPartType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetPartTypeType" name="assetPartTypeType" [(ngModel)]="assetPartTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetPartTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetPartTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.assetPartTypeId" [(ngModel)]="assetPart.assetPartTypeId" type="text"  hidden>
+         
+                    <!--  ####### This is the ParentId - don't let user add/change it ######
+					<div class="form-group m-form__group">
+                        <label for="AssetPartName">{{l("AssetPart")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetPartName" name="assetPartName" [(ngModel)]="assetPartName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetPartModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setParentIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.parentId" [(ngModel)]="assetPart.parentId" type="text"  hidden>
+                    -->
+
+					<div class="form-group m-form__group">
+                        <label for="AssetPartStatusStatus">{{l("AssetPartStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetPartStatusStatus" name="assetPartStatusStatus" [(ngModel)]="assetPartStatusStatus" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetPartStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetPartStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.assetPartStatusId" [(ngModel)]="assetPart.assetPartStatusId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="UsageMetricMetric">{{l("UsageMetric")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UsageMetricMetric" name="usageMetricMetric" [(ngModel)]="usageMetricMetric" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUsageMetricModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUsageMetricIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.usageMetricId" [(ngModel)]="assetPart.usageMetricId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="AttachmentFilename">{{l("Attachment")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AttachmentFilename" name="attachmentFilename" [(ngModel)]="attachmentFilename" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAttachmentModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAttachmentIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.attachmentId" [(ngModel)]="assetPart.attachmentId" type="text"  hidden>
+		 <!--
+					<div class="form-group m-form__group">
+                        <label for="AssetReference">{{l("Asset")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AssetReference" name="assetReference" [(ngModel)]="assetReference" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAssetIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.assetId" [(ngModel)]="assetPart.assetId" type="text"  hidden>
+		 -->
+					<div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="assetPart.itemTypeId" [(ngModel)]="assetPart.itemTypeId" type="text"  hidden>
+		 
+
+								
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!assetPartForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <assetPartAssetPartTypeLookupTableModal #assetPartAssetPartTypeLookupTableModal (modalSave)="getNewAssetPartTypeId()"></assetPartAssetPartTypeLookupTableModal>
+		 <assetPartAssetPartLookupTableModal #assetPartAssetPartLookupTableModal (modalSave)="getNewParentId()"></assetPartAssetPartLookupTableModal>
+		 <assetPartAssetPartStatusLookupTableModal #assetPartAssetPartStatusLookupTableModal (modalSave)="getNewAssetPartStatusId()"></assetPartAssetPartStatusLookupTableModal>
+		 <assetPartUsageMetricLookupTableModal #assetPartUsageMetricLookupTableModal (modalSave)="getNewUsageMetricId()"></assetPartUsageMetricLookupTableModal>
+		 <assetPartAttachmentLookupTableModal #assetPartAttachmentLookupTableModal (modalSave)="getNewAttachmentId()"></assetPartAttachmentLookupTableModal>
+		 <assetPartAssetLookupTableModal #assetPartAssetLookupTableModal (modalSave)="getNewAssetId()"></assetPartAssetLookupTableModal>
+		 <assetPartItemTypeLookupTableModal #assetPartItemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></assetPartItemTypeLookupTableModal>
+		 
+</div>

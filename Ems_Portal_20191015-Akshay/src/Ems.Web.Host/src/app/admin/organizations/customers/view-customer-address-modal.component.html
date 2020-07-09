@@ -1,0 +1,69 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AddressEntryName")}} :</h6>
+                        {{ item.address.addressEntryName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsHeadOffice")}} :</h6>
+                        {{ item.address.isHeadOffice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AddressLine1")}} :</h6>
+                        {{ item.address.addressLine1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AddressLine2")}} :</h6>
+                        {{ item.address.addressLine2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PostalCode")}} :</h6>
+                        {{ item.address.postalCode }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("City")}} :</h6>
+                        {{ item.address.city }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("State")}} :</h6>
+                        {{ item.address.state }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Country")}} :</h6>
+                        {{ item.address.country }}
+                    </div>
+                    <!--<div class="col-6 mb-3">
+                        <h6>{{l("AddressLoc8GUID")}} :</h6>
+                        {{ item.address.addressLoc8GUID }}
+                    </div>-->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsDefaultForBilling")}} :</h6>
+                        {{ item.address.isDefaultForBilling }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IsDefaultForShipping")}} :</h6>
+                        {{ item.address.isDefaultForShipping }}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

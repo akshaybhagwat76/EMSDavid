@@ -1,0 +1,39 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                    {{"AssetComponents" | localize}}
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <button *ngIf="'Pages.Main.AssetParts.ManagePartTree' | permission" (click)="addPart(null)" class="btn btn-primary">
+                <i class="fa fa-plus"></i> {{"AddRootComponent" | localize}}
+            </button>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <p-tree [value]="treeData"
+                selectionMode="single"
+                [(selection)]="selectedAp"
+                (onNodeSelect)="nodeSelect($event)"
+                (onNodeDrop)="nodeDrop($event)"
+                [contextMenu]="partContextMenu"
+                [draggableNodes]="canManageAssetParts" [droppableNodes]="canManageAssetParts">
+            <ng-template let-node pTemplate="default">
+                <div>
+                    <span>
+                        {{node.label}}
+                    </span>
+                </div>
+            </ng-template>
+        </p-tree>
+        <p-contextMenu #partContextMenu [model]="apContextMenuItems" appendTo="body" baseZIndex="99999"></p-contextMenu>
+        <div *ngIf="!totalPartCount" class="text-muted">
+            {{"NoAssetPartDefinedYet" | localize}}
+        </div>
+    </div>
+</div>
+
+<createOrEditAssetPartModal #createOrEditAssetPartModal (partCreated)="partCreated($event)" (partUpdated)="partUpdated($event)" [assetId]="assetId"></createOrEditAssetPartModal>
+<entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+<viewAssetPartModal #viewAssetPartModalComponent></viewAssetPartModal>

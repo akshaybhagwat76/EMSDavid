@@ -1,0 +1,150 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #estimateDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="estimateDetail.id">{{l("EditEstimateDetail")}}</span>
+                        <span *ngIf="!estimateDetail.id">{{l("CreateNewEstimateDetail")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group m-form__group">
+                        <label for="ItemTypeType">{{l("ItemType")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ItemTypeType" name="itemTypeType" [(ngModel)]="itemTypeType" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectItemTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setItemTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="estimateDetail.itemTypeId" [(ngModel)]="estimateDetail.itemTypeId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="UomUnitOfMeasurement">{{l("Uom")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UomUnitOfMeasurement" name="uomUnitOfMeasurement" [(ngModel)]="uomUnitOfMeasurement" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUomModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUomIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="estimateDetail.uomId" [(ngModel)]="estimateDetail.uomId" type="text" hidden>
+
+                    <div class="form-group m-form__group">
+                        <label for="ActionWorkOrderAction">{{l("Action")}} #</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ActionWorkOrderAction" name="actionWorkOrderAction" [(ngModel)]="actionWorkOrderAction" type="text" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectWoActionModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setWoActionIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="estimateDetail.workOrderActionId" [(ngModel)]="estimateDetail.workOrderActionId" type="text" hidden>
+
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Description">{{l("Description")}} #</label>
+                        <input type="text" id="estimateDetail_Description" class="form-control" [(ngModel)]="estimateDetail.description" name="Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Quantity">{{l("Quantity")}} *</label>
+                        <input type="number" id="estimateDetail_Quantity" class="form-control" [(ngModel)]="estimateDetail.quantity" name="Quantity" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_UnitPrice">{{l("UnitPrice")}} *</label>
+                        <input type="number" id="estimateDetail_UnitPrice" class="form-control" [(ngModel)]="estimateDetail.unitPrice" name="UnitPrice" required min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_MarkUp">{{l("MarkUp")}} in (%)</label>
+                        <input type="number" id="estimateDetail_MarkUp" class="form-control" [(ngModel)]="estimateDetail.markUp" name="MarkUp" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Cost">{{l("Cost")}}</label>
+                        <input type="number" id="estimateDetail_Cost" class="form-control" [(ngModel)]="estimateDetail.cost" name="Cost" required min="0" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Discount">{{l("Discount")}} in (%)</label>
+                        <input type="number" id="estimateDetail_Discount" class="form-control" [(ngModel)]="estimateDetail.discount" name="Discount" min="0" (focusout)="calculateAmount()" />
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="estimateDetail_IsTaxable" class="kt-checkbox">
+                            <input id="estimateDetail_IsTaxable" type="checkbox" name="IsTaxable" [(ngModel)]="estimateDetail.isTaxable" (change)="calculateAmount()">
+                            {{l("IsTaxable")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Charge">{{l("Charge")}} </label>
+                        <input type="number" id="estimateDetail_Charge" class="form-control" [(ngModel)]="estimateDetail.charge" name="Charge" required min="0" disabled />
+                    </div>
+
+
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="estimateDetail_IsChargeable" class="kt-checkbox">
+                            <input id="estimateDetail_IsChargeable" type="checkbox" name="IsChargeable" [(ngModel)]="estimateDetail.isChargeable">
+                            {{l("IsChargeable")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="estimateDetail_IsAdHoc" class="kt-checkbox">
+                            <input id="estimateDetail_IsAdHoc" type="checkbox" name="IsAdHoc" [(ngModel)]="estimateDetail.isAdHoc">
+                            {{l("IsAdHoc")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="estimateDetail_IsStandbyReplacementUnit" class="kt-checkbox">
+                            <input id="estimateDetail_IsStandbyReplacementUnit" type="checkbox" name="IsStandbyReplacementUnit" [(ngModel)]="estimateDetail.isStandbyReplacementUnit">
+                            {{l("IsStandbyReplacementUnit")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <br /><div class="m-checkbox-list">
+                        <label for="estimateDetail_IsOptionalItem" class="kt-checkbox">
+                            <input id="estimateDetail_IsOptionalItem" type="checkbox" name="IsOptionalItem" [(ngModel)]="estimateDetail.isOptionalItem">
+                            {{l("IsOptionalItem")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimateDetail_Remark">{{l("Remark")}}</label>
+                        <input type="text" id="estimateDetail_Remark" class="form-control" [(ngModel)]="estimateDetail.remark" name="Remark" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!estimateDetailForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <itemTypeLookupTableModal #itemTypeLookupTableModal (modalSave)="getNewItemTypeId()"></itemTypeLookupTableModal>
+    <uomLookupTableModal #uomLookupTableModal (modalSave)="getNewUomId()"></uomLookupTableModal>
+    <workOrderWorkOrderActionLookupTableModal #workOrderWorkOrderActionLookupTableModal (modalSave)="getNewWoActionId()"></workOrderWorkOrderActionLookupTableModal>
+</div>

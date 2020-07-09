@@ -1,0 +1,551 @@
+<div class="kt-login__form" [@routerTransition] id="TenantDashboard">
+    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Dashboard" | localize}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{"DashboardHeaderInfo" | localize}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-portlet__body kt-portlet__body--fit">
+                    <div class="row row-no-padding row-col-separator-xl">
+                        <div class="col-md-12 col-lg-6 col-xl-3">
+                            <div class="kt-widget24">
+                                <div class="kt-widget24__details">
+                                    <div class="kt-widget24__info">
+                                        <h4 class="kt-widget24__title">
+                                            Incidents
+                                        </h4>
+                                        <span class="kt-widget24__desc">
+                                            New Incidents this month
+                                        </span>
+                                    </div>
+                                    <span class="kt-widget24__stats kt--font-brand">
+                                        <span counto [step]="30" [duration]="1" [countFrom]="0"
+                                            [countTo]="dashboardHeaderStats.newIncidents"
+                                            (countoChange)="dashboardHeaderStats.newIncidentsCounter = $event">
+                                            {{dashboardHeaderStats.newIncidentsCounter.toFixed(0)}}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="progress progress--sm">
+                                    <div class="progress-bar kt-bg-brand" role="progressbar" [style.width]="dashboardHeaderStats.newIncidentProgressBar"
+                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="kt-widget24__action">
+                                    <span class="kt-widget24__change">
+                                        Change
+                                    </span>
+                                    <span class="kt-widget24__number">
+                                        <span class="counterup">{{dashboardHeaderStats.newIncidentsChange}}</span>%
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 col-lg-6 col-xl-3">
+                            <div class="kt-widget24">
+                                <div class="kt-widget24__details">
+                                    <div class="kt-widget24__info">
+                                        <h4 class="kt-widget24__title">
+                                            Work Orders
+                                        </h4>
+                                        <span class="kt-widget24__desc">
+                                            New Work Orders this month
+                                        </span>
+                                    </div>
+                                    <span class="kt-widget24__stats kt--font-info" counto [step]="30" [duration]="1"
+                                        [countFrom]="0" [countTo]="dashboardHeaderStats.newWorkOrders"
+                                        (countoChange)="dashboardHeaderStats.newWorkOrdersCounter = $event">
+                                        {{dashboardHeaderStats.newWorkOrdersCounter.toFixed(0)}}
+                                    </span>
+                                </div>
+                                <div class="progress progress--sm">
+                                    <div class="progress-bar kt-bg-info" role="progressbar" [style.width]="dashboardHeaderStats.newWorkOrdersProgressBar"
+                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="kt-widget24__action">
+                                    <span class="kt-widget24__change">
+                                        Change
+                                    </span>
+                                    <span class="kt-widget24__number">
+                                        <span class="counterup">{{dashboardHeaderStats.newWorkOrdersChange}}</span>%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 col-xl-3">
+                            <div class="kt-widget24">
+                                <div class="kt-widget24__details">
+                                    <div class="kt-widget24__info">
+                                        <h4 class="kt-widget24__title">
+                                            Vendor Quotations
+                                        </h4>
+                                        <span class="kt-widget24__desc">
+                                            New Quotations this month
+                                        </span>
+                                    </div>
+                                    <span class="kt-widget24__stats kt--font-info" counto [step]="30" [duration]="1"
+                                        [countFrom]="0" [countTo]="dashboardHeaderStats.newQuotations"
+                                        (countoChange)="dashboardHeaderStats.newQuotationsCounter = $event">
+                                        {{dashboardHeaderStats.newQuotationsCounter.toFixed(0)}}
+                                    </span>
+                                </div>
+                                <div class="progress progress--sm">
+                                    <div class="progress-bar kt-bg-danger" role="progressbar" [style.width]="dashboardHeaderStats.newQuotationsProgressBar"
+                                        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="kt-widget24__action">
+                                    <span class="kt-widget24__change">
+                                        Change
+                                    </span>
+                                    <span class="kt-widget24__number">
+                                        <span class="counterup">{{dashboardHeaderStats.newQuotationsChange}}</span>%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 col-xl-3">
+                            <div class="kt-widget24">
+                                <div class="kt-widget24__details">
+                                    <div class="kt-widget24__info">
+                                        <h4 class="kt-widget24__title">
+                                            Customer Estimates
+                                        </h4>
+                                        <span class="kt-widget24__desc">
+                                            New Estimates this month
+                                        </span>
+                                    </div>
+                                    <span class="kt-widget24__stats kt--font-info" counto [step]="30" [duration]="1"
+                                        [countFrom]="0" [countTo]="dashboardHeaderStats.newEstimates"
+                                        (countoChange)="dashboardHeaderStats.newEstimatesCounter = $event">
+                                        {{dashboardHeaderStats.newEstimatesCounter.toFixed(0)}}
+                                    </span>
+                                </div>
+                                <div class="progress progress--sm">
+                                    <div class="progress-bar kt-bg-success" role="progressbar" [style.width]="dashboardHeaderStats.newEstimatesProgressBar"
+                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="kt-widget24__action">
+                                    <span class="kt-widget24__change">
+                                        Change
+                                    </span>
+                                    <span class="kt-widget24__number">
+                                        <span class="counterup">{{dashboardHeaderStats.newEstimatesChange}}</span>%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid sales-summary-chart">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Aged Receivables
+                                </h3>
+                            </div>
+                            
+                        </div>
+                        <div class="kt-portlet__body" [busyIf]="agedReceivablesChart.loading">
+                            <!--
+                            <div class="row list-separated text-center">
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <h6>
+                                        {{agedReceivablesChart.agedReceivablesDate1}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="agedReceivablesChart.agedReceivablesTotal1"
+                                            (countoChange)="agedReceivablesChart.agedReceivablesTotalCounter1 = $event">
+                                            {{agedReceivablesChart.agedReceivablesTotalCounter1.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <h6>
+                                        {{agedReceivablesChart.agedReceivablesDate2}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="agedReceivablesChart.agedReceivablesTotal2"
+                                            (countoChange)="agedReceivablesChart.agedReceivablesTotalCounter2 = $event">
+                                            {{agedReceivablesChart.agedReceivablesTotalCounter2.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <h6>
+                                        {{agedReceivablesChart.agedReceivablesDate3}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="agedReceivablesChart.agedReceivablesTotal3"
+                                            (countoChange)="agedReceivablesChart.agedReceivablesTotalCounter3 = $event">
+                                            {{agedReceivablesChart.agedReceivablesTotalCounter3.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <h6>
+                                        {{agedReceivablesChart.agedReceivablesDate4}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="agedReceivablesChart.agedReceivablesTotal4"
+                                            (countoChange)="agedReceivablesChart.agedReceivablesTotalCounter4 = $event">
+                                            {{agedReceivablesChart.agedReceivablesTotalCounter4.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+
+                            <!--Aged Receivables-->
+                            <div style="height: 320px; min-height: 320px; margin-top: -40px;">
+                                <ngx-charts-area-chart-stacked [results]="agedReceivablesChart.data"
+                                    [showXAxisLabel]="true" showYAxisLabel="true" [xAxis]="true" [yAxis]="true"
+                                    [showGridLines]="false" [tooltipDisabled]="false">
+                                </ngx-charts-area-chart-stacked>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid sales-summary-chart">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Revenue Forecast
+                                </h3>
+                            </div>
+                            
+                        </div>
+                        <div class="kt-portlet__body" [busyIf]="agedReceivablesChart.loading">
+                            <!--
+                            <div class="row list-separated text-center">
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate1}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal1"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter1 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter1.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate2}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal2"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter2 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter2.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate3}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal3"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter3 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter3.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate4}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal4"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter4 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter4.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate5}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal5"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter5 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter5.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-4">
+                                    <h6>
+                                        {{revenueForecastChart.revenueForecastDate6}}
+                                    </h6>
+                                    <div class="uppercase font-hg font-purple">
+                                        <span class="kt-font-info kt-font-bolder">$</span>
+                                        <span counto class="kt--font-info kt-font-bolder" [step]="30" [duration]="1"
+                                            [countFrom]="0" [countTo]="revenueForecastChart.revenueForecastTotal6"
+                                            (countoChange)="revenueForecastChart.revenueForecastTotalCounter6 = $event">
+                                            {{revenueForecastChart.revenueForecastTotalCounter6.toFixed(0)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            -->
+                            <!--Revenue Forecast-->
+                            <div style="height: 320px; min-height: 320px; margin-top: -40px;">
+                                <ngx-charts-bar-vertical [results]="revenueForecastChart.data"
+                                    [showXAxisLabel]="true" showYAxisLabel="true" [xAxis]="true" [yAxis]="true"
+                                    [showGridLines]="false" [tooltipDisabled]="false">
+                                </ngx-charts-bar-vertical>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid ">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    General Stats
+                                </h3>
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <a href="javascript:;" class="btn btn-primary" (click)="generalStatsPieChart.reload()">
+                                    <i class="fa fa-redo"></i> Refresh
+                                </a>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="row">
+                                <ngx-charts-pie-grid [results]="generalStatsPieChart.data">
+                                </ngx-charts-pie-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid ">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Daily Stats
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ngx-charts-bar-vertical [results]="dailySalesLineChart.chartData"
+                                        [scheme]="dailySalesLineChart.scheme">
+                                        <ng-template #tooltipTemplate let-model="model">
+                                            <span>Day {{model.name}}</span>
+                                            <br />
+                                            <span>{{model.value}}</span>
+                                        </ng-template>
+                                    </ngx-charts-bar-vertical>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <div class="row">
+                <div class="col-lg-6 col-xs-12 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid ">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+
+                                <h3 class="kt-portlet__head-title">
+                                    Top Assets with Work Orders
+                                </h3>
+
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <button (click)="updateAssetsWithWorkorders(30)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>30d</button>
+                                <button (click)="updateAssetsWithWorkorders(60)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>60d</button>
+                                <button (click)="updateAssetsWithWorkorders(90)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>90d</button>
+                            </div>
+
+                        </div>
+                        <div class="kt-portlet__body">
+                            <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getAssetsWithWorkorders($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="false"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 150px" pSortableColumn="reference">
+                                        {{l('Ref')}}
+                                        <p-sortIcon field="reference"></p-sortIcon>
+                                    </th>
+
+                                    <th style="width: 300px" pSortableColumn="description">
+                                        {{l('Asset')}}
+                                        <p-sortIcon field="description"></p-sortIcon>
+                                    </th>
+
+                                    <th style="width: 75x" pSortableColumn="workorders">
+                                        {{l('Work Orders')}}
+                                        <p-sortIcon field="workorders"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Ref')}}</span>
+                                        {{record.asset.reference}}
+                                    </td>
+                                    
+                                    <td style="width:300px">
+                                        <span class="ui-column-title"> {{l('Asset')}}</span>
+                                        {{record.asset.description}}
+                                    </td>
+
+                                    <td style="width:75x">
+                                        <span class="ui-column-title"> {{l('Work Orders')}}</span>
+                                        {{record.workorders}}
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                       
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xs-12 col-sm-12">
+                    <div class="kt-portlet kt-portlet--height-fluid ">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+
+                                <h3 class="kt-portlet__head-title">
+                                    Support Items Consumed
+                                </h3>
+
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <button (click)="updateWorkorderItems(30)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>30d</button>
+                                <button (click)="updateWorkorderItems(60)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>60d</button>
+                                <button (click)="updateWorkorderItems(90)" class="btn btn-secondary btn-sm"><i
+                                        class="fa fa-sync"></i>90d</button>
+                            </div>
+
+                        </div>
+                        <div class="kt-portlet__body">
+                            <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper1.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getWorkorderItems($event)"
+                                     [value]="primengTableHelper1.records"
+                                     rows="{{primengTableHelper1.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="false"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper1.isResponsive"
+                                     [resizableColumns]="primengTableHelper1.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 450px" pSortableColumn="item">
+                                        {{l('Support Item')}}
+                                        <p-sortIcon field="item"></p-sortIcon>
+                                    </th>
+
+                                    <th style="width: 75x" pSortableColumn="consumed">
+                                        {{l('Consumed')}}
+                                        <p-sortIcon field="consumed"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width:450px">
+                                        <span class="ui-column-title"> {{l('Support Item')}}</span>
+                                        {{record.item.description}}
+                                    </td>
+                                    
+                                    <td style="width:75x">
+                                        <span class="ui-column-title"> {{l('Consumed')}}</span>
+                                        {{record.consumed}}
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #agedReceivablesPeriodForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="agedReceivablesPeriod.id">{{l("EditAgedReceivablesPeriod")}}</span>
+                        <span *ngIf="!agedReceivablesPeriod.id">{{l("CreateNewAgedReceivablesPeriod")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Period">{{l("Period")}}</label>
+									 <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="agedReceivablesPeriod.period._d" id="AgedReceivablesPeriod_Period" name="AgedReceivablesPeriod_Period">
+								</div>
+					
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Current">{{l("Current")}}</label>
+									<input type="number" id="AgedReceivablesPeriod_Current" class="form-control" [(ngModel)]="agedReceivablesPeriod.current" name="Current"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Over30">{{l("Over30")}}</label>
+									<input type="number" id="AgedReceivablesPeriod_Over30" class="form-control" [(ngModel)]="agedReceivablesPeriod.over30" name="Over30"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Over60">{{l("Over60")}}</label>
+									<input type="number" id="AgedReceivablesPeriod_Over60" class="form-control" [(ngModel)]="agedReceivablesPeriod.over60" name="Over60"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Over90">{{l("Over90")}}</label>
+									<input type="number" id="AgedReceivablesPeriod_Over90" class="form-control" [(ngModel)]="agedReceivablesPeriod.over90" name="Over90"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="AgedReceivablesPeriod_Over120">{{l("Over120")}}</label>
+									<input type="number" id="AgedReceivablesPeriod_Over120" class="form-control" [(ngModel)]="agedReceivablesPeriod.over120" name="Over120"  />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!agedReceivablesPeriodForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
